@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "GHWalkThroughPageCell.h"
 
-typedef NS_ENUM(NSInteger, GHWalkThroughViewDirection) {
-    GHWalkThroughViewDirectionVertical,
-    GHWalkThroughViewDirectionHorizontal
+typedef NS_ENUM(NSInteger, IDLWalkThroughViewDirection) {
+    IDLWalkThroughViewDirectionVertical,
+    IDLWalkThroughViewDirectionHorizontal
 };
 
 @protocol IDLWalkThroughViewDelegate;
@@ -23,7 +23,7 @@ typedef NS_ENUM(NSInteger, GHWalkThroughViewDirection) {
 
 @property (nonatomic, assign) id<IDLWalkThroughViewDataSource> dataSource;
 
-@property (nonatomic, assign) GHWalkThroughViewDirection walkThroughDirection;
+@property (nonatomic, assign) IDLWalkThroughViewDirection walkThroughDirection;
 
 @property (nonatomic, strong) UIView* floatingHeaderView;
 

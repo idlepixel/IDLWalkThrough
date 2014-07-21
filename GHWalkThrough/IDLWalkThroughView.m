@@ -81,10 +81,10 @@
     [self bringSubviewToFront:_floatingHeaderView];
 }
 
-- (void) setWalkThroughDirection:(GHWalkThroughViewDirection)walkThroughDirection
+- (void) setWalkThroughDirection:(IDLWalkThroughViewDirection)walkThroughDirection
 {
     _walkThroughDirection = walkThroughDirection;
-    UICollectionViewScrollDirection dir = _walkThroughDirection == GHWalkThroughViewDirectionVertical ? UICollectionViewScrollDirectionVertical : UICollectionViewScrollDirectionHorizontal;
+    UICollectionViewScrollDirection dir = _walkThroughDirection == IDLWalkThroughViewDirectionVertical ? UICollectionViewScrollDirectionVertical : UICollectionViewScrollDirectionHorizontal;
     UICollectionViewFlowLayout* layout =  (UICollectionViewFlowLayout*) self.collectionView.collectionViewLayout;
     [layout setScrollDirection:dir];
     [layout invalidateLayout];
@@ -99,7 +99,7 @@
 
 - (void) orientFooter
 {
-    if (self.walkThroughDirection == GHWalkThroughViewDirectionVertical) {
+    if (self.walkThroughDirection == IDLWalkThroughViewDirectionVertical) {
         BOOL isRotated = !CGAffineTransformEqualToTransform(self.pageControl.transform, CGAffineTransformIdentity);
         if (!isRotated) {
             CGRect butonFrame = self.skipButton.frame;
@@ -206,7 +206,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     // Get scrolling position, and send the alpha values.
     if (!self.isfixedBackground) {
-        float offset = self.walkThroughDirection == GHWalkThroughViewDirectionHorizontal ? self.collectionView.contentOffset.x / self.collectionView.frame.size.width : self.collectionView.contentOffset.y / self.collectionView.frame.size.height ;
+        float offset = self.walkThroughDirection == IDLWalkThroughViewDirectionHorizontal ? self.collectionView.contentOffset.x / self.collectionView.frame.size.width : self.collectionView.contentOffset.y / self.collectionView.frame.size.height ;
         [self crossDissolveForOffset:offset];
     }
     
@@ -214,11 +214,11 @@
     CGFloat contentOffset = 0.0f;
     
     switch (self.walkThroughDirection) {
-        case GHWalkThroughViewDirectionHorizontal:
+        case IDLWalkThroughViewDirectionHorizontal:
             pageMetric = scrollView.frame.size.width;
             contentOffset = scrollView.contentOffset.x;
             break;
-        case GHWalkThroughViewDirectionVertical:
+        case IDLWalkThroughViewDirectionVertical:
             pageMetric = scrollView.frame.size.height;
             contentOffset = scrollView.contentOffset.y;
             break;

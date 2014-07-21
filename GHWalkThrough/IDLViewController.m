@@ -38,7 +38,7 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
     
     _ghView = [[IDLWalkThroughView alloc] initWithFrame:self.navigationController.view.bounds];
     [_ghView setDataSource:self];
-    [_ghView setWalkThroughDirection:GHWalkThroughViewDirectionVertical];
+    [_ghView setWalkThroughDirection:IDLWalkThroughViewDirectionVertical];
     UILabel* welcomeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 50)];
     welcomeLabel.text = @"Welcome";
     welcomeLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:40];
@@ -78,23 +78,23 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
     switch (indexPath.row) {
         case 0:
             self.ghView.floatingHeaderView = nil;
-            [self.ghView setWalkThroughDirection:GHWalkThroughViewDirectionHorizontal];
+            [self.ghView setWalkThroughDirection:IDLWalkThroughViewDirectionHorizontal];
             break;
         case 1:
             self.ghView.floatingHeaderView = nil;
-            [self.ghView setWalkThroughDirection:GHWalkThroughViewDirectionVertical];
+            [self.ghView setWalkThroughDirection:IDLWalkThroughViewDirectionVertical];
             break;
         case 2:
         {
             [_ghView setFloatingHeaderView:self.welcomeLabel];
-            [self.ghView setWalkThroughDirection:GHWalkThroughViewDirectionHorizontal];
+            [self.ghView setWalkThroughDirection:IDLWalkThroughViewDirectionHorizontal];
         }
             break;
         case 3:
             [_ghView setFloatingHeaderView:self.welcomeLabel];
             self.ghView.isfixedBackground = YES;
             self.ghView.bgImage = [UIImage imageNamed:@"static_bg_01"];
-            [self.ghView setWalkThroughDirection:GHWalkThroughViewDirectionVertical];
+            [self.ghView setWalkThroughDirection:IDLWalkThroughViewDirectionVertical];
     
             break;
             
