@@ -1,3 +1,10 @@
+#IDLWalkThrough (work in progress) - forked from GHWalkThrough
+
+This fork will include the following changes to the original project:
+* Multiple layer animations
+* Datasource/delegate syntax changes
+* modernised code
+
 #GHWalkThrough - iOS App Walk through control
 
 ![BackgroundImage](https://raw2.github.com/GnosisHub/GHWalkThrough/master/wtwithheader.gif)
