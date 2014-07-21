@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:GHWalkThrough.xcodeproj">
+      location = "self:IDLWalkThrough.xcodeproj">
    </FileRef>
 </Workspace>

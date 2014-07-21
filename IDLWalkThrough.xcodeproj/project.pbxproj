@@ -47,11 +47,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		849EC35A188E4A6400CAEA3D /* GHWalkThrough.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GHWalkThrough.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		849EC35A188E4A6400CAEA3D /* IDLWalkThrough.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IDLWalkThrough.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		849EC35D188E4A6400CAEA3D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		849EC35F188E4A6400CAEA3D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		849EC361188E4A6400CAEA3D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		849EC365188E4A6400CAEA3D /* GHWalkThrough-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GHWalkThrough-Info.plist"; sourceTree = "<group>"; };
+		849EC365188E4A6400CAEA3D /* IDLWalkThrough-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "IDLWalkThrough-Info.plist"; sourceTree = "<group>"; };
 		849EC367188E4A6400CAEA3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		849EC369188E4A6400CAEA3D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		849EC36B188E4A6400CAEA3D /* GHWalkThrough-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GHWalkThrough-Prefix.pch"; sourceTree = "<group>"; };
@@ -61,9 +61,9 @@
 		849EC372188E4A6400CAEA3D /* GHViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GHViewController.h; sourceTree = "<group>"; };
 		849EC373188E4A6400CAEA3D /* GHViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GHViewController.m; sourceTree = "<group>"; };
 		849EC375188E4A6400CAEA3D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		849EC37B188E4A6400CAEA3D /* GHWalkThroughTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GHWalkThroughTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		849EC37B188E4A6400CAEA3D /* IDLWalkThroughTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IDLWalkThroughTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		849EC37C188E4A6400CAEA3D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		849EC384188E4A6400CAEA3D /* GHWalkThroughTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GHWalkThroughTests-Info.plist"; sourceTree = "<group>"; };
+		849EC384188E4A6400CAEA3D /* IDLWalkThroughTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "IDLWalkThroughTests-Info.plist"; sourceTree = "<group>"; };
 		849EC386188E4A6400CAEA3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		849EC388188E4A6400CAEA3D /* GHWalkThroughTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GHWalkThroughTests.m; sourceTree = "<group>"; };
 		849EC393188E4AA300CAEA3D /* GHWalkThroughView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHWalkThroughView.h; sourceTree = "<group>"; };
@@ -120,8 +120,8 @@
 		849EC35B188E4A6400CAEA3D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				849EC35A188E4A6400CAEA3D /* GHWalkThrough.app */,
-				849EC37B188E4A6400CAEA3D /* GHWalkThroughTests.xctest */,
+				849EC35A188E4A6400CAEA3D /* IDLWalkThrough.app */,
+				849EC37B188E4A6400CAEA3D /* IDLWalkThroughTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -166,7 +166,7 @@
 				84F2F189188EA2CF00F883B8 /* bg_03.jpg */,
 				84F2F18A188EA2CF00F883B8 /* bg_02.jpg */,
 				84F2F18B188EA2CF00F883B8 /* bg_01.jpg */,
-				849EC365188E4A6400CAEA3D /* GHWalkThrough-Info.plist */,
+				849EC365188E4A6400CAEA3D /* IDLWalkThrough-Info.plist */,
 				849EC366188E4A6400CAEA3D /* InfoPlist.strings */,
 				849EC369188E4A6400CAEA3D /* main.m */,
 				849EC36B188E4A6400CAEA3D /* GHWalkThrough-Prefix.pch */,
@@ -186,7 +186,7 @@
 		849EC383188E4A6400CAEA3D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				849EC384188E4A6400CAEA3D /* GHWalkThroughTests-Info.plist */,
+				849EC384188E4A6400CAEA3D /* IDLWalkThroughTests-Info.plist */,
 				849EC385188E4A6400CAEA3D /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -206,9 +206,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		849EC359188E4A6400CAEA3D /* GHWalkThrough */ = {
+		849EC359188E4A6400CAEA3D /* IDLWalkThrough */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 849EC38C188E4A6400CAEA3D /* Build configuration list for PBXNativeTarget "GHWalkThrough" */;
+			buildConfigurationList = 849EC38C188E4A6400CAEA3D /* Build configuration list for PBXNativeTarget "IDLWalkThrough" */;
 			buildPhases = (
 				849EC356188E4A6400CAEA3D /* Sources */,
 				849EC357188E4A6400CAEA3D /* Frameworks */,
@@ -218,14 +218,14 @@
 			);
 			dependencies = (
 			);
-			name = GHWalkThrough;
+			name = IDLWalkThrough;
 			productName = GHWalkThrough;
-			productReference = 849EC35A188E4A6400CAEA3D /* GHWalkThrough.app */;
+			productReference = 849EC35A188E4A6400CAEA3D /* IDLWalkThrough.app */;
 			productType = "com.apple.product-type.application";
 		};
-		849EC37A188E4A6400CAEA3D /* GHWalkThroughTests */ = {
+		849EC37A188E4A6400CAEA3D /* IDLWalkThroughTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 849EC38F188E4A6400CAEA3D /* Build configuration list for PBXNativeTarget "GHWalkThroughTests" */;
+			buildConfigurationList = 849EC38F188E4A6400CAEA3D /* Build configuration list for PBXNativeTarget "IDLWalkThroughTests" */;
 			buildPhases = (
 				849EC377188E4A6400CAEA3D /* Sources */,
 				849EC378188E4A6400CAEA3D /* Frameworks */,
@@ -236,9 +236,9 @@
 			dependencies = (
 				849EC381188E4A6400CAEA3D /* PBXTargetDependency */,
 			);
-			name = GHWalkThroughTests;
+			name = IDLWalkThroughTests;
 			productName = GHWalkThroughTests;
-			productReference = 849EC37B188E4A6400CAEA3D /* GHWalkThroughTests.xctest */;
+			productReference = 849EC37B188E4A6400CAEA3D /* IDLWalkThroughTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -256,7 +256,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 849EC355188E4A6400CAEA3D /* Build configuration list for PBXProject "GHWalkThrough" */;
+			buildConfigurationList = 849EC355188E4A6400CAEA3D /* Build configuration list for PBXProject "IDLWalkThrough" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -269,8 +269,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				849EC359188E4A6400CAEA3D /* GHWalkThrough */,
-				849EC37A188E4A6400CAEA3D /* GHWalkThroughTests */,
+				849EC359188E4A6400CAEA3D /* IDLWalkThrough */,
+				849EC37A188E4A6400CAEA3D /* IDLWalkThroughTests */,
 			);
 		};
 /* End PBXProject section */
@@ -333,7 +333,7 @@
 /* Begin PBXTargetDependency section */
 		849EC381188E4A6400CAEA3D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 849EC359188E4A6400CAEA3D /* GHWalkThrough */;
+			target = 849EC359188E4A6400CAEA3D /* IDLWalkThrough */;
 			targetProxy = 849EC380188E4A6400CAEA3D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -444,9 +444,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "GHWalkThrough/GHWalkThrough-Prefix.pch";
-				INFOPLIST_FILE = "GHWalkThrough/GHWalkThrough-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "GHWalkThrough/IDLWalkThrough-Prefix.pch";
+				INFOPLIST_FILE = "GHWalkThrough/IDLWalkThrough-Info.plist";
+				PRODUCT_NAME = IDLWalkThrough;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -457,9 +457,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "GHWalkThrough/GHWalkThrough-Prefix.pch";
-				INFOPLIST_FILE = "GHWalkThrough/GHWalkThrough-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "GHWalkThrough/IDLWalkThrough-Prefix.pch";
+				INFOPLIST_FILE = "GHWalkThrough/IDLWalkThrough-Info.plist";
+				PRODUCT_NAME = IDLWalkThrough;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -480,8 +480,8 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "GHWalkThroughTests/GHWalkThroughTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "GHWalkThroughTests/IDLWalkThroughTests-Info.plist";
+				PRODUCT_NAME = IDLWalkThroughTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -499,8 +499,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GHWalkThrough/GHWalkThrough-Prefix.pch";
-				INFOPLIST_FILE = "GHWalkThroughTests/GHWalkThroughTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "GHWalkThroughTests/IDLWalkThroughTests-Info.plist";
+				PRODUCT_NAME = IDLWalkThroughTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -509,7 +509,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		849EC355188E4A6400CAEA3D /* Build configuration list for PBXProject "GHWalkThrough" */ = {
+		849EC355188E4A6400CAEA3D /* Build configuration list for PBXProject "IDLWalkThrough" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				849EC38A188E4A6400CAEA3D /* Debug */,
@@ -518,7 +518,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		849EC38C188E4A6400CAEA3D /* Build configuration list for PBXNativeTarget "GHWalkThrough" */ = {
+		849EC38C188E4A6400CAEA3D /* Build configuration list for PBXNativeTarget "IDLWalkThrough" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				849EC38D188E4A6400CAEA3D /* Debug */,
@@ -527,7 +527,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		849EC38F188E4A6400CAEA3D /* Build configuration list for PBXNativeTarget "GHWalkThroughTests" */ = {
+		849EC38F188E4A6400CAEA3D /* Build configuration list for PBXNativeTarget "IDLWalkThroughTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				849EC390188E4A6400CAEA3D /* Debug */,
