@@ -56,7 +56,7 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
     return 5;
 }
 
-- (void) configurePage:(GHWalkThroughPageCell *)cell atIndex:(NSInteger)index
+- (void) configurePage:(IDLWalkThroughPageCell *)cell atIndex:(NSInteger)index
 {
     cell.title = [NSString stringWithFormat:@"This is page %ld", index+1];
     cell.titleImage = [UIImage imageNamed:[NSString stringWithFormat:@"title%ld", index+1]];

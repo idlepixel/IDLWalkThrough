@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Tapasya. All rights reserved.
 //
 
-#import "GHWalkThroughPageCell.h"
+#import "IDLWalkThroughPageCell.h"
 
-@interface GHWalkThroughPageCell ()
+@interface IDLWalkThroughPageCell ()
 
 @property (nonatomic, strong) UILabel* titleLabel;
 @property (nonatomic, strong) UITextView* descLabel;
@@ -16,7 +16,7 @@
 
 @end
 
-@implementation GHWalkThroughPageCell
+@implementation IDLWalkThroughPageCell
 
 - (id)initWithFrame:(CGRect)frame
 {

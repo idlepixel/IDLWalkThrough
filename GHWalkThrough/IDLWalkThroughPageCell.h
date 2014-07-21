@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GHWalkThroughPageCell : UICollectionViewCell
+@interface IDLWalkThroughPageCell : UICollectionViewCell
 
 @property (nonatomic, strong) UIImage *titleImage;
 @property (nonatomic, assign) CGFloat imgPositionY;

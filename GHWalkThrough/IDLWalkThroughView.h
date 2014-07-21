@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GHWalkThroughPageCell.h"
+#import "IDLWalkThroughPageCell.h"
 
 typedef NS_ENUM(NSInteger, IDLWalkThroughViewDirection) {
     IDLWalkThroughViewDirectionVertical,
@@ -53,6 +53,6 @@ typedef NS_ENUM(NSInteger, IDLWalkThroughViewDirection) {
 @optional
 //-(UIView*) customViewForPage:(NSInteger) index;
 - (UIImage*) bgImageforPage:(NSInteger) index;
--(void) configurePage:(GHWalkThroughPageCell*) cell atIndex:(NSInteger) index;
+-(void) configurePage:(IDLWalkThroughPageCell*) cell atIndex:(NSInteger) index;
 
 @end
