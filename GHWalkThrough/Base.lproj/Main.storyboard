@@ -7,7 +7,7 @@
         <!--View Controller - IDLWalkThrough Demo-->
         <scene sceneID="eIJ-QT-SJf">
             <objects>
-                <tableViewController id="gKc-t6-IAp" customClass="GHViewController" sceneMemberID="viewController">
+                <tableViewController id="gKc-t6-IAp" customClass="IDLViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="B6v-Bw-bsJ">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

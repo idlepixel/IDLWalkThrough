@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Tapasya. All rights reserved.
 //
 
-#import "GHWalkThroughView.h"
+#import "IDLWalkThroughView.h"
 
-@interface GHWalkThroughView ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface IDLWalkThroughView ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UICollectionView* collectionView;
 @property (nonatomic, strong) UIImageView* bgFrontLayer;
@@ -21,7 +21,7 @@
 
 @end
 
-@implementation GHWalkThroughView
+@implementation IDLWalkThroughView
 
 - (id)initWithFrame:(CGRect)frame
 {

@@ -1,5 +1,5 @@
 //
-//  GHAppDelegate.h
+//  GHViewController.h
 //  GHWalkThrough
 //
 //  Created by Tapasya on 21/01/14.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GHAppDelegate : UIResponder <UIApplicationDelegate>
-
-@property (strong, nonatomic) UIWindow *window;
+@interface IDLViewController : UITableViewController
 
 @end

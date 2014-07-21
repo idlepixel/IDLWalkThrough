@@ -12,16 +12,16 @@
 		849EC362188E4A6400CAEA3D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849EC361188E4A6400CAEA3D /* UIKit.framework */; };
 		849EC368188E4A6400CAEA3D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 849EC366188E4A6400CAEA3D /* InfoPlist.strings */; };
 		849EC36A188E4A6400CAEA3D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 849EC369188E4A6400CAEA3D /* main.m */; };
-		849EC36E188E4A6400CAEA3D /* GHAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 849EC36D188E4A6400CAEA3D /* GHAppDelegate.m */; };
+		849EC36E188E4A6400CAEA3D /* IDLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 849EC36D188E4A6400CAEA3D /* IDLAppDelegate.m */; };
 		849EC371188E4A6400CAEA3D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 849EC36F188E4A6400CAEA3D /* Main.storyboard */; };
-		849EC374188E4A6400CAEA3D /* GHViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849EC373188E4A6400CAEA3D /* GHViewController.m */; };
+		849EC374188E4A6400CAEA3D /* IDLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849EC373188E4A6400CAEA3D /* IDLViewController.m */; };
 		849EC376188E4A6400CAEA3D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 849EC375188E4A6400CAEA3D /* Images.xcassets */; };
 		849EC37D188E4A6400CAEA3D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849EC37C188E4A6400CAEA3D /* XCTest.framework */; };
 		849EC37E188E4A6400CAEA3D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849EC35D188E4A6400CAEA3D /* Foundation.framework */; };
 		849EC37F188E4A6400CAEA3D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849EC361188E4A6400CAEA3D /* UIKit.framework */; };
 		849EC387188E4A6400CAEA3D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 849EC385188E4A6400CAEA3D /* InfoPlist.strings */; };
 		849EC389188E4A6400CAEA3D /* GHWalkThroughTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 849EC388188E4A6400CAEA3D /* GHWalkThroughTests.m */; };
-		849EC395188E4AA300CAEA3D /* GHWalkThroughView.m in Sources */ = {isa = PBXBuildFile; fileRef = 849EC394188E4AA300CAEA3D /* GHWalkThroughView.m */; };
+		849EC395188E4AA300CAEA3D /* IDLWalkThroughView.m in Sources */ = {isa = PBXBuildFile; fileRef = 849EC394188E4AA300CAEA3D /* IDLWalkThroughView.m */; };
 		849EC398188E4BC200CAEA3D /* GHWalkThroughPageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 849EC397188E4BC200CAEA3D /* GHWalkThroughPageCell.m */; };
 		84F2F18C188EA2CF00F883B8 /* bg_05.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84F2F187188EA2CF00F883B8 /* bg_05.jpg */; };
 		84F2F18D188EA2CF00F883B8 /* bg_04.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84F2F188188EA2CF00F883B8 /* bg_04.jpg */; };
@@ -55,19 +55,19 @@
 		849EC367188E4A6400CAEA3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		849EC369188E4A6400CAEA3D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		849EC36B188E4A6400CAEA3D /* GHWalkThrough-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GHWalkThrough-Prefix.pch"; sourceTree = "<group>"; };
-		849EC36C188E4A6400CAEA3D /* GHAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GHAppDelegate.h; sourceTree = "<group>"; };
-		849EC36D188E4A6400CAEA3D /* GHAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GHAppDelegate.m; sourceTree = "<group>"; };
+		849EC36C188E4A6400CAEA3D /* IDLAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IDLAppDelegate.h; sourceTree = "<group>"; };
+		849EC36D188E4A6400CAEA3D /* IDLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IDLAppDelegate.m; sourceTree = "<group>"; };
 		849EC370188E4A6400CAEA3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		849EC372188E4A6400CAEA3D /* GHViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GHViewController.h; sourceTree = "<group>"; };
-		849EC373188E4A6400CAEA3D /* GHViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GHViewController.m; sourceTree = "<group>"; };
+		849EC372188E4A6400CAEA3D /* IDLViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IDLViewController.h; sourceTree = "<group>"; };
+		849EC373188E4A6400CAEA3D /* IDLViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IDLViewController.m; sourceTree = "<group>"; };
 		849EC375188E4A6400CAEA3D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		849EC37B188E4A6400CAEA3D /* IDLWalkThroughTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IDLWalkThroughTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		849EC37C188E4A6400CAEA3D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		849EC384188E4A6400CAEA3D /* IDLWalkThroughTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "IDLWalkThroughTests-Info.plist"; sourceTree = "<group>"; };
 		849EC386188E4A6400CAEA3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		849EC388188E4A6400CAEA3D /* GHWalkThroughTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GHWalkThroughTests.m; sourceTree = "<group>"; };
-		849EC393188E4AA300CAEA3D /* GHWalkThroughView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHWalkThroughView.h; sourceTree = "<group>"; };
-		849EC394188E4AA300CAEA3D /* GHWalkThroughView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHWalkThroughView.m; sourceTree = "<group>"; };
+		849EC393188E4AA300CAEA3D /* IDLWalkThroughView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDLWalkThroughView.h; sourceTree = "<group>"; };
+		849EC394188E4AA300CAEA3D /* IDLWalkThroughView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDLWalkThroughView.m; sourceTree = "<group>"; };
 		849EC396188E4BC200CAEA3D /* GHWalkThroughPageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHWalkThroughPageCell.h; sourceTree = "<group>"; };
 		849EC397188E4BC200CAEA3D /* GHWalkThroughPageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHWalkThroughPageCell.m; sourceTree = "<group>"; };
 		84F2F187188EA2CF00F883B8 /* bg_05.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg_05.jpg; sourceTree = "<group>"; };
@@ -141,11 +141,11 @@
 			isa = PBXGroup;
 			children = (
 				849EC392188E4A7C00CAEA3D /* Views */,
-				849EC36C188E4A6400CAEA3D /* GHAppDelegate.h */,
-				849EC36D188E4A6400CAEA3D /* GHAppDelegate.m */,
+				849EC36C188E4A6400CAEA3D /* IDLAppDelegate.h */,
+				849EC36D188E4A6400CAEA3D /* IDLAppDelegate.m */,
 				849EC36F188E4A6400CAEA3D /* Main.storyboard */,
-				849EC372188E4A6400CAEA3D /* GHViewController.h */,
-				849EC373188E4A6400CAEA3D /* GHViewController.m */,
+				849EC372188E4A6400CAEA3D /* IDLViewController.h */,
+				849EC373188E4A6400CAEA3D /* IDLViewController.m */,
 				849EC375188E4A6400CAEA3D /* Images.xcassets */,
 				849EC364188E4A6400CAEA3D /* Supporting Files */,
 			);
@@ -195,8 +195,8 @@
 		849EC392188E4A7C00CAEA3D /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				849EC393188E4AA300CAEA3D /* GHWalkThroughView.h */,
-				849EC394188E4AA300CAEA3D /* GHWalkThroughView.m */,
+				849EC393188E4AA300CAEA3D /* IDLWalkThroughView.h */,
+				849EC394188E4AA300CAEA3D /* IDLWalkThroughView.m */,
 				849EC396188E4BC200CAEA3D /* GHWalkThroughPageCell.h */,
 				849EC397188E4BC200CAEA3D /* GHWalkThroughPageCell.m */,
 			);
@@ -312,10 +312,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				849EC395188E4AA300CAEA3D /* GHWalkThroughView.m in Sources */,
+				849EC395188E4AA300CAEA3D /* IDLWalkThroughView.m in Sources */,
 				849EC36A188E4A6400CAEA3D /* main.m in Sources */,
-				849EC374188E4A6400CAEA3D /* GHViewController.m in Sources */,
-				849EC36E188E4A6400CAEA3D /* GHAppDelegate.m in Sources */,
+				849EC374188E4A6400CAEA3D /* IDLViewController.m in Sources */,
+				849EC36E188E4A6400CAEA3D /* IDLAppDelegate.m in Sources */,
 				849EC398188E4BC200CAEA3D /* GHWalkThroughPageCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

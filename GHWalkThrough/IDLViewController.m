@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Tapasya. All rights reserved.
 //
 
-#import "GHViewController.h"
-#import "GHWalkThroughView.h"
+#import "IDLViewController.h"
+#import "IDLWalkThroughView.h"
 
 static NSString * const sampleDesc1 = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque tincidunt laoreet diam, id suscipit ipsum sagittis a. ";
 
@@ -19,9 +19,9 @@ static NSString * const sampleDesc4 = @"Praesent ornare consectetur elit, in fri
 
 static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi egestas eget. Etiam facilisis turpis eget ipsum tempus, nec ultricies dui sagittis. Quisque interdum ipsum vitae ante laoreet, id egestas ligula auctor";
 
-@interface GHViewController () <GHWalkThroughViewDataSource>
+@interface IDLViewController () <IDLWalkThroughViewDataSource>
 
-@property (nonatomic, strong) GHWalkThroughView* ghView ;
+@property (nonatomic, strong) IDLWalkThroughView* ghView ;
 
 @property (nonatomic, strong) NSArray* descStrings;
 
@@ -29,14 +29,14 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
 
 @end
 
-@implementation GHViewController
+@implementation IDLViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    _ghView = [[GHWalkThroughView alloc] initWithFrame:self.navigationController.view.bounds];
+    _ghView = [[IDLWalkThroughView alloc] initWithFrame:self.navigationController.view.bounds];
     [_ghView setDataSource:self];
     [_ghView setWalkThroughDirection:GHWalkThroughViewDirectionVertical];
     UILabel* welcomeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 50)];

@@ -14,14 +14,14 @@ typedef NS_ENUM(NSInteger, GHWalkThroughViewDirection) {
     GHWalkThroughViewDirectionHorizontal
 };
 
-@protocol GHWalkThroughViewDelegate;
-@protocol GHWalkThroughViewDataSource;
+@protocol IDLWalkThroughViewDelegate;
+@protocol IDLWalkThroughViewDataSource;
 
-@interface GHWalkThroughView : UIView
+@interface IDLWalkThroughView : UIView
 
-@property (nonatomic, assign) id<GHWalkThroughViewDelegate> delegate;
+@property (nonatomic, assign) id<IDLWalkThroughViewDelegate> delegate;
 
-@property (nonatomic, assign) id<GHWalkThroughViewDataSource> dataSource;
+@property (nonatomic, assign) id<IDLWalkThroughViewDataSource> dataSource;
 
 @property (nonatomic, assign) GHWalkThroughViewDirection walkThroughDirection;
 
@@ -37,14 +37,14 @@ typedef NS_ENUM(NSInteger, GHWalkThroughViewDirection) {
 
 @end
 
-@protocol GHWalkThroughViewDelegate <NSObject>
+@protocol IDLWalkThroughViewDelegate <NSObject>
 
 @optional
-- (void)walkthroughDidDismissView:(GHWalkThroughView *)walkthroughView;
+- (void)walkthroughDidDismissView:(IDLWalkThroughView *)walkthroughView;
 
 @end
 
-@protocol GHWalkThroughViewDataSource <NSObject>
+@protocol IDLWalkThroughViewDataSource <NSObject>
 
 @required
 

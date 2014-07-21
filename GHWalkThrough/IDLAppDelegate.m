@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Tapasya. All rights reserved.
 //
 
-#import "GHAppDelegate.h"
+#import "IDLAppDelegate.h"
 
-@implementation GHAppDelegate
+@implementation IDLAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
