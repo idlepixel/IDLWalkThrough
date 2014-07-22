@@ -163,7 +163,7 @@
 {
     [super applyDefaults];
     
-    self.imageOffset = CGPointMake(0.0f, 50.0f);
+    self.imageOffset = CGPointMake(0.0f, 0.0f);
 }
 
 - (void) setImage:(UIImage *)image
@@ -201,6 +201,10 @@
         self.imageView = imageView;
     }
     [pageView addSubview:self.imageView];
+    
+    // debug
+    //self.imageView.layer.borderColor = [UIColor purpleColor].CGColor;
+    //self.imageView.layer.borderWidth = 2.0f;
     
     [self.contentView addSubview:pageView];
 }
