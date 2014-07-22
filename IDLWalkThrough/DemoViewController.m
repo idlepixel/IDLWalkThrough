@@ -21,7 +21,7 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
 
 @interface DemoViewController () <IDLWalkThroughViewDataSource>
 
-@property (nonatomic, strong) IDLWalkThroughView* ghView ;
+@property (nonatomic, strong) IDLWalkThroughView* walkThroughView;
 
 @property (nonatomic, strong) NSArray* descStrings;
 
@@ -36,9 +36,11 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    _ghView = [[IDLWalkThroughView alloc] initWithFrame:self.navigationController.view.bounds];
-    [_ghView setDataSource:self];
-    [_ghView setWalkThroughDirection:IDLWalkThroughViewDirectionVertical];
+    IDLWalkThroughView *walkThroughView = [[IDLWalkThroughView alloc] initWithFrame:self.navigationController.view.bounds];
+    [walkThroughView setDataSource:self];
+    [walkThroughView setWalkThroughDirection:IDLWalkThroughViewDirectionVertical];
+    self.walkThroughView = walkThroughView;
+    
     UILabel* welcomeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 50)];
     welcomeLabel.text = @"Welcome";
     welcomeLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:40];
@@ -58,19 +60,18 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
 
 - (void)configureTextPage:(IDLWalkThroughTextPageCell *)cell atIndex:(NSInteger)index
 {
-    cell.title = [NSString stringWithFormat:@"This is page %ld", index+1];
-    //cell.titleImage = [UIImage imageNamed:[NSString stringWithFormat:@"title%ld", index+1]];
+    cell.title = [NSString stringWithFormat:@"This is page %ld", (long)(index+1)];
     cell.detail = [self.descStrings objectAtIndex:index];
 }
 
 - (void)configurePicturePage:(IDLWalkThroughPicturePageCell *)cell atIndex:(NSInteger)index
 {
-    cell.image = [UIImage imageNamed:[NSString stringWithFormat:@"title%ld", index+1]];
+    cell.image = [UIImage imageNamed:[NSString stringWithFormat:@"title%ld", (long)(index+1)]];
 }
 
 - (UIImage*) backgroundImageforPage:(NSInteger)index
 {
-    NSString* imageName =[NSString stringWithFormat:@"bg_0%ld.jpg", index+1];
+    NSString* imageName =[NSString stringWithFormat:@"bg_0%ld.jpg", (long)(index+1)];
     UIImage* image = [UIImage imageNamed:imageName];
     return image;
 }
@@ -78,28 +79,31 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    self.ghView.isfixedBackground = NO;
+    
+    IDLWalkThroughView *walkThroughView = self.walkThroughView;
+    
+    walkThroughView.isfixedBackground = NO;
 
     switch (indexPath.row) {
         case 0:
-            self.ghView.floatingHeaderView = nil;
-            [self.ghView setWalkThroughDirection:IDLWalkThroughViewDirectionHorizontal];
+            walkThroughView.floatingHeaderView = nil;
+            [walkThroughView setWalkThroughDirection:IDLWalkThroughViewDirectionHorizontal];
             break;
         case 1:
-            self.ghView.floatingHeaderView = nil;
-            [self.ghView setWalkThroughDirection:IDLWalkThroughViewDirectionVertical];
+            walkThroughView.floatingHeaderView = nil;
+            [walkThroughView setWalkThroughDirection:IDLWalkThroughViewDirectionVertical];
             break;
         case 2:
         {
-            [_ghView setFloatingHeaderView:self.welcomeLabel];
-            [self.ghView setWalkThroughDirection:IDLWalkThroughViewDirectionHorizontal];
+            [walkThroughView setFloatingHeaderView:self.welcomeLabel];
+            [walkThroughView setWalkThroughDirection:IDLWalkThroughViewDirectionHorizontal];
         }
             break;
         case 3:
-            [_ghView setFloatingHeaderView:self.welcomeLabel];
-            self.ghView.isfixedBackground = YES;
-            self.ghView.bgImage = [UIImage imageNamed:@"static_bg_01"];
-            [self.ghView setWalkThroughDirection:IDLWalkThroughViewDirectionVertical];
+            [walkThroughView setFloatingHeaderView:self.welcomeLabel];
+            walkThroughView.isfixedBackground = YES;
+            walkThroughView.backgroundImage = [UIImage imageNamed:@"static_bg_01"];
+            [walkThroughView setWalkThroughDirection:IDLWalkThroughViewDirectionVertical];
     
             break;
             
@@ -107,7 +111,7 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
             break;
     }
     
-    [self.ghView showInView:self.navigationController.view animateDuration:0.3];
+    [walkThroughView showInView:self.navigationController.view animateDuration:0.3];
 
 }
 
