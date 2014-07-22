@@ -7,12 +7,15 @@
 //
 
 #import "IDLWalkThroughView.h"
+#import "IDLWalkThroughFadingImageView.h"
 
 @interface IDLWalkThroughView ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
-@property (nonatomic, strong) UICollectionView* collectionView;
-@property (nonatomic, strong) UIImageView* bgFrontLayer;
-@property (nonatomic, strong) UIImageView* bgBackLayer;
+@property (nonatomic, strong) UICollectionView* textCollectionView;
+@property (nonatomic, strong) UICollectionView* pictureCollectionView;
+
+@property (nonatomic, strong) IDLWalkThroughFadingImageView* backgroundFadingImageView;
+@property (nonatomic, strong) IDLWalkThroughFadingImageView* pictureOverlayFadingImageView;
 
 @property (nonatomic, strong) UIPageControl* pageControl;
 @property (nonatomic, strong) UIButton* skipButton;
@@ -28,38 +31,54 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        [self setup];
+        [self configure];
     }
     return self;
 }
 
-- (void) setup
+- (void)configure
 {
     self.backgroundColor = [UIColor grayColor];
     
-    _bgFrontLayer = [[UIImageView alloc] initWithFrame:self.frame];
-    _bgBackLayer = [[UIImageView alloc] initWithFrame:self.frame];
+    CGRect frame = self.bounds;
     
-    UIView* bgView = [[UIView alloc] initWithFrame:self.frame];
-    [bgView addSubview:_bgBackLayer];
-    [bgView addSubview:_bgFrontLayer];
-
+    IDLWalkThroughFadingImageView *fadingImageView = [[IDLWalkThroughFadingImageView alloc] initWithFrame:frame];
+    fadingImageView.backgroundColor = [UIColor clearColor];
+    self.backgroundFadingImageView = fadingImageView;
+    fadingImageView = [[IDLWalkThroughFadingImageView alloc] initWithFrame:frame];
+    fadingImageView.backgroundColor = [UIColor clearColor];
+    self.pictureOverlayFadingImageView = fadingImageView;
+    
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
     [flowLayout setMinimumInteritemSpacing:0.0f];
     [flowLayout setMinimumLineSpacing:0.0f];
     self.layout = flowLayout;
 
-    _collectionView = [[UICollectionView alloc] initWithFrame:self.frame collectionViewLayout:flowLayout];
-    _collectionView.backgroundColor = [UIColor clearColor];
-    _collectionView.backgroundView = bgView;
-    _collectionView.showsHorizontalScrollIndicator = NO;
-    _collectionView.showsVerticalScrollIndicator = NO;
-    self.collectionView.dataSource = self;
-    self.collectionView.delegate = self;
-    [self.collectionView registerClass:[IDLWalkThroughPageCell class] forCellWithReuseIdentifier:@"cellIdentifier"];
-    [self.collectionView setPagingEnabled:YES];
-    [self addSubview:_collectionView];
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:flowLayout];
+    collectionView.backgroundColor = [UIColor clearColor];
+    collectionView.backgroundView = self.backgroundFadingImageView;
+    collectionView.showsHorizontalScrollIndicator = NO;
+    collectionView.showsVerticalScrollIndicator = NO;
+    collectionView.dataSource = self;
+    collectionView.delegate = self;
+    collectionView.pagingEnabled = YES;
+    collectionView.userInteractionEnabled = NO;
+    [collectionView registerClass:[IDLWalkThroughPicturePageCell class] forCellWithReuseIdentifier:@"cellIdentifier"];
+    [self addSubview:collectionView];
+    self.pictureCollectionView = collectionView;
+    
+    collectionView = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:flowLayout];
+    collectionView.backgroundColor = [UIColor clearColor];
+    collectionView.backgroundView = self.pictureOverlayFadingImageView;
+    collectionView.showsHorizontalScrollIndicator = NO;
+    collectionView.showsVerticalScrollIndicator = NO;
+    collectionView.dataSource = self;
+    collectionView.delegate = self;
+    collectionView.pagingEnabled = YES;
+    [collectionView registerClass:[IDLWalkThroughTextPageCell class] forCellWithReuseIdentifier:@"cellIdentifier"];
+    [self addSubview:collectionView];
+    self.textCollectionView = collectionView;
     
     [self buildFooterView];
 
@@ -72,20 +91,20 @@
     }
     
     _floatingHeaderView = floatingHeaderView;
-    CGRect frame = _floatingHeaderView.frame;
-    frame.origin.y = 50;
+    CGRect frame = floatingHeaderView.frame;
+    frame.origin.y = 50.0f;
     frame.origin.x = self.frame.size.width/2 - frame.size.width/2;
-    _floatingHeaderView.frame = frame;
+    floatingHeaderView.frame = frame;
     
-    [self addSubview:_floatingHeaderView];
-    [self bringSubviewToFront:_floatingHeaderView];
+    [self addSubview:floatingHeaderView];
+    [self bringSubviewToFront:floatingHeaderView];
 }
 
 - (void) setWalkThroughDirection:(IDLWalkThroughViewDirection)walkThroughDirection
 {
     _walkThroughDirection = walkThroughDirection;
     UICollectionViewScrollDirection dir = _walkThroughDirection == IDLWalkThroughViewDirectionVertical ? UICollectionViewScrollDirectionVertical : UICollectionViewScrollDirectionHorizontal;
-    UICollectionViewFlowLayout* layout =  (UICollectionViewFlowLayout*) self.collectionView.collectionViewLayout;
+    UICollectionViewFlowLayout* layout =  (UICollectionViewFlowLayout*) self.textCollectionView.collectionViewLayout;
     [layout setScrollDirection:dir];
     [layout invalidateLayout];
     [self orientFooter];
@@ -127,7 +146,8 @@
     }
 }
 
-- (void)buildFooterView {
+- (void)buildFooterView
+{
     self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, self.frame.size.height - 60, self.frame.size.width, 20)];
     
     //Set defersCurrentPageDisplay to YES to prevent page control jerking when switching pages with page control. This prevents page control from instant change of page indication.
@@ -185,8 +205,14 @@
 {
     IDLWalkThroughPageCell *cell = (IDLWalkThroughPageCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellIdentifier" forIndexPath:indexPath];
     
-    if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(configurePage:atIndex:)]) {
-        [self.dataSource configurePage:cell atIndex:indexPath.row];
+    if (collectionView == self.textCollectionView) {
+        if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(configureTextPage:atIndex:)]) {
+            [self.dataSource configureTextPage:(IDLWalkThroughTextPageCell *)cell atIndex:indexPath.row];
+        }
+    } else if (collectionView == self.pictureCollectionView) {
+        if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(configurePicturePage:atIndex:)]) {
+            [self.dataSource configurePicturePage:(IDLWalkThroughPicturePageCell *)cell atIndex:indexPath.row];
+        }
     }
     return cell;
     
@@ -203,10 +229,11 @@
 //    }
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
     // Get scrolling position, and send the alpha values.
     if (!self.isfixedBackground) {
-        float offset = self.walkThroughDirection == IDLWalkThroughViewDirectionHorizontal ? self.collectionView.contentOffset.x / self.collectionView.frame.size.width : self.collectionView.contentOffset.y / self.collectionView.frame.size.height ;
+        float offset = self.walkThroughDirection == IDLWalkThroughViewDirectionHorizontal ? self.textCollectionView.contentOffset.x / self.textCollectionView.frame.size.width : self.textCollectionView.contentOffset.y / self.textCollectionView.frame.size.height ;
         [self crossDissolveForOffset:offset];
     }
     
@@ -228,20 +255,23 @@
     self.pageControl.currentPage = page;
 }
 
-- (void)crossDissolveForOffset:(float)offset {
+- (void)crossDissolveForOffset:(float)offset
+{
     NSInteger page = (int)(offset);
     float alphaValue = offset - (int)offset;
     
+    IDLWalkThroughFadingImageView *fadingImageView = self.backgroundFadingImageView;
+    
     if (alphaValue < 0 && self.pageControl.currentPage == 0){
-        self.bgBackLayer.image = nil;
-        self.bgFrontLayer.alpha = (1 + alphaValue);
+        fadingImageView.backImage = nil;
+        fadingImageView.frontAlpha = (1 + alphaValue);
         return;
     }
     
-    self.bgFrontLayer.alpha = 1;
-    self.bgFrontLayer.image = [self.dataSource bgImageforPage:page];
-    self.bgBackLayer.alpha = 0;
-    self.bgBackLayer.image = [self.dataSource bgImageforPage:page+1];
+    fadingImageView.frontImage = [self.dataSource backgroundImageforPage:page];
+    fadingImageView.frontAlpha = 1.0f;
+    fadingImageView.backImage = [self.dataSource backgroundImageforPage:page+1];
+    fadingImageView.backAlpha = 1.0f;
     
     float backLayerAlpha = alphaValue;
     float frontLayerAlpha = (1 - alphaValue);
@@ -249,28 +279,30 @@
     backLayerAlpha = easeOutValue(backLayerAlpha);
     frontLayerAlpha = easeOutValue(frontLayerAlpha);
     
-    self.bgBackLayer.alpha = backLayerAlpha;
-    self.bgFrontLayer.alpha = frontLayerAlpha;
+    fadingImageView.backAlpha = backLayerAlpha;
+    fadingImageView.frontAlpha = frontLayerAlpha;
 }
 
-float easeOutValue(float value) {
+float easeOutValue(float value)
+{
     float inverse = value - 1.0;
     return 1.0 + inverse * inverse * inverse;
 }
 
-- (void) showInView:(UIView *)view animateDuration:(CGFloat) duration
+- (void)showInView:(UIView *)view animateDuration:(CGFloat) duration
 {
     self.pageControl.currentPage = 0;
     self.pageControl.numberOfPages = [self.dataSource numberOfPages];;
 
     if (self.isfixedBackground) {
-        self.bgFrontLayer.image = self.bgImage;
+        self.backgroundFadingImageView.frontImage = self.bgImage;
+        
     } else{
-        self.bgFrontLayer.image = [self.dataSource bgImageforPage:0];
+        self.backgroundFadingImageView.frontImage = [self.dataSource backgroundImageforPage:0];
     }
 
     self.alpha = 0;
-    self.collectionView.contentOffset = CGPointZero;
+    self.textCollectionView.contentOffset = CGPointZero;
     [view addSubview:self];
     
     [UIView animateWithDuration:duration animations:^{

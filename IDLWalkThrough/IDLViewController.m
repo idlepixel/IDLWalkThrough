@@ -56,14 +56,19 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
     return 5;
 }
 
-- (void) configurePage:(IDLWalkThroughPageCell *)cell atIndex:(NSInteger)index
+- (void)configureTextPage:(IDLWalkThroughTextPageCell *)cell atIndex:(NSInteger)index
 {
     cell.title = [NSString stringWithFormat:@"This is page %ld", index+1];
-    cell.titleImage = [UIImage imageNamed:[NSString stringWithFormat:@"title%ld", index+1]];
-    cell.desc = [self.descStrings objectAtIndex:index];
+    //cell.titleImage = [UIImage imageNamed:[NSString stringWithFormat:@"title%ld", index+1]];
+    cell.detail = [self.descStrings objectAtIndex:index];
 }
 
-- (UIImage*) bgImageforPage:(NSInteger)index
+- (void)configurePicturePage:(IDLWalkThroughPicturePageCell *)cell atIndex:(NSInteger)index
+{
+    cell.image = [UIImage imageNamed:[NSString stringWithFormat:@"title%ld", index+1]];
+}
+
+- (UIImage*) backgroundImageforPage:(NSInteger)index
 {
     NSString* imageName =[NSString stringWithFormat:@"bg_0%ld.jpg", index+1];
     UIImage* image = [UIImage imageNamed:imageName];

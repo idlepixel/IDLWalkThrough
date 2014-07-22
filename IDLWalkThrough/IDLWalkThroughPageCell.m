@@ -10,9 +10,8 @@
 
 @interface IDLWalkThroughPageCell ()
 
-@property (nonatomic, strong) UILabel* titleLabel;
-@property (nonatomic, strong) UITextView* descLabel;
-@property (nonatomic, strong) UIImageView* titleImageView;
+- (void)configure;
+- (void)applyDefaults;
 
 @end
 
@@ -24,10 +23,31 @@
     if (self) {
         // Initialization code
         [self applyDefaults];
-        [self buildUI];
+        [self configure];
     }
     return self;
 }
+
+- (void)configure
+{
+    // do nothing
+}
+
+- (void)applyDefaults
+{
+    // do nothing
+}
+
+@end
+
+@interface IDLWalkThroughTextPageCell ()
+
+@property (nonatomic, strong) UILabel* titleLabel;
+@property (nonatomic, strong) UITextView* detailLabel;
+
+@end
+
+@implementation IDLWalkThroughTextPageCell
 
 #pragma mark setters
 
@@ -38,34 +58,21 @@
     [self setNeedsLayout];
 }
 
-- (void) setTitleImage:(UIImage *)titleImage
+- (void)setDetail:(NSString *)detail
 {
-    _titleImage = titleImage;
-    self.titleImageView.image = self.titleImage;
-	self.titleImageView.contentMode = UIViewContentModeScaleAspectFit;
-    [self setNeedsLayout];
-}
-
-- (void) setDesc:(NSString *)desc
-{
-    _desc = desc;
-    self.descLabel.text = self.desc;
+    _detail = detail;
+    self.detailLabel.text = self.detail;
     [self setNeedsLayout];
 }
 
 - (void) layoutSubviews
 {
     [super layoutSubviews];
-    
-    CGRect rect1 = self.titleImageView.frame;
-    rect1.origin.x = (self.contentView.frame.size.width - rect1.size.width)/2;
-    rect1.origin.y = self.frame.size.height - self.titlePositionY - self.imgPositionY - rect1.size.height;
-    self.titleImageView.frame = rect1;
 
     [self layoutTitleLabel];
     
-    CGRect descLabelFrame = CGRectMake(20, self.frame.size.height - self.descPositionY, self.contentView.frame.size.width - 40, 500);
-    self.descLabel.frame = descLabelFrame;
+    CGRect detailLabelFrame = CGRectMake(20, self.frame.size.height - self.detailPositionY, self.contentView.frame.size.width - 40, 500);
+    self.detailLabel.frame = detailLabelFrame;
     
 }
 
@@ -91,19 +98,22 @@
 
 - (void) applyDefaults
 {
-    self.title = @"Title";
-    self.desc = @"Default Description";
+    [super applyDefaults];
     
-    self.imgPositionY    = 50.0f;
+    self.title = @"Title";
+    self.detail = @"Default Description";
+    
     self.titlePositionY  = 180.0f;
-    self.descPositionY   = 160.0f;
+    self.detailPositionY   = 160.0f;
     self.titleFont = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16.0];
     self.titleColor = [UIColor whiteColor];
-    self.descFont = [UIFont fontWithName:@"HelveticaNeue" size:13.0];
-    self.descColor = [UIColor whiteColor];
+    self.detailFont = [UIFont fontWithName:@"HelveticaNeue" size:13.0];
+    self.detailColor = [UIColor whiteColor];
 }
 
-- (void) buildUI {
+- (void)configure
+{
+    [super configure];
     
     self.backgroundColor = [UIColor clearColor];
     self.backgroundView = nil;
@@ -111,13 +121,7 @@
     
     UIView *pageView = [[UIView alloc] initWithFrame:self.contentView.bounds];
     
-    if (self.titleImageView == nil) {
-        UIImageView *titleImageView = self.titleImage != nil ? [[UIImageView alloc] initWithImage:self.titleImage] : [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 128, 128)];
-        self.titleImageView = titleImageView;
-    }
-    [pageView addSubview:self.titleImageView];
-    
-    if(self.titleLabel == nil) {
+    if (self.titleLabel == nil) {
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         titleLabel.text = self.title;
         titleLabel.font = self.titleFont;
@@ -129,30 +133,76 @@
         self.titleLabel = titleLabel;
     }
     
-    if(self.descLabel == nil) {
-        UITextView *descLabel = [[UITextView alloc] initWithFrame:CGRectZero];
-        descLabel.text = self.desc;
-        descLabel.scrollEnabled = NO;
-        descLabel.font = self.descFont;
-        descLabel.textColor = self.descColor;
-        descLabel.backgroundColor = [UIColor clearColor];
-        descLabel.textAlignment = NSTextAlignmentCenter;
-        descLabel.userInteractionEnabled = NO;
-        [pageView addSubview:descLabel];
-        self.descLabel = descLabel;
+    if (self.detailLabel == nil) {
+        UITextView *detailLabel = [[UITextView alloc] initWithFrame:CGRectZero];
+        detailLabel.text = self.detail;
+        detailLabel.scrollEnabled = NO;
+        detailLabel.font = self.detailFont;
+        detailLabel.textColor = self.detailColor;
+        detailLabel.backgroundColor = [UIColor clearColor];
+        detailLabel.textAlignment = NSTextAlignmentCenter;
+        detailLabel.userInteractionEnabled = NO;
+        [pageView addSubview:detailLabel];
+        self.detailLabel = detailLabel;
     }
 
     [self.contentView addSubview:pageView];
 }
 
+@end
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
+@interface IDLWalkThroughPicturePageCell ()
+
+@property (nonatomic, strong) UIImageView* imageView;
 
 @end
+
+@implementation IDLWalkThroughPicturePageCell
+
+- (void) applyDefaults
+{
+    [super applyDefaults];
+    
+    self.imageOffset = CGPointMake(0.0f, 50.0f);
+}
+
+- (void) setImage:(UIImage *)image
+{
+    _image = image;
+    self.imageView.image = self.image;
+	self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [self setNeedsLayout];
+}
+
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    CGRect rect1 = self.imageView.frame;
+    rect1.origin.x = (self.contentView.frame.size.width - rect1.size.width)/2;
+    rect1.origin.y = self.frame.size.height - self.imageOffset.y - rect1.size.height;
+    self.imageView.frame = rect1;
+}
+
+- (void)configure
+{
+    [super configure];
+    
+    self.backgroundColor = [UIColor clearColor];
+    self.backgroundView = nil;
+    self.contentView.backgroundColor = [UIColor clearColor];
+    
+    UIView *pageView = [[UIView alloc] initWithFrame:self.contentView.bounds];
+    
+    if (self.imageView == nil) {
+        UIImageView *imageView = self.image != nil ? [[UIImageView alloc] initWithImage:self.image] : [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 128, 128)];
+        self.imageView = imageView;
+    }
+    [pageView addSubview:self.imageView];
+    
+    [self.contentView addSubview:pageView];
+}
+
+@end
+
+

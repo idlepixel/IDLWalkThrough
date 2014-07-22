@@ -51,8 +51,11 @@ typedef NS_ENUM(NSInteger, IDLWalkThroughViewDirection) {
 -(NSInteger) numberOfPages;
 
 @optional
-//-(UIView*) customViewForPage:(NSInteger) index;
-- (UIImage*) bgImageforPage:(NSInteger) index;
--(void) configurePage:(IDLWalkThroughPageCell*) cell atIndex:(NSInteger) index;
+
+- (UIImage *)pictureOverlayImageforPage:(NSInteger)index;
+- (UIImage *)backgroundImageforPage:(NSInteger)index;
+
+- (void)configurePicturePage:(IDLWalkThroughPicturePageCell *)cell atIndex:(NSInteger)index;
+- (void)configureTextPage:(IDLWalkThroughTextPageCell *)cell atIndex:(NSInteger)index;
 
 @end

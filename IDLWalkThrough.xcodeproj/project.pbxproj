@@ -34,6 +34,7 @@
 		84F2F199188F78F400F883B8 /* title3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F2F194188F78F400F883B8 /* title3@2x.png */; };
 		84F2F19A188F78F400F883B8 /* title4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F2F195188F78F400F883B8 /* title4@2x.png */; };
 		84F2F19C188FA0D600F883B8 /* static_bg_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 84F2F19B188FA0D600F883B8 /* static_bg_01.png */; };
+		A7984DEE197E165E00A60599 /* IDLWalkThroughFadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7984DED197E165E00A60599 /* IDLWalkThroughFadingImageView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,8 @@
 		84F2F194188F78F400F883B8 /* title3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title3@2x.png"; sourceTree = "<group>"; };
 		84F2F195188F78F400F883B8 /* title4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title4@2x.png"; sourceTree = "<group>"; };
 		84F2F19B188FA0D600F883B8 /* static_bg_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = static_bg_01.png; sourceTree = "<group>"; };
+		A7984DEC197E165E00A60599 /* IDLWalkThroughFadingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDLWalkThroughFadingImageView.h; sourceTree = "<group>"; };
+		A7984DED197E165E00A60599 /* IDLWalkThroughFadingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDLWalkThroughFadingImageView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,10 +198,12 @@
 		849EC392188E4A7C00CAEA3D /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				849EC393188E4AA300CAEA3D /* IDLWalkThroughView.h */,
-				849EC394188E4AA300CAEA3D /* IDLWalkThroughView.m */,
+				A7984DEC197E165E00A60599 /* IDLWalkThroughFadingImageView.h */,
+				A7984DED197E165E00A60599 /* IDLWalkThroughFadingImageView.m */,
 				849EC396188E4BC200CAEA3D /* IDLWalkThroughPageCell.h */,
 				849EC397188E4BC200CAEA3D /* IDLWalkThroughPageCell.m */,
+				849EC393188E4AA300CAEA3D /* IDLWalkThroughView.h */,
+				849EC394188E4AA300CAEA3D /* IDLWalkThroughView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -316,6 +321,7 @@
 				849EC36A188E4A6400CAEA3D /* main.m in Sources */,
 				849EC374188E4A6400CAEA3D /* IDLViewController.m in Sources */,
 				849EC36E188E4A6400CAEA3D /* IDLAppDelegate.m in Sources */,
+				A7984DEE197E165E00A60599 /* IDLWalkThroughFadingImageView.m in Sources */,
 				849EC398188E4BC200CAEA3D /* IDLWalkThroughPageCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

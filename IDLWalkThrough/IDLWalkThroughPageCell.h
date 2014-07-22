@@ -10,16 +10,25 @@
 
 @interface IDLWalkThroughPageCell : UICollectionViewCell
 
-@property (nonatomic, strong) UIImage *titleImage;
-@property (nonatomic, assign) CGFloat imgPositionY;
+@end
+
+@interface IDLWalkThroughTextPageCell : IDLWalkThroughPageCell
+
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) UIFont *titleFont;
 @property (nonatomic, strong) UIColor *titleColor;
 @property (nonatomic, assign) CGFloat titlePositionY;
-@property (nonatomic, strong) NSString *desc;
-@property (nonatomic, strong) UIFont *descFont;
-@property (nonatomic, strong) UIColor *descColor;
-@property (nonatomic, assign) CGFloat descPositionY;
 
+@property (nonatomic, strong) NSString *detail;
+@property (nonatomic, strong) UIFont *detailFont;
+@property (nonatomic, strong) UIColor *detailColor;
+@property (nonatomic, assign) CGFloat detailPositionY;
+
+@end
+
+@interface IDLWalkThroughPicturePageCell : IDLWalkThroughPageCell
+
+@property (nonatomic, strong) UIImage *image;
+@property (nonatomic, assign) CGPoint imageOffset;
 
 @end
