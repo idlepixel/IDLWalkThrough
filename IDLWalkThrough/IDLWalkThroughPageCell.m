@@ -169,19 +169,21 @@
 - (void) setImage:(UIImage *)image
 {
     _image = image;
-    self.imageView.image = self.image;
+    self.imageView.image = image;
 	self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    CGSize imageSize = image.size;
+    self.imageView.frame = CGRectMake(0.0f, 0.0f, imageSize.width, imageSize.height);
     [self setNeedsLayout];
 }
 
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    
-    CGRect rect1 = self.imageView.frame;
-    rect1.origin.x = (self.contentView.frame.size.width - rect1.size.width)/2;
-    rect1.origin.y = self.frame.size.height - self.imageOffset.y - rect1.size.height;
-    self.imageView.frame = rect1;
+    CGRect contentRect = self.contentView.bounds;
+    CGPoint center = CGPointMake(contentRect.size.width/2.0f, contentRect.size.height/2.0f);
+    center.x = round(center.x + self.imageOffset.x);
+    center.y = round(center.y + self.imageOffset.y);
+    self.imageView.center = center;
 }
 
 - (void)configure

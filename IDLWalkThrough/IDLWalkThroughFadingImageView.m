@@ -10,8 +10,8 @@
 
 @interface IDLWalkThroughFadingImageView ()
 
-@property (nonatomic, weak, readwrite) UIImageView* backImageView;
-@property (nonatomic, weak, readwrite) UIImageView* frontImageView;
+@property (nonatomic, weak) UIImageView* backImageView;
+@property (nonatomic, weak) UIImageView* frontImageView;
 
 @end
 

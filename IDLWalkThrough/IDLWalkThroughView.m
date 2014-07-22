@@ -20,7 +20,8 @@
 @property (nonatomic, strong) UIPageControl* pageControl;
 @property (nonatomic, strong) UIButton* skipButton;
 
-@property (nonatomic, weak) UICollectionViewFlowLayout* layout;
+@property (nonatomic, assign) NSInteger currentPage;
+@property (nonatomic, assign) NSInteger lastPage;
 
 @end
 
@@ -53,7 +54,6 @@
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
     [flowLayout setMinimumInteritemSpacing:0.0f];
     [flowLayout setMinimumLineSpacing:0.0f];
-    self.layout = flowLayout;
 
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:flowLayout];
     collectionView.backgroundColor = [UIColor clearColor];
@@ -68,6 +68,11 @@
     [self addSubview:collectionView];
     self.pictureCollectionView = collectionView;
     
+    flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    [flowLayout setMinimumInteritemSpacing:0.0f];
+    [flowLayout setMinimumLineSpacing:0.0f];
+    
     collectionView = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:flowLayout];
     collectionView.backgroundColor = [UIColor clearColor];
     collectionView.backgroundView = self.pictureOverlayFadingImageView;
@@ -81,6 +86,9 @@
     self.textCollectionView = collectionView;
     
     [self buildFooterView];
+    
+    self.currentPage = 0;
+    self.lastPage = 0;
 
 }
 
@@ -103,10 +111,12 @@
 - (void) setWalkThroughDirection:(IDLWalkThroughViewDirection)walkThroughDirection
 {
     _walkThroughDirection = walkThroughDirection;
-    UICollectionViewScrollDirection dir = _walkThroughDirection == IDLWalkThroughViewDirectionVertical ? UICollectionViewScrollDirectionVertical : UICollectionViewScrollDirectionHorizontal;
-    UICollectionViewFlowLayout* layout =  (UICollectionViewFlowLayout*) self.textCollectionView.collectionViewLayout;
-    [layout setScrollDirection:dir];
-    [layout invalidateLayout];
+    UICollectionViewScrollDirection direction = _walkThroughDirection == IDLWalkThroughViewDirectionVertical ? UICollectionViewScrollDirectionVertical : UICollectionViewScrollDirectionHorizontal;
+    NSArray *layouts = [NSArray arrayWithObjects:self.textCollectionView.collectionViewLayout, self.pictureCollectionView.collectionViewLayout, nil];
+    for (UICollectionViewFlowLayout* layout in layouts) {
+        [layout setScrollDirection:direction];
+        [layout invalidateLayout];
+    }
     [self orientFooter];
 }
 
@@ -148,26 +158,28 @@
 
 - (void)buildFooterView
 {
-    self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, self.frame.size.height - 60, self.frame.size.width, 20)];
+    UIPageControl *pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, self.frame.size.height - 60, self.frame.size.width, 20)];
     
     //Set defersCurrentPageDisplay to YES to prevent page control jerking when switching pages with page control. This prevents page control from instant change of page indication.
-    self.pageControl.defersCurrentPageDisplay = YES;
+    pageControl.defersCurrentPageDisplay = YES;
     
-    self.pageControl.autoresizingMask =  UIViewAutoresizingFlexibleWidth;
-    [self.pageControl addTarget:self action:@selector(showPanelAtPageControl:) forControlEvents:UIControlEventValueChanged];
-    [self addSubview:self.pageControl];
-    [self bringSubviewToFront:self.pageControl];
+    pageControl.autoresizingMask =  UIViewAutoresizingFlexibleWidth;
+    [pageControl addTarget:self action:@selector(showPanelAtPageControl:) forControlEvents:UIControlEventValueChanged];
+    [self addSubview:pageControl];
+    [self bringSubviewToFront:pageControl];
+    self.pageControl = pageControl;
     
-    self.skipButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *skipButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    self.skipButton.frame = CGRectMake(self.frame.size.width - 80, self.pageControl.frame.origin.y - ((30 - self.pageControl.frame.size.height)/2), 80, 30);
+    skipButton.frame = CGRectMake(self.frame.size.width - 80, pageControl.frame.origin.y - ((30 - pageControl.frame.size.height)/2), 80, 30);
     
-    self.skipButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    [self.skipButton setTitle:@"Skip" forState:UIControlStateNormal];
-    [self.skipButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.skipButton addTarget:self action:@selector(skipIntroduction) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.skipButton];
-    [self bringSubviewToFront:self.skipButton]; 
+    skipButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    [skipButton setTitle:@"Skip" forState:UIControlStateNormal];
+    [skipButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [skipButton addTarget:self action:@selector(skipIntroduction) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:skipButton];
+    [self bringSubviewToFront:skipButton];
+    self.skipButton = skipButton;
 }
 
 - (void) skipIntroduction
@@ -218,7 +230,8 @@
     
 }
 
--(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
     return self.frame.size;
 }
 
@@ -231,6 +244,8 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (scrollView != self.textCollectionView) return;
+    
     // Get scrolling position, and send the alpha values.
     if (!self.isfixedBackground) {
         float offset = self.walkThroughDirection == IDLWalkThroughViewDirectionHorizontal ? self.textCollectionView.contentOffset.x / self.textCollectionView.frame.size.width : self.textCollectionView.contentOffset.y / self.textCollectionView.frame.size.height ;
@@ -238,21 +253,60 @@
     }
     
     CGFloat pageMetric = 0.0f;
-    CGFloat contentOffset = 0.0f;
+    CGFloat pageOffset = 0.0f;
+    
+    CGPoint contentOffset = scrollView.contentOffset;
     
     switch (self.walkThroughDirection) {
         case IDLWalkThroughViewDirectionHorizontal:
             pageMetric = scrollView.frame.size.width;
-            contentOffset = scrollView.contentOffset.x;
+            pageOffset = contentOffset.x;
             break;
         case IDLWalkThroughViewDirectionVertical:
             pageMetric = scrollView.frame.size.height;
-            contentOffset = scrollView.contentOffset.y;
+            pageOffset = contentOffset.y;
             break;
     }
     
-    int page = floor((contentOffset - pageMetric / 2) / pageMetric) + 1;
-    self.pageControl.currentPage = page;
+    CGFloat pagePosition = pageOffset / pageMetric;
+    
+    NSInteger previousPage = floor(pagePosition);
+    //NSInteger nextPage = ceil(pagePosition);
+    
+    CGFloat normalisedPosition = pagePosition - previousPage;
+    
+    NSInteger closestPage = floor(pagePosition - 0.5f) + 1;
+    self.pageControl.currentPage = closestPage;
+    
+    //NSLog(@"position: %f (p:%i,n:%i), offset:%f",pagePosition,previousPage,nextPage,normalisedPosition);
+    
+    CGFloat picturePosition = easeInOutQuad(normalisedPosition);
+    
+    //NSLog(@"picturePosition: %f",picturePosition);
+    
+    switch (self.walkThroughDirection) {
+        case IDLWalkThroughViewDirectionHorizontal:
+            contentOffset.x = (previousPage + picturePosition) * pageMetric;
+            break;
+        case IDLWalkThroughViewDirectionVertical:
+            contentOffset.y = (previousPage + picturePosition) * pageMetric;
+            break;
+    }
+    //NSLog(@"contentOffset: %@",NSStringFromCGPoint(contentOffset));
+    self.pictureCollectionView.contentOffset = contentOffset;
+}
+
+float easeInOutQuad(float value)
+{
+    value *= 2.0f;
+    
+    if (value < 1.0f) {
+        return 0.5f * pow(value, 2.0f);
+    } else {
+        value = 2.0f - value;
+        value = 0.5f * pow(value, 2.0f);
+        return 1.0f - value;
+    }
 }
 
 - (void)crossDissolveForOffset:(float)offset
@@ -276,12 +330,14 @@
     float backLayerAlpha = alphaValue;
     float frontLayerAlpha = (1 - alphaValue);
     
-    backLayerAlpha = easeOutValue(backLayerAlpha);
-    frontLayerAlpha = easeOutValue(frontLayerAlpha);
+    backLayerAlpha = easeInOutQuad(backLayerAlpha);
+    frontLayerAlpha = easeInOutQuad(frontLayerAlpha);
     
     fadingImageView.backAlpha = backLayerAlpha;
     fadingImageView.frontAlpha = frontLayerAlpha;
 }
+
+
 
 float easeOutValue(float value)
 {
@@ -295,7 +351,7 @@ float easeOutValue(float value)
     self.pageControl.numberOfPages = [self.dataSource numberOfPages];;
 
     if (self.isfixedBackground) {
-        self.backgroundFadingImageView.frontImage = self.bgImage;
+        self.backgroundFadingImageView.frontImage = self.backgroundImage;
         
     } else{
         self.backgroundFadingImageView.frontImage = [self.dataSource backgroundImageforPage:0];

@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, IDLWalkThroughViewDirection) {
 
 @property (nonatomic, assign) BOOL isfixedBackground;
 
-@property (nonatomic, strong) UIImage* bgImage;
+@property (nonatomic, strong) UIImage* backgroundImage;
 
 @property (nonatomic, copy) NSString *closeTitle;
 
