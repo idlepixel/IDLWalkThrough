@@ -218,12 +218,12 @@
     IDLWalkThroughPageCell *cell = (IDLWalkThroughPageCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellIdentifier" forIndexPath:indexPath];
     
     if (collectionView == self.textCollectionView) {
-        if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(configureTextPage:atIndex:)]) {
-            [self.dataSource configureTextPage:(IDLWalkThroughTextPageCell *)cell atIndex:indexPath.row];
+        if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(configureTextCell:forPageAtIndex:)]) {
+            [self.dataSource configureTextCell:(IDLWalkThroughTextPageCell *)cell forPageAtIndex:indexPath.row];
         }
     } else if (collectionView == self.pictureCollectionView) {
-        if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(configurePicturePage:atIndex:)]) {
-            [self.dataSource configurePicturePage:(IDLWalkThroughPicturePageCell *)cell atIndex:indexPath.row];
+        if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(configurePictureCell:forPageAtIndex:)]) {
+            [self.dataSource configurePictureCell:(IDLWalkThroughPicturePageCell *)cell forPageAtIndex:indexPath.row];
         }
     }
     return cell;

@@ -58,13 +58,13 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
     return 5;
 }
 
-- (void)configureTextPage:(IDLWalkThroughTextPageCell *)cell atIndex:(NSInteger)index
+- (void)configureTextCell:(IDLWalkThroughTextPageCell *)cell forPageAtIndex:(NSInteger)index
 {
     cell.title = [NSString stringWithFormat:@"This is page %ld", (long)(index+1)];
     cell.detail = [self.descStrings objectAtIndex:index];
 }
 
-- (void)configurePicturePage:(IDLWalkThroughPicturePageCell *)cell atIndex:(NSInteger)index
+- (void)configurePictureCell:(IDLWalkThroughPicturePageCell *)cell forPageAtIndex:(NSInteger)index
 {
     cell.image = [UIImage imageNamed:[NSString stringWithFormat:@"title%ld", (long)(index+1)]];
 }
