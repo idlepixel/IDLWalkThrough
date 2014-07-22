@@ -57,7 +57,7 @@
     _collectionView.showsVerticalScrollIndicator = NO;
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
-    [self.collectionView registerClass:[GHWalkThroughPageCell class] forCellWithReuseIdentifier:@"cellIdentifier"];
+    [self.collectionView registerClass:[IDLWalkThroughPageCell class] forCellWithReuseIdentifier:@"cellIdentifier"];
     [self.collectionView setPagingEnabled:YES];
     [self addSubview:_collectionView];
     
@@ -183,7 +183,7 @@
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    GHWalkThroughPageCell *cell = (GHWalkThroughPageCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellIdentifier" forIndexPath:indexPath];
+    IDLWalkThroughPageCell *cell = (IDLWalkThroughPageCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellIdentifier" forIndexPath:indexPath];
     
     if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(configurePage:atIndex:)]) {
         [self.dataSource configurePage:cell atIndex:indexPath.row];
