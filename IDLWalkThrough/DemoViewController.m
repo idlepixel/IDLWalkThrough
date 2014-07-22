@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Tapasya. All rights reserved.
 //
 
-#import "IDLViewController.h"
+#import "DemoViewController.h"
 #import "IDLWalkThroughView.h"
 
 static NSString * const sampleDesc1 = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque tincidunt laoreet diam, id suscipit ipsum sagittis a. ";
@@ -19,7 +19,7 @@ static NSString * const sampleDesc4 = @"Praesent ornare consectetur elit, in fri
 
 static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi egestas eget. Etiam facilisis turpis eget ipsum tempus, nec ultricies dui sagittis. Quisque interdum ipsum vitae ante laoreet, id egestas ligula auctor";
 
-@interface IDLViewController () <IDLWalkThroughViewDataSource>
+@interface DemoViewController () <IDLWalkThroughViewDataSource>
 
 @property (nonatomic, strong) IDLWalkThroughView* ghView ;
 
@@ -29,7 +29,7 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
 
 @end
 
-@implementation IDLViewController
+@implementation DemoViewController
 
 - (void)viewDidLoad
 {

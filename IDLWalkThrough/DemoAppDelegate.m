@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Tapasya. All rights reserved.
 //
 
-#import "IDLAppDelegate.h"
+#import "DemoAppDelegate.h"
 
-@implementation IDLAppDelegate
+@implementation DemoAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

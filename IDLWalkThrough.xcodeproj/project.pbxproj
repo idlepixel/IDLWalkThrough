@@ -12,10 +12,10 @@
 		849EC362188E4A6400CAEA3D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849EC361188E4A6400CAEA3D /* UIKit.framework */; };
 		849EC368188E4A6400CAEA3D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 849EC366188E4A6400CAEA3D /* InfoPlist.strings */; };
 		849EC36A188E4A6400CAEA3D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 849EC369188E4A6400CAEA3D /* main.m */; };
-		849EC36E188E4A6400CAEA3D /* IDLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 849EC36D188E4A6400CAEA3D /* IDLAppDelegate.m */; };
+		849EC36E188E4A6400CAEA3D /* DemoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 849EC36D188E4A6400CAEA3D /* DemoAppDelegate.m */; };
 		849EC371188E4A6400CAEA3D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 849EC36F188E4A6400CAEA3D /* Main.storyboard */; };
-		849EC374188E4A6400CAEA3D /* IDLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849EC373188E4A6400CAEA3D /* IDLViewController.m */; };
-		849EC376188E4A6400CAEA3D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 849EC375188E4A6400CAEA3D /* Images.xcassets */; };
+		849EC374188E4A6400CAEA3D /* DemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 849EC373188E4A6400CAEA3D /* DemoViewController.m */; };
+		849EC376188E4A6400CAEA3D /* DemoImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 849EC375188E4A6400CAEA3D /* DemoImages.xcassets */; };
 		849EC37D188E4A6400CAEA3D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849EC37C188E4A6400CAEA3D /* XCTest.framework */; };
 		849EC37E188E4A6400CAEA3D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849EC35D188E4A6400CAEA3D /* Foundation.framework */; };
 		849EC37F188E4A6400CAEA3D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849EC361188E4A6400CAEA3D /* UIKit.framework */; };
@@ -56,12 +56,12 @@
 		849EC367188E4A6400CAEA3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		849EC369188E4A6400CAEA3D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		849EC36B188E4A6400CAEA3D /* GHWalkThrough-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GHWalkThrough-Prefix.pch"; sourceTree = "<group>"; };
-		849EC36C188E4A6400CAEA3D /* IDLAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IDLAppDelegate.h; sourceTree = "<group>"; };
-		849EC36D188E4A6400CAEA3D /* IDLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IDLAppDelegate.m; sourceTree = "<group>"; };
+		849EC36C188E4A6400CAEA3D /* DemoAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoAppDelegate.h; sourceTree = "<group>"; };
+		849EC36D188E4A6400CAEA3D /* DemoAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoAppDelegate.m; sourceTree = "<group>"; };
 		849EC370188E4A6400CAEA3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		849EC372188E4A6400CAEA3D /* IDLViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IDLViewController.h; sourceTree = "<group>"; };
-		849EC373188E4A6400CAEA3D /* IDLViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IDLViewController.m; sourceTree = "<group>"; };
-		849EC375188E4A6400CAEA3D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		849EC372188E4A6400CAEA3D /* DemoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoViewController.h; sourceTree = "<group>"; };
+		849EC373188E4A6400CAEA3D /* DemoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoViewController.m; sourceTree = "<group>"; };
+		849EC375188E4A6400CAEA3D /* DemoImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = DemoImages.xcassets; sourceTree = "<group>"; };
 		849EC37B188E4A6400CAEA3D /* IDLWalkThroughTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IDLWalkThroughTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		849EC37C188E4A6400CAEA3D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		849EC384188E4A6400CAEA3D /* IDLWalkThroughTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "IDLWalkThroughTests-Info.plist"; sourceTree = "<group>"; };
@@ -144,12 +144,12 @@
 			isa = PBXGroup;
 			children = (
 				849EC392188E4A7C00CAEA3D /* Views */,
-				849EC36C188E4A6400CAEA3D /* IDLAppDelegate.h */,
-				849EC36D188E4A6400CAEA3D /* IDLAppDelegate.m */,
+				849EC36C188E4A6400CAEA3D /* DemoAppDelegate.h */,
+				849EC36D188E4A6400CAEA3D /* DemoAppDelegate.m */,
 				849EC36F188E4A6400CAEA3D /* Main.storyboard */,
-				849EC372188E4A6400CAEA3D /* IDLViewController.h */,
-				849EC373188E4A6400CAEA3D /* IDLViewController.m */,
-				849EC375188E4A6400CAEA3D /* Images.xcassets */,
+				849EC372188E4A6400CAEA3D /* DemoViewController.h */,
+				849EC373188E4A6400CAEA3D /* DemoViewController.m */,
+				849EC375188E4A6400CAEA3D /* DemoImages.xcassets */,
 				849EC364188E4A6400CAEA3D /* Supporting Files */,
 			);
 			path = IDLWalkThrough;
@@ -290,7 +290,7 @@
 				84F2F196188F78F400F883B8 /* title5@2x.png in Resources */,
 				84F2F19C188FA0D600F883B8 /* static_bg_01.png in Resources */,
 				84F2F199188F78F400F883B8 /* title3@2x.png in Resources */,
-				849EC376188E4A6400CAEA3D /* Images.xcassets in Resources */,
+				849EC376188E4A6400CAEA3D /* DemoImages.xcassets in Resources */,
 				84F2F18F188EA2CF00F883B8 /* bg_02.jpg in Resources */,
 				84F2F198188F78F400F883B8 /* title2@2x.png in Resources */,
 				84F2F197188F78F400F883B8 /* title1@2x.png in Resources */,
@@ -319,8 +319,8 @@
 			files = (
 				849EC395188E4AA300CAEA3D /* IDLWalkThroughView.m in Sources */,
 				849EC36A188E4A6400CAEA3D /* main.m in Sources */,
-				849EC374188E4A6400CAEA3D /* IDLViewController.m in Sources */,
-				849EC36E188E4A6400CAEA3D /* IDLAppDelegate.m in Sources */,
+				849EC374188E4A6400CAEA3D /* DemoViewController.m in Sources */,
+				849EC36E188E4A6400CAEA3D /* DemoAppDelegate.m in Sources */,
 				A7984DEE197E165E00A60599 /* IDLWalkThroughFadingImageView.m in Sources */,
 				849EC398188E4BC200CAEA3D /* IDLWalkThroughPageCell.m in Sources */,
 			);
