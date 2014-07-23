@@ -116,7 +116,7 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
         default:
             break;
     }
-    
+    [walkThroughView resetLastPageShown];
     [walkThroughView showInView:self.navigationController.view animateDuration:0.3];
 
 }

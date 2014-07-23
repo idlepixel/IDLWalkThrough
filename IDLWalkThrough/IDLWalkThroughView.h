@@ -29,6 +29,8 @@ typedef NS_ENUM(NSInteger, IDLWalkThroughViewDirection) {
 
 @property (nonatomic, assign) BOOL isfixedBackground;
 
+@property (nonatomic, assign, readonly) BOOL lastPageShown;
+
 @property (nonatomic, strong) UIImage* backgroundImage;
 
 @property (nonatomic, strong) NSString *skipTitle;
@@ -44,6 +46,8 @@ typedef NS_ENUM(NSInteger, IDLWalkThroughViewDirection) {
 - (void)showInView:(UIView*) view animateDuration:(CGFloat) duration;
 
 - (void)applyAppearanceDefaults:(BOOL)force;
+
+- (void)resetLastPageShown;
 
 @end
 

@@ -42,6 +42,8 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
 @property (nonatomic, strong) UIPageControl* pageControl;
 @property (nonatomic, strong) UIButton* skipButton;
 
+@property (nonatomic, assign, readwrite) BOOL lastPageShown;
+
 @end
 
 @implementation IDLWalkThroughView
@@ -241,14 +243,26 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
      
 -(void)refreshSkipButtonTitle
 {
-    UIPageControl *control = self.pageControl;
-    NSString *title = nil;
-    if (control.currentPage == (control.numberOfPages - 1) && self.doneTitle != nil) {
+    NSString *title = self.skipTitle;
+    
+    if (self.lastPageShown && self.doneTitle != nil) {
         title = self.doneTitle;
-    } else {
-        title = self.skipTitle;
     }
     [self.skipButton setTitle:title forState:UIControlStateNormal];
+}
+
+- (void)resetLastPageShown
+{
+    self.lastPageShown = NO;
+    [self refreshSkipButtonTitle];
+}
+
+- (void)updateLastPageShown
+{
+    UIPageControl *control = self.pageControl;
+    if (!self.lastPageShown) {
+        self.lastPageShown = (control.currentPage == (control.numberOfPages - 1));
+    }
 }
 
 - (void)layoutFooterViews
@@ -351,6 +365,8 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     for (UICollectionView *collectionView in collectionViews) {
         [collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:0] atScrollPosition:(UICollectionViewScrollPositionCenteredHorizontally | UICollectionViewScrollPositionCenteredVertically) animated:YES];
     }
+    [self updateLastPageShown];
+    [self refreshSkipButtonTitle];
 }
 
 - (void)showPanelAtPageControl:(UIPageControl*) sender
@@ -396,7 +412,6 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     if (scrollView != self.textCollectionView) return;
     
     UIPageControl *pageControl = self.pageControl;
-    NSInteger lastPage = pageControl.currentPage;
     
     // Get scrolling position, and send the alpha values.
     if (!self.isfixedBackground) {
@@ -429,10 +444,6 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     NSInteger closestPage = floor(pagePosition - 0.5f) + 1;
     pageControl.currentPage = closestPage;
     
-    if (lastPage != pageControl.currentPage) {
-        [self refreshSkipButtonTitle];
-    }
-    
     CGFloat picturePosition = easeInOutQuad(normalisedPosition);
     
     switch (self.walkThroughDirection) {
@@ -445,6 +456,14 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     }
     
     self.pictureCollectionView.contentOffset = contentOffset;
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if (scrollView != self.textCollectionView) return;
+    
+    [self updateLastPageShown];
+    [self refreshSkipButtonTitle];
 }
 
 float easeInOutQuad(float value)
