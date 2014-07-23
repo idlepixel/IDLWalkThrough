@@ -14,10 +14,21 @@ typedef NS_ENUM(NSInteger, IDLWalkThroughViewDirection) {
     IDLWalkThroughViewDirectionHorizontal
 };
 
+
+typedef float(^IDLWalkThroughViewEasingBlock)(float value);
+
 @protocol IDLWalkThroughViewDelegate;
 @protocol IDLWalkThroughViewDataSource;
 
 @interface IDLWalkThroughView : UIView <UIAppearanceContainer>
+
++(IDLWalkThroughViewEasingBlock)easingBlockLinear;
++(IDLWalkThroughViewEasingBlock)easingBlockInOutSine;
++(IDLWalkThroughViewEasingBlock)easingBlockInOutQuad;
++(IDLWalkThroughViewEasingBlock)easingBlockInOutCubic;
++(IDLWalkThroughViewEasingBlock)easingBlockInBounce;
++(IDLWalkThroughViewEasingBlock)easingBlockOutBounce;
++(IDLWalkThroughViewEasingBlock)easingBlockInOutBounce;
 
 @property (nonatomic, assign) id<IDLWalkThroughViewDelegate> delegate;
 
@@ -42,6 +53,9 @@ typedef NS_ENUM(NSInteger, IDLWalkThroughViewDirection) {
 @property (nonatomic, strong) NSNumber *footerPaddingBottom     UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) NSNumber *footerSkipButtonWidth   UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) NSNumber *footerSkipButtonHeight  UI_APPEARANCE_SELECTOR;
+
+@property (nonatomic, copy) IDLWalkThroughViewEasingBlock backgroundFadeEasingBlock;
+@property (nonatomic, copy) IDLWalkThroughViewEasingBlock pictureMovementEasingBlock;
 
 - (void)showInView:(UIView*) view animateDuration:(CGFloat) duration;
 

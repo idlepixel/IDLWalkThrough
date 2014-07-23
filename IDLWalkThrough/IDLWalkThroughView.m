@@ -25,12 +25,14 @@
 
 #define kIDLWalkThroughCellIdentifier               @"IDLWalkThroughCellIdentifier"
 
+/*
 NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
 {
     view.layer.borderColor = color.CGColor;
     view.layer.borderWidth = width;
 }
-
+*/
+ 
 @interface IDLWalkThroughView ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UICollectionView* textCollectionView;
@@ -47,6 +49,107 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
 @end
 
 @implementation IDLWalkThroughView
+
++(IDLWalkThroughViewEasingBlock)easingBlockLinear
+{
+    IDLWalkThroughViewEasingBlock block = ^(float value) {
+        return value;
+    };
+    return block;
+}
+
++(IDLWalkThroughViewEasingBlock)easingBlockInOutSine
+{
+    IDLWalkThroughViewEasingBlock block = ^(float value) {
+        return (float)(-0.5f * (cos(M_PI * value) - 1.0f));
+    };
+    return block;
+}
+
++(IDLWalkThroughViewEasingBlock)easingBlockInOutQuad
+{
+    IDLWalkThroughViewEasingBlock block = ^(float value) {
+        value *= 2.0f;
+        
+        if (value < 1.0f) {
+            return (float)(0.5f * pow(value, 2.0f));
+        } else {
+            value = 2.0f - value;
+            value = 0.5f * pow(value, 2.0f);
+            return (float)(1.0f - value);
+        }
+    };
+    return block;
+}
+
++(IDLWalkThroughViewEasingBlock)easingBlockInOutCubic
+{
+    IDLWalkThroughViewEasingBlock block = ^(float value) {
+        value *= 2.0f;
+        
+        if (value < 1.0f) {
+            return (float)(0.5f * pow(value, 3.0f));
+        } else {
+            value = 2.0f - value;
+            value = 0.5f * pow(value, 3.0f);
+            return (float)(1.0f - value);
+        }
+    };
+    return block;
+}
+
+float internal_easingBlockInBounce(float value)
+{
+    return (float)(1.0f - internal_easingBlockOutBounce(1.0f - value));
+}
+
+float internal_easingBlockOutBounce(float value)
+{
+    if (value < 1.0f/2.75f) {
+        return (7.5625f*pow(value, 2.0f));
+        
+    } else if (value < 2.0f/2.75f) {
+        value -= 1.5f/2.75f;
+        return (7.5625f*pow(value, 2.0f) + 0.75f);
+        
+    } else if (value < 2.5f/2.75f) {
+        value -= 2.25f/2.75f;
+        return (7.5625f*pow(value, 2.0f) + 0.9375f);
+        
+    } else {
+        value -= 2.625f/2.75f;
+        return (7.5625f*pow(value, 2.0f) + 0.984375f);
+    }
+}
+
+
++(IDLWalkThroughViewEasingBlock)easingBlockInBounce
+{
+    IDLWalkThroughViewEasingBlock block = ^(float value) {
+        return internal_easingBlockInBounce(value);
+    };
+    return block;
+}
+
++(IDLWalkThroughViewEasingBlock)easingBlockOutBounce
+{
+    IDLWalkThroughViewEasingBlock block = ^(float value) {
+        return internal_easingBlockOutBounce(value);
+    };
+    return block;
+}
+
++(IDLWalkThroughViewEasingBlock)easingBlockInOutBounce
+{
+    IDLWalkThroughViewEasingBlock block = ^(float value) {
+        if (value < 0.5f) {
+            return internal_easingBlockInBounce(value * 2.0f) * 0.5f;
+        } else {
+            return internal_easingBlockOutBounce(value * 2.0f - 1.0f) * 0.5f + 0.5f;
+        }
+    };
+    return block;
+}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -127,6 +230,9 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     
     self.skipTitle = @"Skip";
     self.doneTitle = @"Done";
+    
+    self.pictureMovementEasingBlock = [IDLWalkThroughView easingBlockInOutCubic];
+    self.backgroundFadeEasingBlock = [IDLWalkThroughView easingBlockInOutQuad];
     
     CGRect frame = self.bounds;
     
@@ -444,7 +550,10 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     NSInteger closestPage = floor(pagePosition - 0.5f) + 1;
     pageControl.currentPage = closestPage;
     
-    CGFloat picturePosition = easeInOutQuad(normalisedPosition);
+    CGFloat picturePosition = normalisedPosition;
+    if (self.pictureMovementEasingBlock) {
+        picturePosition = self.pictureMovementEasingBlock(picturePosition);
+    }
     
     switch (self.walkThroughDirection) {
         case IDLWalkThroughViewDirectionHorizontal:
@@ -466,29 +575,10 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     [self refreshSkipButtonTitle];
 }
 
-float easeInOutQuad(float value)
-{
-    value *= 2.0f;
-    
-    if (value < 1.0f) {
-        return 0.5f * pow(value, 2.0f);
-    } else {
-        value = 2.0f - value;
-        value = 0.5f * pow(value, 2.0f);
-        return 1.0f - value;
-    }
-}
-
-float easeOutValue(float value)
-{
-    float inverse = value - 1.0;
-    return 1.0 + inverse * inverse * inverse;
-}
-
-- (void)crossDissolveForOffset:(float)offset
+- (void)crossDissolveForOffset:(CGFloat)offset
 {
     NSInteger page = (int)(offset);
-    float alphaValue = offset - (int)offset;
+    CGFloat alphaValue = offset - (int)offset;
     
     IDLWalkThroughFadingImageView *fadingImageView = self.backgroundFadingImageView;
     
@@ -503,11 +593,13 @@ float easeOutValue(float value)
     fadingImageView.backImage = [self.dataSource walkThroughView:self backgroundImageforPage:page+1];
     fadingImageView.backAlpha = 1.0f;
     
-    float backLayerAlpha = alphaValue;
-    float frontLayerAlpha = (1 - alphaValue);
+    CGFloat backLayerAlpha = alphaValue;
+    CGFloat frontLayerAlpha = (1 - alphaValue);
     
-    backLayerAlpha = easeInOutQuad(backLayerAlpha);
-    frontLayerAlpha = easeInOutQuad(frontLayerAlpha);
+    if (self.backgroundFadeEasingBlock) {
+        backLayerAlpha = self.backgroundFadeEasingBlock(backLayerAlpha);
+        frontLayerAlpha = self.backgroundFadeEasingBlock(frontLayerAlpha);
+    }
     
     fadingImageView.backAlpha = backLayerAlpha;
     fadingImageView.frontAlpha = frontLayerAlpha;
