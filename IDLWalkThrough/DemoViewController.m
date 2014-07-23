@@ -43,8 +43,16 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
     //[[IDLWalkThroughView appearance] setFooterPaddingSide:@(5.0f)];
     
     IDLWalkThroughView *walkThroughView = [[IDLWalkThroughView alloc] initWithFrame:self.navigationController.view.bounds];
-    [walkThroughView setDataSource:self];
+    walkThroughView.backgroundColor = [UIColor grayColor];
+    walkThroughView.dataSource = self;
     [walkThroughView setWalkThroughDirection:IDLWalkThroughViewDirectionVertical];
+    
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        walkThroughView.footerPaddingBottom = walkThroughView.footerPaddingSide = @(5.0f);
+    } else {
+        walkThroughView.footerPaddingBottom = walkThroughView.footerPaddingSide = @(40.0f);
+    }
+    
     self.walkThroughView = walkThroughView;
     
     UILabel* welcomeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 50)];
