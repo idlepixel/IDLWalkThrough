@@ -121,7 +121,7 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
 {
     [super viewDidLayoutSubviews];
     
-    self.walkThroughView.frame = self.view.bounds;
+    self.walkThroughView.frame = self.walkThroughView.superview.bounds;
 }
 
 - (void)didReceiveMemoryWarning

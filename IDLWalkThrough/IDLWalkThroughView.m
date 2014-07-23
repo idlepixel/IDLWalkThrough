@@ -134,9 +134,6 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     
     [self buildFooterView];
     
-    UIViewSetBorder(self.textCollectionView, [UIColor greenColor], 2.0f);
-    UIViewSetBorder(self, [UIColor redColor], 2.0f);
-    
     self.currentPage = 0;
     self.lastPage = 0;
 
@@ -148,10 +145,16 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     
     CGRect frame = self.bounds;
     
-    self.textCollectionView.frame = frame;
-    [self.textCollectionView reloadData];
-    self.pictureCollectionView.frame = frame;
-    [self.pictureCollectionView reloadData];
+    
+    if (self.textCollectionView && self.pictureCollectionView) {
+        NSArray *collectionViews = [NSArray arrayWithObjects:self.textCollectionView, self.pictureCollectionView, nil];
+        NSInteger page = self.pageControl.currentPage;
+        for (UICollectionView *collectionView in collectionViews) {
+            collectionView.frame = frame;
+            [collectionView reloadData];
+            [collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:0] atScrollPosition:(UICollectionViewScrollPositionCenteredHorizontally | UICollectionViewScrollPositionCenteredVertically) animated:NO];
+        }
+    }
     
     if (self.floatingHeaderView) {
         CGRect floatingHeaderFrame = self.floatingHeaderView.frame;
@@ -160,7 +163,7 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
         self.floatingHeaderView.frame = floatingHeaderFrame;
         [self bringSubviewToFront:self.floatingHeaderView];
     }
-    [self orientFooter];
+    [self layoutFooterViews];
 }
 
 - (void)setFloatingHeaderView:(UIView *)floatingHeaderView
@@ -183,7 +186,7 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
         [layout setScrollDirection:direction];
         [layout invalidateLayout];
     }
-    [self orientFooter];
+    [self layoutFooterViews];
 }
 
 - (void)setCloseTitle:(NSString *)closeTitle
@@ -192,43 +195,62 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     [self.skipButton setTitle:_closeTitle forState:UIControlStateNormal];
 }
 
-- (void)orientFooter
+#define kFooterPaddingBottom    30.0f
+#define kFooterPaddingSide      30.0f
+
+#define kFooterButtonHeight     45.0f
+#define kFooterButtonWidth      60.0f
+
+- (void)layoutFooterViews
 {
-    UIViewSetBorder(self.pageControl, [UIColor yellowColor], 2.0f);
+    
+    UIPageControl *pageControl = self.pageControl;
+    UIButton *skipButton = self.skipButton;
+    
+    CGRect bounds = self.bounds;
+    CGPoint center = CGPointMake(bounds.size.width/2.0f, bounds.size.height/2.0f);
+    
+    CGSize pageControlSize = [pageControl sizeForNumberOfPages:pageControl.numberOfPages];
+    pageControlSize.height = MAX(pageControlSize.height, kFooterButtonHeight);
+    
+    CGRect pageControlFrame = pageControl.frame;
+    pageControlFrame.size = pageControlSize;
+    
+    CGPoint bottomLeft = CGPointMake(floor(bounds.size.width - kFooterPaddingSide), floor(bounds.size.height - kFooterPaddingBottom));
+    
+    CGRect skipButtonFrame = skipButton.frame;
+    skipButtonFrame.size.width = kFooterButtonWidth;
+    skipButtonFrame.size.height = pageControlSize.height;
+    skipButtonFrame.origin.y = floor(bottomLeft.y - pageControlSize.height);
+    
     if (self.walkThroughDirection == IDLWalkThroughViewDirectionVertical) {
         
-        BOOL isRotated = !CGAffineTransformEqualToTransform(self.pageControl.transform, CGAffineTransformIdentity);
+        pageControl.frame = pageControlFrame;
+        pageControl.transform = CGAffineTransformMakeRotation(M_PI / 2.0f);
+        pageControlFrame = pageControl.frame;
         
-        if (!isRotated) {
-            CGRect butonFrame = self.skipButton.frame;
-            butonFrame.origin.x -= 30;
-            self.skipButton.frame = butonFrame;
-            
-            self.pageControl.transform = CGAffineTransformRotate(self.pageControl.transform, M_PI_2);
-            CGRect frame = self.pageControl.frame;
-            frame.size.height = ([self.dataSource numberOfPages] + 1 ) * 16;
-            frame.origin.x = self.frame.size.width - frame.size.width - 10;
-            frame.origin.y = butonFrame.origin.y+butonFrame.size.height - frame.size.height;
-            self.pageControl.frame = frame;
+        pageControlFrame.origin.x = bottomLeft.x - (pageControlSize.width + pageControlSize.height)/2.0f;
+        pageControlFrame.origin.y = bottomLeft.y - (pageControlSize.width/2.0f + pageControlSize.height);
         
-        }
-    } else{
-        BOOL isRotated = !CGAffineTransformEqualToTransform(self.pageControl.transform, CGAffineTransformIdentity);
+        skipButtonFrame.origin.x = floor(bottomLeft.x - (skipButtonFrame.size.width + pageControlSize.height));
         
-        if (isRotated) {
-            // Rotate back the page control
-            self.pageControl.transform = CGAffineTransformRotate(self.pageControl.transform, -M_PI_2);
-            self.pageControl.frame = CGRectMake(0, self.frame.size.height - 60, self.frame.size.width, 20);
-            
-            self.skipButton.frame = CGRectMake(self.frame.size.width - 80, self.pageControl.frame.origin.y - ((30 - self.pageControl.frame.size.height)/2), 80, 30);
-
-        }
+    } else {
+        
+        pageControl.transform = CGAffineTransformMakeRotation(0.0f);
+        pageControlFrame.origin.x = floor(center.x - pageControlSize.width/2.0f);
+        pageControlFrame.origin.y = floor(bottomLeft.y - pageControlSize.height);
+        
+        skipButtonFrame.origin.x = floor(bottomLeft.x - skipButtonFrame.size.width);
+        
     }
+    
+    pageControl.frame = pageControlFrame;
+    skipButton.frame = skipButtonFrame;
 }
 
 - (void)buildFooterView
 {
-    UIPageControl *pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, self.frame.size.height - 60, self.frame.size.width, 20)];
+    UIPageControl *pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, 50)];
     
     //Set defersCurrentPageDisplay to YES to prevent page control jerking when switching pages with page control. This prevents page control from instant change of page indication.
     pageControl.defersCurrentPageDisplay = YES;
@@ -241,7 +263,7 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     
     UIButton *skipButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    skipButton.frame = CGRectMake(self.frame.size.width - 80, pageControl.frame.origin.y - ((30 - pageControl.frame.size.height)/2), 80, 30);
+    skipButton.frame = CGRectMake(0.0f, 0.0f, 20.0f, 20.0f);
     
     skipButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     [skipButton setTitle:@"Skip" forState:UIControlStateNormal];
@@ -250,6 +272,8 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     [self addSubview:skipButton];
     [self bringSubviewToFront:skipButton];
     self.skipButton = skipButton;
+    
+    [self layoutFooterViews];
 }
 
 - (void)skipIntroduction
@@ -269,7 +293,7 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
 
 - (void)showPanelAtPageControl:(UIPageControl*) sender
 {
-    [self.pageControl setCurrentPage:sender.currentPage];
+    self.pageControl.currentPage = sender.currentPage;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView

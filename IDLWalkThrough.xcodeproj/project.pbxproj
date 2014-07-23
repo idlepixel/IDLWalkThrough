@@ -55,7 +55,6 @@
 		849EC365188E4A6400CAEA3D /* IDLWalkThrough-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "IDLWalkThrough-Info.plist"; sourceTree = "<group>"; };
 		849EC367188E4A6400CAEA3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		849EC369188E4A6400CAEA3D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		849EC36B188E4A6400CAEA3D /* GHWalkThrough-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GHWalkThrough-Prefix.pch"; sourceTree = "<group>"; };
 		849EC36C188E4A6400CAEA3D /* DemoAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoAppDelegate.h; sourceTree = "<group>"; };
 		849EC36D188E4A6400CAEA3D /* DemoAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoAppDelegate.m; sourceTree = "<group>"; };
 		849EC370188E4A6400CAEA3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -84,6 +83,7 @@
 		84F2F19B188FA0D600F883B8 /* static_bg_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = static_bg_01.png; sourceTree = "<group>"; };
 		A7984DEC197E165E00A60599 /* IDLWalkThroughFadingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDLWalkThroughFadingImageView.h; sourceTree = "<group>"; };
 		A7984DED197E165E00A60599 /* IDLWalkThroughFadingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDLWalkThroughFadingImageView.m; sourceTree = "<group>"; };
+		A7984DEF197FC6DB00A60599 /* IDLWalkThrough-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IDLWalkThrough-Prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,7 +172,7 @@
 				849EC365188E4A6400CAEA3D /* IDLWalkThrough-Info.plist */,
 				849EC366188E4A6400CAEA3D /* InfoPlist.strings */,
 				849EC369188E4A6400CAEA3D /* main.m */,
-				849EC36B188E4A6400CAEA3D /* GHWalkThrough-Prefix.pch */,
+				A7984DEF197FC6DB00A60599 /* IDLWalkThrough-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
