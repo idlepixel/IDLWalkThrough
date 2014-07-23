@@ -88,6 +88,9 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     
     self.backgroundColor = [UIColor grayColor];
     
+    self.skipTitle = @"Skip";
+    self.doneTitle = @"Done";
+    
     CGRect frame = self.bounds;
     
     IDLWalkThroughFadingImageView *fadingImageView = [[IDLWalkThroughFadingImageView alloc] initWithFrame:frame];
@@ -189,10 +192,28 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     [self layoutFooterViews];
 }
 
-- (void)setCloseTitle:(NSString *)closeTitle
+-(void)setSkipTitle:(NSString *)skipTitle
 {
-    _closeTitle = closeTitle;
-    [self.skipButton setTitle:_closeTitle forState:UIControlStateNormal];
+    _skipTitle = skipTitle;
+    [self refreshSkipButtonTitle];
+}
+
+-(void)setDoneTitle:(NSString *)doneTitle
+{
+    _doneTitle = doneTitle;
+    [self refreshSkipButtonTitle];
+}
+     
+-(void)refreshSkipButtonTitle
+{
+    UIPageControl *control = self.pageControl;
+    NSString *title = nil;
+    if (control.currentPage == (control.numberOfPages - 1) && self.doneTitle != nil) {
+        title = self.doneTitle;
+    } else {
+        title = self.skipTitle;
+    }
+    [self.skipButton setTitle:title forState:UIControlStateNormal];
 }
 
 #define kFooterPaddingBottom    30.0f
@@ -246,6 +267,7 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     
     pageControl.frame = pageControlFrame;
     skipButton.frame = skipButtonFrame;
+    [self refreshSkipButtonTitle];
 }
 
 - (void)buildFooterView
@@ -266,7 +288,6 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     skipButton.frame = CGRectMake(0.0f, 0.0f, 20.0f, 20.0f);
     
     skipButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    [skipButton setTitle:@"Skip" forState:UIControlStateNormal];
     [skipButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [skipButton addTarget:self action:@selector(skipIntroduction) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:skipButton];
@@ -274,6 +295,7 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     self.skipButton = skipButton;
     
     [self layoutFooterViews];
+    [self refreshSkipButtonTitle];
 }
 
 - (void)skipIntroduction

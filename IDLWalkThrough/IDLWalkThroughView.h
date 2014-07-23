@@ -31,7 +31,8 @@ typedef NS_ENUM(NSInteger, IDLWalkThroughViewDirection) {
 
 @property (nonatomic, strong) UIImage* backgroundImage;
 
-@property (nonatomic, copy) NSString *closeTitle;
+@property (nonatomic, strong) NSString *skipTitle;
+@property (nonatomic, strong) NSString *doneTitle;
 
 - (void)showInView:(UIView*) view animateDuration:(CGFloat) duration;
 
