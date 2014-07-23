@@ -9,9 +9,18 @@
 #import "IDLWalkThroughView.h"
 #import "IDLWalkThroughFadingImageView.h"
 
-#define kIDLWalkThroughDefaultTitlePosition         200.0f
-#define kIDLWalkThroughDefaultImagePosition         180.0f
-#define kIDLWalkThroughDefaultTitleDetailPadding    5.0f
+#define kIDLWalkThroughDefaultTitlePosition             200.0f
+#define kIDLWalkThroughDefaultImagePosition             180.0f
+#define kIDLWalkThroughDefaultTitleDetailPadding        0.0f
+
+#define kIDLWalkThroughDefaultPaddingHorizontalTitle    10.0f
+#define kIDLWalkThroughDefaultPaddingHorizontalDetail   20.0f
+
+#define kIDLWalkThroughDefaultFooterPaddingBottom       30.0f
+#define kIDLWalkThroughDefaultFooterPaddingSide         30.0f
+
+#define kIDLWalkThroughDefaultFooterButtonHeight        45.0f
+#define kIDLWalkThroughDefaultFooterButtonWidth         60.0f
 
 #define kIDLWalkThroughCellIdentifier               @"IDLWalkThroughCellIdentifier"
 
@@ -72,10 +81,36 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
         textCell.titleDetailPadding = @(kIDLWalkThroughDefaultTitleDetailPadding);
     }
     
+    if (textCell.titleHorizontalPadding == nil || force) {
+        textCell.titleHorizontalPadding = @(kIDLWalkThroughDefaultPaddingHorizontalTitle);
+    }
+    
+    if (textCell.detailHorizontalPadding == nil || force) {
+        textCell.detailHorizontalPadding = @(kIDLWalkThroughDefaultPaddingHorizontalDetail);
+    }
+    
     IDLWalkThroughPictureCell *pictureCell = [IDLWalkThroughPictureCell appearance];
     
     if (pictureCell.imagePosition == nil || force) {
         pictureCell.imagePosition = @(kIDLWalkThroughDefaultImagePosition);
+    }
+    
+    IDLWalkThroughView *view = [IDLWalkThroughView appearance];
+    
+    if (view.footerPaddingBottom == nil || force) {
+        view.footerPaddingBottom = @(kIDLWalkThroughDefaultFooterPaddingBottom);
+    }
+    
+    if (view.footerPaddingSide == nil || force) {
+        view.footerPaddingSide = @(kIDLWalkThroughDefaultFooterPaddingSide);
+    }
+    
+    if (view.footerSkipButtonHeight == nil || force) {
+        view.footerSkipButtonHeight = @(kIDLWalkThroughDefaultFooterButtonHeight);
+    }
+    
+    if (view.footerSkipButtonWidth == nil || force) {
+        view.footerSkipButtonWidth = @(kIDLWalkThroughDefaultFooterButtonWidth);
     }
 }
 
@@ -213,12 +248,6 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     [self.skipButton setTitle:title forState:UIControlStateNormal];
 }
 
-#define kFooterPaddingBottom    30.0f
-#define kFooterPaddingSide      30.0f
-
-#define kFooterButtonHeight     45.0f
-#define kFooterButtonWidth      60.0f
-
 - (void)layoutFooterViews
 {
     
@@ -229,15 +258,15 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     CGPoint center = CGPointMake(bounds.size.width/2.0f, bounds.size.height/2.0f);
     
     CGSize pageControlSize = [pageControl sizeForNumberOfPages:pageControl.numberOfPages];
-    pageControlSize.height = MAX(pageControlSize.height, kFooterButtonHeight);
+    pageControlSize.height = MAX(pageControlSize.height, self.footerSkipButtonHeight.floatValue);
     
     CGRect pageControlFrame = pageControl.frame;
     pageControlFrame.size = pageControlSize;
     
-    CGPoint bottomLeft = CGPointMake(floor(bounds.size.width - kFooterPaddingSide), floor(bounds.size.height - kFooterPaddingBottom));
+    CGPoint bottomLeft = CGPointMake(floor(bounds.size.width - self.footerPaddingSide.floatValue), floor(bounds.size.height - self.footerPaddingBottom.floatValue));
     
     CGRect skipButtonFrame = skipButton.frame;
-    skipButtonFrame.size.width = kFooterButtonWidth;
+    skipButtonFrame.size.width = self.footerSkipButtonWidth.floatValue;
     skipButtonFrame.size.height = pageControlSize.height;
     skipButtonFrame.origin.y = floor(bottomLeft.y - pageControlSize.height);
     

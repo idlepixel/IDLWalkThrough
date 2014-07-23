@@ -15,15 +15,17 @@
 @interface IDLWalkThroughTextCell : IDLWalkThroughPageCell
 
 @property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) UIFont *titleFont                 UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) UIColor *titleColor               UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIFont *titleFont                     UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *titleColor                   UI_APPEARANCE_SELECTOR;
 
 @property (nonatomic, strong) NSString *detail;
-@property (nonatomic, strong) UIFont *detailFont                UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) UIColor *detailColor              UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIFont *detailFont                    UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *detailColor                  UI_APPEARANCE_SELECTOR;
 
-@property (nonatomic, strong) NSNumber *titlePosition           UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) NSNumber *titleDetailPadding      UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) NSNumber *titlePosition               UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) NSNumber *titleDetailPadding          UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) NSNumber *titleHorizontalPadding      UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) NSNumber *detailHorizontalPadding     UI_APPEARANCE_SELECTOR;
 
 @end
 

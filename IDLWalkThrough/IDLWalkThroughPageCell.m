@@ -58,9 +58,6 @@
     [self setNeedsLayout];
 }
 
-#define kPaddingWidthTitle      10.0f
-#define kPaddingWidthDetail     20.0f
-
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -72,7 +69,9 @@
 
     [self layoutTitleLabel];
     
-    CGRect detailLabelFrame = CGRectMake(kPaddingWidthDetail, CGRectGetMaxY(self.titleLabel.frame)+self.titleDetailPadding.floatValue, self.contentView.frame.size.width - (kPaddingWidthDetail * 2.0f), 500);
+    CGFloat padding = self.detailHorizontalPadding.floatValue;
+    
+    CGRect detailLabelFrame = CGRectMake(padding, CGRectGetMaxY(self.titleLabel.frame)+self.titleDetailPadding.floatValue, self.contentView.frame.size.width - (padding * 2.0f), 500);
     self.detailLabel.frame = detailLabelFrame;
     
 }
@@ -81,19 +80,21 @@
 {
     CGFloat titleHeight;
     
+    CGFloat padding = self.titleHorizontalPadding.floatValue;
+    
     if ([self.title respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) {
         NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:self.title attributes:@{ NSFontAttributeName: self.titleFont }];
-        CGRect rect = [attributedText boundingRectWithSize:(CGSize){self.contentView.frame.size.width - (kPaddingWidthTitle * 2.0f), CGFLOAT_MAX} options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+        CGRect rect = [attributedText boundingRectWithSize:(CGSize){self.contentView.frame.size.width - (padding * 2.0f), CGFLOAT_MAX} options:NSStringDrawingUsesLineFragmentOrigin context:nil];
         titleHeight = ceilf(rect.size.height);
     } else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        titleHeight = [self.title sizeWithFont:self.titleFont constrainedToSize:CGSizeMake(self.contentView.frame.size.width - (kPaddingWidthTitle * 2.0f), CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
+        titleHeight = [self.title sizeWithFont:self.titleFont constrainedToSize:CGSizeMake(self.contentView.frame.size.width - (padding * 2.0f), CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
 #pragma clang diagnostic pop
     }
     titleHeight += 1.0f;
     
-    CGRect titleLabelFrame = CGRectMake(kPaddingWidthTitle, self.frame.size.height - self.titlePosition.floatValue, self.contentView.frame.size.width - (kPaddingWidthTitle * 2.0f), titleHeight);
+    CGRect titleLabelFrame = CGRectMake(padding, self.frame.size.height - self.titlePosition.floatValue, self.contentView.frame.size.width - (padding * 2.0f), titleHeight);
 
     self.titleLabel.frame = titleLabelFrame;
 }

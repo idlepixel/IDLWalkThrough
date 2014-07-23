@@ -37,6 +37,10 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
 	// Do any additional setup after loading the view, typically from a nib.
     
     //[[IDLWalkThroughTextPageCell appearance] setTitleColor:[UIColor greenColor]];
+    //[[IDLWalkThroughTextCell appearance] setDetailHorizontalPadding:@(50.0f)];
+    
+    //[[IDLWalkThroughView appearance] setFooterPaddingBottom:@(5.0f)];
+    //[[IDLWalkThroughView appearance] setFooterPaddingSide:@(5.0f)];
     
     IDLWalkThroughView *walkThroughView = [[IDLWalkThroughView alloc] initWithFrame:self.navigationController.view.bounds];
     [walkThroughView setDataSource:self];
@@ -62,7 +66,7 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
 
 - (void)configureTextCell:(IDLWalkThroughTextCell *)cell forPageAtIndex:(NSInteger)index
 {
-    cell.title = [NSString stringWithFormat:@"This is page %ld words pineapple apple banana words pineapple apple banana", (long)(index+1)];
+    cell.title = [NSString stringWithFormat:@"This is page %ld", (long)(index+1)];
     cell.detail = [self.descStrings objectAtIndex:index];
 }
 
