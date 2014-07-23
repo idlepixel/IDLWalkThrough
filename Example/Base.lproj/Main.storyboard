@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
-        <!--Demo View Controller - IDLWalkThrough Demo-->
+        <!--Example View Controller - IDLWalkThroughExample Demo-->
         <scene sceneID="eIJ-QT-SJf">
             <objects>
-                <tableViewController id="gKc-t6-IAp" customClass="DemoViewController" sceneMemberID="viewController">
+                <tableViewController id="gKc-t6-IAp" customClass="ExampleViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="B6v-Bw-bsJ">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -91,16 +91,16 @@
                             <outlet property="delegate" destination="gKc-t6-IAp" id="GA1-a1-YvM"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="IDLWalkThrough Demo" id="Uql-vC-0sw"/>
+                    <navigationItem key="navigationItem" title="IDLWalkThroughExample Demo" id="Uql-vC-0sw"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hJn-QY-pca" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1239" y="-211"/>
         </scene>
-        <!--Navigation Controller - IDLWalkThrough Demo-->
+        <!--Navigation Controller - IDLWalkThroughExample Demo-->
         <scene sceneID="CPL-eg-1bg">
             <objects>
-                <navigationController title="IDLWalkThrough Demo" automaticallyAdjustsScrollViewInsets="NO" id="jaZ-N0-Ahg" sceneMemberID="viewController">
+                <navigationController title="IDLWalkThroughExample Demo" automaticallyAdjustsScrollViewInsets="NO" id="jaZ-N0-Ahg" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="qbE-kc-Tkl">

@@ -1,5 +1,5 @@
 //
-//  GHViewController.h
+//  ExampleViewController.h
 //  GHWalkThrough
 //
 //  Created by Tapasya on 21/01/14.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DemoViewController : UITableViewController
+@interface ExampleViewController : UITableViewController
 
 @end
