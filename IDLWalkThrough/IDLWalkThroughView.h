@@ -34,6 +34,8 @@ typedef NS_ENUM(NSInteger, IDLWalkThroughViewDirection) {
 @property (nonatomic, strong) NSString *skipTitle;
 @property (nonatomic, strong) NSString *doneTitle;
 
+@property (nonatomic, strong) NSNumber *headerPaddingTop        UI_APPEARANCE_SELECTOR;
+
 @property (nonatomic, strong) NSNumber *footerPaddingSide       UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) NSNumber *footerPaddingBottom     UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) NSNumber *footerSkipButtonWidth   UI_APPEARANCE_SELECTOR;

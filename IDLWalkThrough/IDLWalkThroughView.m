@@ -16,9 +16,10 @@
 #define kIDLWalkThroughDefaultPaddingHorizontalTitle    10.0f
 #define kIDLWalkThroughDefaultPaddingHorizontalDetail   20.0f
 
+#define kIDLWalkThroughDefaultHeaderPaddingTop          50.0f
+
 #define kIDLWalkThroughDefaultFooterPaddingBottom       30.0f
 #define kIDLWalkThroughDefaultFooterPaddingSide         30.0f
-
 #define kIDLWalkThroughDefaultFooterButtonHeight        45.0f
 #define kIDLWalkThroughDefaultFooterButtonWidth         60.0f
 
@@ -97,6 +98,10 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     
     IDLWalkThroughView *view = [IDLWalkThroughView appearance];
     
+    if (view.headerPaddingTop == nil || force) {
+        view.headerPaddingTop = @(kIDLWalkThroughDefaultHeaderPaddingTop);
+    }
+    
     if (view.footerPaddingBottom == nil || force) {
         view.footerPaddingBottom = @(kIDLWalkThroughDefaultFooterPaddingBottom);
     }
@@ -117,8 +122,6 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
 - (void)configure
 {
     [self applyAppearanceDefaults:NO];
-    
-    self.backgroundColor = [UIColor grayColor];
     
     self.skipTitle = @"Skip";
     self.doneTitle = @"Done";
@@ -193,7 +196,7 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     
     if (self.floatingHeaderView) {
         CGRect floatingHeaderFrame = self.floatingHeaderView.frame;
-        floatingHeaderFrame.origin.y = 50.0f;
+        floatingHeaderFrame.origin.y = self.headerPaddingTop.floatValue;
         floatingHeaderFrame.origin.x = floor((frame.size.width - floatingHeaderFrame.size.width)/2.0f);
         self.floatingHeaderView.frame = floatingHeaderFrame;
         [self bringSubviewToFront:self.floatingHeaderView];
