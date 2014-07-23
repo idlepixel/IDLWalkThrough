@@ -147,6 +147,9 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
         NSArray *collectionViews = [NSArray arrayWithObjects:self.textCollectionView, self.pictureCollectionView, nil];
         NSInteger page = self.pageControl.currentPage;
         for (UICollectionView *collectionView in collectionViews) {
+            UICollectionViewFlowLayout *layout = (id)collectionView.collectionViewLayout;
+            layout.itemSize = frame.size;
+            [layout invalidateLayout];
             collectionView.frame = frame;
             [collectionView reloadData];
             [collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:0] atScrollPosition:(UICollectionViewScrollPositionCenteredHorizontally | UICollectionViewScrollPositionCenteredVertically) animated:NO];
