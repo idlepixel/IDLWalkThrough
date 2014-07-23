@@ -15,20 +15,21 @@
 @interface IDLWalkThroughTextPageCell : IDLWalkThroughPageCell
 
 @property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) UIFont *titleFont;
-@property (nonatomic, strong) UIColor *titleColor;
-@property (nonatomic, assign) CGFloat titlePositionY;
+@property (nonatomic, strong) UIFont *titleFont                 UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *titleColor               UI_APPEARANCE_SELECTOR;
 
 @property (nonatomic, strong) NSString *detail;
-@property (nonatomic, strong) UIFont *detailFont;
-@property (nonatomic, strong) UIColor *detailColor;
-@property (nonatomic, assign) CGFloat detailPositionY;
+@property (nonatomic, strong) UIFont *detailFont                UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *detailColor              UI_APPEARANCE_SELECTOR;
+
+@property (nonatomic, strong) NSNumber *titlePosition           UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) NSNumber *titleDetailPadding      UI_APPEARANCE_SELECTOR;
 
 @end
 
 @interface IDLWalkThroughPicturePageCell : IDLWalkThroughPageCell
 
 @property (nonatomic, strong) UIImage *image;
-@property (nonatomic, assign) CGPoint imageOffset;
+@property (nonatomic, strong) NSNumber *imagePosition           UI_APPEARANCE_SELECTOR;
 
 @end

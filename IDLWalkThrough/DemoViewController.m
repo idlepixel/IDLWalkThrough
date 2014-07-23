@@ -17,7 +17,7 @@ static NSString * const sampleDesc3 = @"In interdum scelerisque sem a convallis.
 
 static NSString * const sampleDesc4 = @"Praesent ornare consectetur elit, in fringilla ipsum blandit sed. Nam elementum, sem sit amet convallis dictum, risus metus faucibus augue, nec consectetur tortor mauris ac purus.";
 
-static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi egestas eget. Etiam facilisis turpis eget ipsum tempus, nec ultricies dui sagittis. Quisque interdum ipsum vitae ante laoreet, id egestas ligula auctor";
+static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi egestas eget. Etiam facilisis turpis eget ipsum tempus, nec ultricies dui sagittis. Quisque interdum ipsum vitae ante laoreet, id egestas ligula auctor. Quisque interdum ipsum vitae ante laoreet, id egestas ligula auctor. Quisque interdum ipsum vitae ante laoreet, id egestas ligula auctor. Quisque interdum ipsum vitae ante laoreet, id egestas ligula auctor";
 
 @interface DemoViewController () <IDLWalkThroughViewDataSource>
 
@@ -36,6 +36,8 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
+    //[[IDLWalkThroughTextPageCell appearance] setTitleColor:[UIColor greenColor]];
+    
     IDLWalkThroughView *walkThroughView = [[IDLWalkThroughView alloc] initWithFrame:self.navigationController.view.bounds];
     [walkThroughView setDataSource:self];
     [walkThroughView setWalkThroughDirection:IDLWalkThroughViewDirectionVertical];
@@ -53,14 +55,14 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
 
 #pragma mark - GHDataSource
 
--(NSInteger) numberOfPages
+- (NSInteger) numberOfPages
 {
     return 5;
 }
 
 - (void)configureTextCell:(IDLWalkThroughTextPageCell *)cell forPageAtIndex:(NSInteger)index
 {
-    cell.title = [NSString stringWithFormat:@"This is page %ld", (long)(index+1)];
+    cell.title = [NSString stringWithFormat:@"This is page %ld words pineapple apple banana words pineapple apple banana", (long)(index+1)];
     cell.detail = [self.descStrings objectAtIndex:index];
 }
 
@@ -76,7 +78,7 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
     return image;
 }
 
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     

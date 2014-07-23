@@ -9,6 +9,10 @@
 #import "IDLWalkThroughView.h"
 #import "IDLWalkThroughFadingImageView.h"
 
+#define kIDLWalkThroughDefaultTitlePosition         180.0f
+#define kIDLWalkThroughDefaultImagePosition         160.0f
+#define kIDLWalkThroughDefaultTitleDetailPadding    5.0f
+
 @interface IDLWalkThroughView ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UICollectionView* textCollectionView;
@@ -37,8 +41,43 @@
     return self;
 }
 
+- (void)applyAppearanceDefaults:(BOOL)force
+{
+    IDLWalkThroughTextPageCell *textCell = [IDLWalkThroughTextPageCell appearance];
+    
+    if (textCell.titleFont == nil || force) {
+        textCell.titleFont = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16.0];
+    }
+    if (textCell.titleColor == nil || force) {
+        textCell.titleColor = [UIColor whiteColor];
+    }
+    
+    if (textCell.detailFont == nil || force) {
+        textCell.detailFont = [UIFont fontWithName:@"HelveticaNeue" size:13.0];
+    }
+    if (textCell.detailColor == nil || force) {
+        textCell.detailColor = [UIColor whiteColor];
+    }
+    
+    if (textCell.titlePosition == nil || force) {
+        textCell.titlePosition = @(kIDLWalkThroughDefaultTitlePosition);
+    }
+    
+    if (textCell.titleDetailPadding == nil || force) {
+        textCell.titleDetailPadding = @(kIDLWalkThroughDefaultTitleDetailPadding);
+    }
+    
+    IDLWalkThroughPicturePageCell *pictureCell = [IDLWalkThroughPicturePageCell appearance];
+    
+    if (pictureCell.imagePosition == nil || force) {
+        pictureCell.imagePosition = @(kIDLWalkThroughDefaultImagePosition);
+    }
+}
+
 - (void)configure
 {
+    [self applyAppearanceDefaults:NO];
+    
     self.backgroundColor = [UIColor grayColor];
     
     CGRect frame = self.bounds;
@@ -92,7 +131,7 @@
 
 }
 
-- (void) setFloatingHeaderView:(UIView *)floatingHeaderView
+- (void)setFloatingHeaderView:(UIView *)floatingHeaderView
 {
     if (_floatingHeaderView != nil) {
         [_floatingHeaderView removeFromSuperview];
@@ -108,7 +147,7 @@
     [self bringSubviewToFront:floatingHeaderView];
 }
 
-- (void) setWalkThroughDirection:(IDLWalkThroughViewDirection)walkThroughDirection
+- (void)setWalkThroughDirection:(IDLWalkThroughViewDirection)walkThroughDirection
 {
     _walkThroughDirection = walkThroughDirection;
     UICollectionViewScrollDirection direction = _walkThroughDirection == IDLWalkThroughViewDirectionVertical ? UICollectionViewScrollDirectionVertical : UICollectionViewScrollDirectionHorizontal;
@@ -126,7 +165,7 @@
     [self.skipButton setTitle:_closeTitle forState:UIControlStateNormal];
 }
 
-- (void) orientFooter
+- (void)orientFooter
 {
     if (self.walkThroughDirection == IDLWalkThroughViewDirectionVertical) {
         BOOL isRotated = !CGAffineTransformEqualToTransform(self.pageControl.transform, CGAffineTransformIdentity);
@@ -182,7 +221,7 @@
     self.skipButton = skipButton;
 }
 
-- (void) skipIntroduction
+- (void)skipIntroduction
 {
     [UIView animateWithDuration:0.3 animations:^{
         self.alpha = 0;
@@ -197,23 +236,23 @@
 	}];
 }
 
-- (void) showPanelAtPageControl:(UIPageControl*) sender
+- (void)showPanelAtPageControl:(UIPageControl*) sender
 {
     [self.pageControl setCurrentPage:sender.currentPage];
 }
 
--(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     return 1;
 }
 
--(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     NSInteger nPages = [self.dataSource numberOfPages];
     return nPages;
 }
 
--(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     IDLWalkThroughPageCell *cell = (IDLWalkThroughPageCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellIdentifier" forIndexPath:indexPath];
     
@@ -230,12 +269,12 @@
     
 }
 
--(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     return self.frame.size;
 }
 
-- (void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
 //    if ([self.dataSource respondsToSelector:@selector(bgImageforPage:)]) {
 //        self.bgFrontLayer.image = [self.dataSource bgImageforPage:self.pageControl.currentPage];

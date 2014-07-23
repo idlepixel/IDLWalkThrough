@@ -17,7 +17,7 @@ typedef NS_ENUM(NSInteger, IDLWalkThroughViewDirection) {
 @protocol IDLWalkThroughViewDelegate;
 @protocol IDLWalkThroughViewDataSource;
 
-@interface IDLWalkThroughView : UIView
+@interface IDLWalkThroughView : UIView <UIAppearanceContainer>
 
 @property (nonatomic, assign) id<IDLWalkThroughViewDelegate> delegate;
 
@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, IDLWalkThroughViewDirection) {
 
 @property (nonatomic, copy) NSString *closeTitle;
 
-- (void) showInView:(UIView*) view animateDuration:(CGFloat) duration;
+- (void)showInView:(UIView*) view animateDuration:(CGFloat) duration;
 
 @end
 
@@ -48,7 +48,7 @@ typedef NS_ENUM(NSInteger, IDLWalkThroughViewDirection) {
 
 @required
 
--(NSInteger) numberOfPages;
+- (NSInteger) numberOfPages;
 
 @optional
 

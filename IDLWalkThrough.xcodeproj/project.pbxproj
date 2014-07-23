@@ -452,6 +452,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "IDLWalkThrough/IDLWalkThrough-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/IDLWalkThrough/IDLWalkThrough-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = IDLWalkThrough;
 				WRAPPER_EXTENSION = app;
 			};
@@ -465,6 +466,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "IDLWalkThrough/IDLWalkThrough-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/IDLWalkThrough/IDLWalkThrough-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = IDLWalkThrough;
 				WRAPPER_EXTENSION = app;
 			};

@@ -35,7 +35,7 @@
     return self;
 }
 
--(void)configure
+- (void)configure
 {
     CGRect bounds = self.bounds;
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:bounds];
@@ -51,7 +51,7 @@
     self.frontImageView = imageView;
 }
 
--(void)layoutSubviews
+- (void)layoutSubviews
 {
     [super layoutSubviews];
     
@@ -61,33 +61,33 @@
     self.frontImageView.frame = bounds;
 }
 
--(UIImage *)backImage
+- (UIImage *)backImage
 {
     return self.backImageView.image;
 }
 
--(void)setBackImage:(UIImage *)backImage
+- (void)setBackImage:(UIImage *)backImage
 {
     self.backImageView.image = backImage;
 }
 
--(void)setBackAlpha:(CGFloat)backAlpha
+- (void)setBackAlpha:(CGFloat)backAlpha
 {
     _backAlpha = backAlpha;
     self.backImageView.alpha = backAlpha;
 }
 
--(UIImage *)frontImage
+- (UIImage *)frontImage
 {
     return self.frontImageView.image;
 }
 
--(void)setFrontImage:(UIImage *)frontImage
+- (void)setFrontImage:(UIImage *)frontImage
 {
     self.frontImageView.image = frontImage;
 }
 
--(void)setFrontAlpha:(CGFloat)frontAlpha
+- (void)setFrontAlpha:(CGFloat)frontAlpha
 {
     _frontAlpha = frontAlpha;
     self.frontImageView.alpha = frontAlpha;

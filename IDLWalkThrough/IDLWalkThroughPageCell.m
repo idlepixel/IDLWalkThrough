@@ -8,10 +8,16 @@
 
 #import "IDLWalkThroughPageCell.h"
 
+
+NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
+{
+    view.layer.borderColor = color.CGColor;
+    view.layer.borderWidth = width;
+}
+
 @interface IDLWalkThroughPageCell ()
 
 - (void)configure;
-- (void)applyDefaults;
 
 @end
 
@@ -22,18 +28,12 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        [self applyDefaults];
         [self configure];
     }
     return self;
 }
 
 - (void)configure
-{
-    // do nothing
-}
-
-- (void)applyDefaults
 {
     // do nothing
 }
@@ -51,7 +51,7 @@
 
 #pragma mark setters
 
-- (void) setTitle:(NSString *)title
+- (void)setTitle:(NSString *)title
 {
     _title = title;
     self.titleLabel.text = self.title;
@@ -65,55 +65,52 @@
     [self setNeedsLayout];
 }
 
-- (void) layoutSubviews
+#define kPaddingWidthTitle      10.0f
+#define kPaddingWidthDetail     20.0f
+
+- (void)layoutSubviews
 {
     [super layoutSubviews];
+    
+    self.titleLabel.textColor = self.titleColor;
+    self.titleLabel.font = self.titleFont;
+    self.detailLabel.textColor = self.detailColor;
+    self.detailLabel.font = self.detailFont;
 
     [self layoutTitleLabel];
     
-    CGRect detailLabelFrame = CGRectMake(20, self.frame.size.height - self.detailPositionY, self.contentView.frame.size.width - 40, 500);
+    CGRect detailLabelFrame = CGRectMake(kPaddingWidthDetail, CGRectGetMaxY(self.titleLabel.frame)+self.titleDetailPadding.floatValue, self.contentView.frame.size.width - (kPaddingWidthDetail * 2.0f), 500);
     self.detailLabel.frame = detailLabelFrame;
     
 }
 
-- (void) layoutTitleLabel
+- (void)layoutTitleLabel
 {
     CGFloat titleHeight;
     
     if ([self.title respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) {
         NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:self.title attributes:@{ NSFontAttributeName: self.titleFont }];
-        CGRect rect = [attributedText boundingRectWithSize:(CGSize){self.contentView.frame.size.width - 20, CGFLOAT_MAX} options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+        CGRect rect = [attributedText boundingRectWithSize:(CGSize){self.contentView.frame.size.width - (kPaddingWidthTitle * 2.0f), CGFLOAT_MAX} options:NSStringDrawingUsesLineFragmentOrigin context:nil];
         titleHeight = ceilf(rect.size.height);
     } else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        titleHeight = [self.title sizeWithFont:self.titleFont constrainedToSize:CGSizeMake(self.contentView.frame.size.width - 20, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
+        titleHeight = [self.title sizeWithFont:self.titleFont constrainedToSize:CGSizeMake(self.contentView.frame.size.width - (kPaddingWidthTitle * 2.0f), CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
 #pragma clang diagnostic pop
     }
+    titleHeight += 1.0f;
     
-    CGRect titleLabelFrame = CGRectMake(10, self.frame.size.height - self.titlePositionY, self.contentView.frame.size.width - 20, titleHeight);
+    CGRect titleLabelFrame = CGRectMake(kPaddingWidthTitle, self.frame.size.height - self.titlePosition.floatValue, self.contentView.frame.size.width - (kPaddingWidthTitle * 2.0f), titleHeight);
 
     self.titleLabel.frame = titleLabelFrame;
-}
-
-- (void) applyDefaults
-{
-    [super applyDefaults];
-    
-    self.title = @"Title";
-    self.detail = @"Default Description";
-    
-    self.titlePositionY  = 180.0f;
-    self.detailPositionY   = 160.0f;
-    self.titleFont = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16.0];
-    self.titleColor = [UIColor whiteColor];
-    self.detailFont = [UIFont fontWithName:@"HelveticaNeue" size:13.0];
-    self.detailColor = [UIColor whiteColor];
 }
 
 - (void)configure
 {
     [super configure];
+    
+    self.title = @"Title";
+    self.detail = @"Default Description";
     
     self.backgroundColor = [UIColor clearColor];
     self.backgroundView = nil;
@@ -126,11 +123,14 @@
         titleLabel.text = self.title;
         titleLabel.font = self.titleFont;
         titleLabel.textColor = self.titleColor;
+        titleLabel.numberOfLines = 0;
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         [pageView addSubview:titleLabel];
         self.titleLabel = titleLabel;
+        
+        //UIViewSetBorder(titleLabel, [UIColor greenColor], 2.0f);
     }
     
     if (self.detailLabel == nil) {
@@ -144,6 +144,8 @@
         detailLabel.userInteractionEnabled = NO;
         [pageView addSubview:detailLabel];
         self.detailLabel = detailLabel;
+        
+        //UIViewSetBorder(detailLabel, [UIColor redColor], 2.0f);
     }
 
     [self.contentView addSubview:pageView];
@@ -159,14 +161,7 @@
 
 @implementation IDLWalkThroughPicturePageCell
 
-- (void) applyDefaults
-{
-    [super applyDefaults];
-    
-    self.imageOffset = CGPointMake(0.0f, 0.0f);
-}
-
-- (void) setImage:(UIImage *)image
+- (void)setImage:(UIImage *)image
 {
     _image = image;
     self.imageView.image = image;
@@ -176,14 +171,18 @@
     [self setNeedsLayout];
 }
 
--(void)layoutSubviews
+- (void)layoutSubviews
 {
+    //UIViewSetBorder(self.imageView, [UIColor orangeColor], 2.0f);
+    
     [super layoutSubviews];
     CGRect contentRect = self.contentView.bounds;
-    CGPoint center = CGPointMake(contentRect.size.width/2.0f, contentRect.size.height/2.0f);
-    center.x = round(center.x + self.imageOffset.x);
-    center.y = round(center.y + self.imageOffset.y);
-    self.imageView.center = center;
+    
+    CGRect imageRect = self.imageView.frame;
+    imageRect.origin.x = floor((contentRect.size.width - imageRect.size.width)/2.0f);
+    imageRect.origin.y = floor(contentRect.size.height - imageRect.size.height - self.imagePosition.floatValue);
+    
+    self.imageView.frame = imageRect;
 }
 
 - (void)configure
