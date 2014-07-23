@@ -32,9 +32,6 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
 @property (nonatomic, strong) UIPageControl* pageControl;
 @property (nonatomic, strong) UIButton* skipButton;
 
-@property (nonatomic, assign) NSInteger currentPage;
-@property (nonatomic, assign) NSInteger lastPage;
-
 @end
 
 @implementation IDLWalkThroughView
@@ -136,9 +133,6 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     self.textCollectionView = collectionView;
     
     [self buildFooterView];
-    
-    self.currentPage = 0;
-    self.lastPage = 0;
 
 }
 
@@ -387,18 +381,14 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     CGFloat pagePosition = pageOffset / pageMetric;
     
     NSInteger previousPage = floor(pagePosition);
-    //NSInteger nextPage = ceil(pagePosition);
     
     CGFloat normalisedPosition = pagePosition - previousPage;
     
     NSInteger closestPage = floor(pagePosition - 0.5f) + 1;
     self.pageControl.currentPage = closestPage;
     
-    //NSLog(@"position: %f (p:%i,n:%i), offset:%f",pagePosition,previousPage,nextPage,normalisedPosition);
     
     CGFloat picturePosition = easeInOutQuad(normalisedPosition);
-    
-    //NSLog(@"picturePosition: %f",picturePosition);
     
     switch (self.walkThroughDirection) {
         case IDLWalkThroughViewDirectionHorizontal:
@@ -408,7 +398,7 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
             contentOffset.y = (previousPage + picturePosition) * pageMetric;
             break;
     }
-    //NSLog(@"contentOffset: %@",NSStringFromCGPoint(contentOffset));
+    
     self.pictureCollectionView.contentOffset = contentOffset;
 }
 
@@ -423,6 +413,12 @@ float easeInOutQuad(float value)
         value = 0.5f * pow(value, 2.0f);
         return 1.0f - value;
     }
+}
+
+float easeOutValue(float value)
+{
+    float inverse = value - 1.0;
+    return 1.0 + inverse * inverse * inverse;
 }
 
 - (void)crossDissolveForOffset:(float)offset
@@ -453,14 +449,6 @@ float easeInOutQuad(float value)
     fadingImageView.frontAlpha = frontLayerAlpha;
 }
 
-
-
-float easeOutValue(float value)
-{
-    float inverse = value - 1.0;
-    return 1.0 + inverse * inverse * inverse;
-}
-
 - (void)showInView:(UIView *)view animateDuration:(CGFloat) duration
 {
     self.frame = view.bounds;
@@ -483,15 +471,5 @@ float easeOutValue(float value)
         self.alpha = 1;
     }];
 }
-
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end
