@@ -454,6 +454,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/IDLWalkThrough/IDLWalkThrough-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = IDLWalkThrough;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -468,6 +469,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/IDLWalkThrough/IDLWalkThrough-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = IDLWalkThrough;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -35,6 +35,8 @@ typedef NS_ENUM(NSInteger, IDLWalkThroughViewDirection) {
 
 - (void)showInView:(UIView*) view animateDuration:(CGFloat) duration;
 
+- (void)applyAppearanceDefaults:(BOOL)force;
+
 @end
 
 @protocol IDLWalkThroughViewDelegate <NSObject>

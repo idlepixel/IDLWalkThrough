@@ -8,13 +8,6 @@
 
 #import "IDLWalkThroughPageCell.h"
 
-
-NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
-{
-    view.layer.borderColor = color.CGColor;
-    view.layer.borderWidth = width;
-}
-
 @interface IDLWalkThroughPageCell ()
 
 - (void)configure;
@@ -129,8 +122,6 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
         titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         [pageView addSubview:titleLabel];
         self.titleLabel = titleLabel;
-        
-        //UIViewSetBorder(titleLabel, [UIColor greenColor], 2.0f);
     }
     
     if (self.detailLabel == nil) {
@@ -144,8 +135,6 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
         detailLabel.userInteractionEnabled = NO;
         [pageView addSubview:detailLabel];
         self.detailLabel = detailLabel;
-        
-        //UIViewSetBorder(detailLabel, [UIColor redColor], 2.0f);
     }
 
     [self.contentView addSubview:pageView];
@@ -173,9 +162,8 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
 
 - (void)layoutSubviews
 {
-    //UIViewSetBorder(self.imageView, [UIColor orangeColor], 2.0f);
-    
     [super layoutSubviews];
+    
     CGRect contentRect = self.contentView.bounds;
     
     CGRect imageRect = self.imageView.frame;
