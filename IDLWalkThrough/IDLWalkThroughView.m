@@ -250,12 +250,15 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
         skipButtonFrame.origin.x = floor(bottomLeft.x - (skipButtonFrame.size.width + pageControlSize.height));
         
     } else {
+        skipButtonFrame.origin.x = floor(bottomLeft.x - skipButtonFrame.size.width);
+        
+        pageControlSize.width = floor(MAX((skipButtonFrame.origin.x - center.x) * 2.0f, pageControlSize.width));
+        
+        pageControlFrame.size.width = pageControlSize.width;
         
         pageControl.transform = CGAffineTransformMakeRotation(0.0f);
         pageControlFrame.origin.x = floor(center.x - pageControlSize.width/2.0f);
         pageControlFrame.origin.y = floor(bottomLeft.y - pageControlSize.height);
-        
-        skipButtonFrame.origin.x = floor(bottomLeft.x - skipButtonFrame.size.width);
         
     }
     
@@ -307,9 +310,17 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
 	}];
 }
 
+- (void)jumpToPage:(NSInteger)page
+{
+    NSArray *collectionViews = [NSArray arrayWithObjects:self.textCollectionView, self.pictureCollectionView, nil];
+    for (UICollectionView *collectionView in collectionViews) {
+        [collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:0] atScrollPosition:(UICollectionViewScrollPositionCenteredHorizontally | UICollectionViewScrollPositionCenteredVertically) animated:YES];
+    }
+}
+
 - (void)showPanelAtPageControl:(UIPageControl*) sender
 {
-    self.pageControl.currentPage = sender.currentPage;
+    [self jumpToPage:sender.currentPage];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -345,16 +356,12 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     return self.frame.size;
 }
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-//    if ([self.dataSource respondsToSelector:@selector(bgImageforPage:)]) {
-//        self.bgFrontLayer.image = [self.dataSource bgImageforPage:self.pageControl.currentPage];
-//    }
-}
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (scrollView != self.textCollectionView) return;
+    
+    UIPageControl *pageControl = self.pageControl;
+    NSInteger lastPage = pageControl.currentPage;
     
     // Get scrolling position, and send the alpha values.
     if (!self.isfixedBackground) {
@@ -385,8 +392,11 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     CGFloat normalisedPosition = pagePosition - previousPage;
     
     NSInteger closestPage = floor(pagePosition - 0.5f) + 1;
-    self.pageControl.currentPage = closestPage;
+    pageControl.currentPage = closestPage;
     
+    if (lastPage != pageControl.currentPage) {
+        [self refreshSkipButtonTitle];
+    }
     
     CGFloat picturePosition = easeInOutQuad(normalisedPosition);
     
