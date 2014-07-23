@@ -43,7 +43,7 @@
 
 - (void)applyAppearanceDefaults:(BOOL)force
 {
-    IDLWalkThroughTextPageCell *textCell = [IDLWalkThroughTextPageCell appearance];
+    IDLWalkThroughTextCell *textCell = [IDLWalkThroughTextCell appearance];
     
     if (textCell.titleFont == nil || force) {
         textCell.titleFont = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16.0];
@@ -67,7 +67,7 @@
         textCell.titleDetailPadding = @(kIDLWalkThroughDefaultTitleDetailPadding);
     }
     
-    IDLWalkThroughPicturePageCell *pictureCell = [IDLWalkThroughPicturePageCell appearance];
+    IDLWalkThroughPictureCell *pictureCell = [IDLWalkThroughPictureCell appearance];
     
     if (pictureCell.imagePosition == nil || force) {
         pictureCell.imagePosition = @(kIDLWalkThroughDefaultImagePosition);
@@ -103,7 +103,7 @@
     collectionView.delegate = self;
     collectionView.pagingEnabled = YES;
     collectionView.userInteractionEnabled = NO;
-    [collectionView registerClass:[IDLWalkThroughPicturePageCell class] forCellWithReuseIdentifier:@"cellIdentifier"];
+    [collectionView registerClass:[IDLWalkThroughPictureCell class] forCellWithReuseIdentifier:@"cellIdentifier"];
     [self addSubview:collectionView];
     self.pictureCollectionView = collectionView;
     
@@ -120,7 +120,7 @@
     collectionView.dataSource = self;
     collectionView.delegate = self;
     collectionView.pagingEnabled = YES;
-    [collectionView registerClass:[IDLWalkThroughTextPageCell class] forCellWithReuseIdentifier:@"cellIdentifier"];
+    [collectionView registerClass:[IDLWalkThroughTextCell class] forCellWithReuseIdentifier:@"cellIdentifier"];
     [self addSubview:collectionView];
     self.textCollectionView = collectionView;
     
@@ -258,11 +258,11 @@
     
     if (collectionView == self.textCollectionView) {
         if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(configureTextCell:forPageAtIndex:)]) {
-            [self.dataSource configureTextCell:(IDLWalkThroughTextPageCell *)cell forPageAtIndex:indexPath.row];
+            [self.dataSource configureTextCell:(IDLWalkThroughTextCell *)cell forPageAtIndex:indexPath.row];
         }
     } else if (collectionView == self.pictureCollectionView) {
         if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(configurePictureCell:forPageAtIndex:)]) {
-            [self.dataSource configurePictureCell:(IDLWalkThroughPicturePageCell *)cell forPageAtIndex:indexPath.row];
+            [self.dataSource configurePictureCell:(IDLWalkThroughPictureCell *)cell forPageAtIndex:indexPath.row];
         }
     }
     return cell;

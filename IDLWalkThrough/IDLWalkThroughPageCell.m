@@ -40,14 +40,14 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
 
 @end
 
-@interface IDLWalkThroughTextPageCell ()
+@interface IDLWalkThroughTextCell ()
 
 @property (nonatomic, strong) UILabel* titleLabel;
 @property (nonatomic, strong) UITextView* detailLabel;
 
 @end
 
-@implementation IDLWalkThroughTextPageCell
+@implementation IDLWalkThroughTextCell
 
 #pragma mark setters
 
@@ -153,13 +153,13 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
 
 @end
 
-@interface IDLWalkThroughPicturePageCell ()
+@interface IDLWalkThroughPictureCell ()
 
 @property (nonatomic, strong) UIImageView* imageView;
 
 @end
 
-@implementation IDLWalkThroughPicturePageCell
+@implementation IDLWalkThroughPictureCell
 
 - (void)setImage:(UIImage *)image
 {

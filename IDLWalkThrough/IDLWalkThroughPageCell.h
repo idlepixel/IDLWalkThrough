@@ -12,7 +12,7 @@
 
 @end
 
-@interface IDLWalkThroughTextPageCell : IDLWalkThroughPageCell
+@interface IDLWalkThroughTextCell : IDLWalkThroughPageCell
 
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) UIFont *titleFont                 UI_APPEARANCE_SELECTOR;
@@ -27,7 +27,7 @@
 
 @end
 
-@interface IDLWalkThroughPicturePageCell : IDLWalkThroughPageCell
+@interface IDLWalkThroughPictureCell : IDLWalkThroughPageCell
 
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSNumber *imagePosition           UI_APPEARANCE_SELECTOR;
