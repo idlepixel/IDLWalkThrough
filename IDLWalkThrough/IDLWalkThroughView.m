@@ -233,6 +233,7 @@ float internal_easingBlockOutBounce(float value)
     
     self.pictureMovementEasingBlock = [IDLWalkThroughView easingBlockInOutCubic];
     self.backgroundFadeEasingBlock = [IDLWalkThroughView easingBlockInOutQuad];
+    self.pictureOverlayFadeEasingBlock = [IDLWalkThroughView easingBlockInOutQuad];
     
     CGRect frame = self.bounds;
     
@@ -299,6 +300,7 @@ float internal_easingBlockOutBounce(float value)
             collectionView.frame = frame;
             [collectionView reloadData];
             [collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:0] atScrollPosition:(UICollectionViewScrollPositionCenteredHorizontally | UICollectionViewScrollPositionCenteredVertically) animated:NO];
+            [self scrollViewDidScroll:collectionView];
         }
     }
     
@@ -487,8 +489,7 @@ float internal_easingBlockOutBounce(float value)
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    NSInteger nPages = [self.dataSource numberOfPagesInWalkThroughView:self];
-    return nPages;
+    return [self dataSourceNumberOfPages];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -520,10 +521,8 @@ float internal_easingBlockOutBounce(float value)
     UIPageControl *pageControl = self.pageControl;
     
     // Get scrolling position, and send the alpha values.
-    if (!self.isfixedBackground) {
-        float offset = self.walkThroughDirection == IDLWalkThroughViewDirectionHorizontal ? self.textCollectionView.contentOffset.x / self.textCollectionView.frame.size.width : self.textCollectionView.contentOffset.y / self.textCollectionView.frame.size.height ;
-        [self crossDissolveForOffset:offset];
-    }
+    float offset = self.walkThroughDirection == IDLWalkThroughViewDirectionHorizontal ? self.textCollectionView.contentOffset.x / self.textCollectionView.frame.size.width : self.textCollectionView.contentOffset.y / self.textCollectionView.frame.size.height ;
+    [self crossDissolveForOffset:offset];
     
     CGFloat pageMetric = 0.0f;
     CGFloat pageOffset = 0.0f;
@@ -575,34 +574,55 @@ float internal_easingBlockOutBounce(float value)
     [self refreshSkipButtonTitle];
 }
 
-- (void)crossDissolveForOffset:(CGFloat)offset
+- (void)crossDissolveFadingImageView:(IDLWalkThroughFadingImageView *)fadingImageView easingBlock:(IDLWalkThroughViewEasingBlock)easingBlock offset:(CGFloat)offset
 {
-    NSInteger page = (int)(offset);
     CGFloat alphaValue = offset - (int)offset;
-    
-    IDLWalkThroughFadingImageView *fadingImageView = self.backgroundFadingImageView;
-    
     if (alphaValue < 0 && self.pageControl.currentPage == 0){
         fadingImageView.backImage = nil;
         fadingImageView.frontAlpha = (1 + alphaValue);
         return;
     }
     
-    fadingImageView.frontImage = [self.dataSource walkThroughView:self backgroundImageforPage:page];
     fadingImageView.frontAlpha = 1.0f;
-    fadingImageView.backImage = [self.dataSource walkThroughView:self backgroundImageforPage:page+1];
     fadingImageView.backAlpha = 1.0f;
     
     CGFloat backLayerAlpha = alphaValue;
     CGFloat frontLayerAlpha = (1 - alphaValue);
     
-    if (self.backgroundFadeEasingBlock) {
-        backLayerAlpha = self.backgroundFadeEasingBlock(backLayerAlpha);
-        frontLayerAlpha = self.backgroundFadeEasingBlock(frontLayerAlpha);
+    if (easingBlock) {
+        backLayerAlpha = easingBlock(backLayerAlpha);
+        frontLayerAlpha = easingBlock(frontLayerAlpha);
     }
     
     fadingImageView.backAlpha = backLayerAlpha;
     fadingImageView.frontAlpha = frontLayerAlpha;
+}
+
+
+- (void)crossDissolveForOffset:(CGFloat)offset
+{
+    NSInteger page = (int)(offset);
+    
+    id<IDLWalkThroughViewDataSource> dataSource = self.dataSource;
+    
+    if (!self.isfixedBackground) {
+        if ([dataSource respondsToSelector:@selector(walkThroughView:backgroundImageforPage:)]) {
+            self.backgroundFadingImageView.frontImage = [dataSource walkThroughView:self backgroundImageforPage:page];
+            self.backgroundFadingImageView.backImage = [dataSource walkThroughView:self backgroundImageforPage:page + 1];
+            self.pictureOverlayFadingImageView.alpha = 1.0f;
+            [self crossDissolveFadingImageView:self.backgroundFadingImageView easingBlock:self.backgroundFadeEasingBlock offset:offset];
+        } else {
+            self.pictureOverlayFadingImageView.alpha = 0.0f;
+        }
+    }
+    if ([dataSource respondsToSelector:@selector(walkThroughView:pictureOverlayImageforPage:)]) {
+        self.pictureOverlayFadingImageView.frontImage = [dataSource walkThroughView:self pictureOverlayImageforPage:page];
+        self.pictureOverlayFadingImageView.backImage = [dataSource walkThroughView:self pictureOverlayImageforPage:page + 1];
+        self.pictureOverlayFadingImageView.alpha = 1.0f;
+        [self crossDissolveFadingImageView:self.pictureOverlayFadingImageView easingBlock:self.pictureOverlayFadeEasingBlock offset:offset];
+    } else {
+        self.pictureOverlayFadingImageView.alpha = 0.0f;
+    }
 }
 
 - (void)showInView:(UIView *)view animateDuration:(CGFloat) duration
@@ -610,13 +630,13 @@ float internal_easingBlockOutBounce(float value)
     self.frame = view.bounds;
     
     self.pageControl.currentPage = 0;
-    self.pageControl.numberOfPages = [self.dataSource numberOfPagesInWalkThroughView:self];
+    self.pageControl.numberOfPages = [self dataSourceNumberOfPages];
 
     if (self.isfixedBackground) {
         self.backgroundFadingImageView.frontImage = self.backgroundImage;
         
     } else{
-        self.backgroundFadingImageView.frontImage = [self.dataSource walkThroughView:self backgroundImageforPage:0];
+        [self crossDissolveForOffset:0.0f];
     }
 
     self.alpha = 0;
@@ -626,6 +646,15 @@ float internal_easingBlockOutBounce(float value)
     [UIView animateWithDuration:duration animations:^{
         self.alpha = 1;
     }];
+}
+
+-(NSInteger)dataSourceNumberOfPages
+{
+    NSInteger pages = 0;
+    if ([self.dataSource respondsToSelector:@selector(numberOfPagesInWalkThroughView:)]) {
+        pages = [self.dataSource numberOfPagesInWalkThroughView:self];
+    }
+    return pages;
 }
 
 @end

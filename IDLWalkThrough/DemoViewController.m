@@ -17,7 +17,7 @@ static NSString * const sampleDesc3 = @"In interdum scelerisque sem a convallis.
 
 static NSString * const sampleDesc4 = @"Praesent ornare consectetur elit, in fringilla ipsum blandit sed. Nam elementum, sem sit amet convallis dictum, risus metus faucibus augue, nec consectetur tortor mauris ac purus.";
 
-static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi egestas eget. Etiam facilisis turpis eget ipsum tempus, nec ultricies dui sagittis. Quisque interdum ipsum vitae ante laoreet, id egestas ligula auctor. Quisque interdum ipsum vitae ante laoreet, id egestas ligula auctor. Quisque interdum ipsum vitae ante laoreet, id egestas ligula auctor. Quisque interdum ipsum vitae ante laoreet, id egestas ligula auctor";
+static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi egestas eget. Etiam facilisis turpis eget ipsum tempus, nec ultricies dui sagittis. Quisque interdum ipsum vitae ante laoreet, id egestas ligula auctor. Quisque interdum ipsum vitae ante laoreet, id egestas ligula auctor.";
 
 @interface DemoViewController () <IDLWalkThroughViewDataSource>
 
@@ -36,7 +36,7 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    //[[IDLWalkThroughTextPageCell appearance] setTitleColor:[UIColor greenColor]];
+    //[[IDLWalkThroughTextCell appearance] setTitleColor:[UIColor greenColor]];
     //[[IDLWalkThroughTextCell appearance] setDetailHorizontalPadding:@(50.0f)];
     
     //[[IDLWalkThroughView appearance] setFooterPaddingBottom:@(5.0f)];
@@ -49,8 +49,12 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
         walkThroughView.footerPaddingBottom = walkThroughView.footerPaddingSide = @(5.0f);
+        [IDLWalkThroughTextCell appearance].titleHorizontalPadding = @(10.0f);
+        [IDLWalkThroughTextCell appearance].detailHorizontalPadding = @(20.0f);
     } else {
-        walkThroughView.footerPaddingBottom = walkThroughView.footerPaddingSide = @(40.0f);
+        walkThroughView.footerPaddingBottom = walkThroughView.footerPaddingSide = @(25.0f);
+        [IDLWalkThroughTextCell appearance].titleHorizontalPadding = @(70.0f);
+        [IDLWalkThroughTextCell appearance].detailHorizontalPadding = @(100.0f);
     }
     
     self.walkThroughView = walkThroughView;
@@ -87,6 +91,15 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
 {
     NSString* imageName =[NSString stringWithFormat:@"bg_0%ld.jpg", (long)(index+1)];
     UIImage* image = [UIImage imageNamed:imageName];
+    return image;
+}
+
+- (UIImage*)walkThroughView:(IDLWalkThroughView *)view pictureOverlayImageforPage:(NSInteger)index
+{
+    index = index % 2;
+    NSString* imageName =[NSString stringWithFormat:@"overlay_0%ld", (long)(index+1)];
+    UIImage* image = [UIImage imageNamed:imageName];
+    image = [image resizableImageWithCapInsets:UIEdgeInsetsMake(10.0f, 10.0f, 250.0f, 10.0f)];
     return image;
 }
 

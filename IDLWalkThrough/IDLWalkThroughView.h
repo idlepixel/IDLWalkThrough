@@ -55,6 +55,7 @@ typedef float(^IDLWalkThroughViewEasingBlock)(float value);
 @property (nonatomic, strong) NSNumber *footerSkipButtonHeight  UI_APPEARANCE_SELECTOR;
 
 @property (nonatomic, copy) IDLWalkThroughViewEasingBlock backgroundFadeEasingBlock;
+@property (nonatomic, copy) IDLWalkThroughViewEasingBlock pictureOverlayFadeEasingBlock;
 @property (nonatomic, copy) IDLWalkThroughViewEasingBlock pictureMovementEasingBlock;
 
 - (void)showInView:(UIView*) view animateDuration:(CGFloat) duration;
