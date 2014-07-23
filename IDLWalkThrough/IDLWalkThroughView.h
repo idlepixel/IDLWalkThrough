@@ -58,14 +58,14 @@ typedef NS_ENUM(NSInteger, IDLWalkThroughViewDirection) {
 
 @required
 
-- (NSInteger) numberOfPages;
+- (NSInteger) numberOfPagesInWalkThroughView:(IDLWalkThroughView *)view;
 
 @optional
 
-- (UIImage *)pictureOverlayImageforPage:(NSInteger)index;
-- (UIImage *)backgroundImageforPage:(NSInteger)index;
+- (UIImage *)walkThroughView:(IDLWalkThroughView *)view pictureOverlayImageforPage:(NSInteger)index;
+- (UIImage *)walkThroughView:(IDLWalkThroughView *)view backgroundImageforPage:(NSInteger)index;
 
-- (void)configurePictureCell:(IDLWalkThroughPictureCell *)cell forPageAtIndex:(NSInteger)index;
-- (void)configureTextCell:(IDLWalkThroughTextCell *)cell forPageAtIndex:(NSInteger)index;
+- (void)walkThroughView:(IDLWalkThroughView *)view configurePictureCell:(IDLWalkThroughPictureCell *)cell forPageAtIndex:(NSInteger)index;
+- (void)walkThroughView:(IDLWalkThroughView *)view configureTextCell:(IDLWalkThroughTextCell *)cell forPageAtIndex:(NSInteger)index;
 
 @end

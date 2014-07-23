@@ -365,7 +365,7 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    NSInteger nPages = [self.dataSource numberOfPages];
+    NSInteger nPages = [self.dataSource numberOfPagesInWalkThroughView:self];
     return nPages;
 }
 
@@ -374,12 +374,12 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     IDLWalkThroughPageCell *cell = (IDLWalkThroughPageCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kIDLWalkThroughCellIdentifier forIndexPath:indexPath];
     
     if (collectionView == self.textCollectionView) {
-        if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(configureTextCell:forPageAtIndex:)]) {
-            [self.dataSource configureTextCell:(IDLWalkThroughTextCell *)cell forPageAtIndex:indexPath.row];
+        if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(walkThroughView:configureTextCell:forPageAtIndex:)]) {
+            [self.dataSource walkThroughView:self configureTextCell:(IDLWalkThroughTextCell *)cell forPageAtIndex:indexPath.row];
         }
     } else if (collectionView == self.pictureCollectionView) {
-        if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(configurePictureCell:forPageAtIndex:)]) {
-            [self.dataSource configurePictureCell:(IDLWalkThroughPictureCell *)cell forPageAtIndex:indexPath.row];
+        if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(walkThroughView:configurePictureCell:forPageAtIndex:)]) {
+            [self.dataSource walkThroughView:self configurePictureCell:(IDLWalkThroughPictureCell *)cell forPageAtIndex:indexPath.row];
         }
     }
     return cell;
@@ -479,9 +479,9 @@ float easeOutValue(float value)
         return;
     }
     
-    fadingImageView.frontImage = [self.dataSource backgroundImageforPage:page];
+    fadingImageView.frontImage = [self.dataSource walkThroughView:self backgroundImageforPage:page];
     fadingImageView.frontAlpha = 1.0f;
-    fadingImageView.backImage = [self.dataSource backgroundImageforPage:page+1];
+    fadingImageView.backImage = [self.dataSource walkThroughView:self backgroundImageforPage:page+1];
     fadingImageView.backAlpha = 1.0f;
     
     float backLayerAlpha = alphaValue;
@@ -499,13 +499,13 @@ float easeOutValue(float value)
     self.frame = view.bounds;
     
     self.pageControl.currentPage = 0;
-    self.pageControl.numberOfPages = [self.dataSource numberOfPages];;
+    self.pageControl.numberOfPages = [self.dataSource numberOfPagesInWalkThroughView:self];
 
     if (self.isfixedBackground) {
         self.backgroundFadingImageView.frontImage = self.backgroundImage;
         
     } else{
-        self.backgroundFadingImageView.frontImage = [self.dataSource backgroundImageforPage:0];
+        self.backgroundFadingImageView.frontImage = [self.dataSource walkThroughView:self backgroundImageforPage:0];
     }
 
     self.alpha = 0;
