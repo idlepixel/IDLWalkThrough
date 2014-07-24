@@ -35,6 +35,7 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
  
 @interface IDLWalkThroughView ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
+@property (nonatomic, strong) UICollectionView* interactionCollectionView;
 @property (nonatomic, strong) UICollectionView* textCollectionView;
 @property (nonatomic, strong) UICollectionView* pictureCollectionView;
 
@@ -45,6 +46,8 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
 @property (nonatomic, strong) UIButton* skipButton;
 
 @property (nonatomic, assign, readwrite) BOOL lastPageShown;
+
+-(NSArray *)collectionViews;
 
 @end
 
@@ -68,30 +71,25 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
 
 +(IDLWalkThroughViewEasingBlock)easingBlockInOutQuad
 {
-    IDLWalkThroughViewEasingBlock block = ^(float value) {
-        value *= 2.0f;
-        
-        if (value < 1.0f) {
-            return (float)(0.5f * pow(value, 2.0f));
-        } else {
-            value = 2.0f - value;
-            value = 0.5f * pow(value, 2.0f);
-            return (float)(1.0f - value);
-        }
-    };
-    return block;
+    return [self easingBlockInOutPower:2.0f];
 }
 
 +(IDLWalkThroughViewEasingBlock)easingBlockInOutCubic
 {
+    return [self easingBlockInOutPower:3.0f];
+}
+
++(IDLWalkThroughViewEasingBlock)easingBlockInOutPower:(CGFloat)exponent
+{
+    if (exponent <= 0.0f) exponent = 1.0f;
     IDLWalkThroughViewEasingBlock block = ^(float value) {
         value *= 2.0f;
         
         if (value < 1.0f) {
-            return (float)(0.5f * pow(value, 3.0f));
+            return (float)(0.5f * pow(value, exponent));
         } else {
             value = 2.0f - value;
-            value = 0.5f * pow(value, 3.0f);
+            value = 0.5f * pow(value, exponent);
             return (float)(1.0f - value);
         }
     };
@@ -232,6 +230,8 @@ float internal_easingBlockOutBounce(float value)
     self.doneTitle = @"Done";
     
     self.pictureMovementEasingBlock = [IDLWalkThroughView easingBlockInOutCubic];
+    self.textMovementEasingBlock = [IDLWalkThroughView easingBlockInOutPower:1.5f];
+    
     self.backgroundFadeEasingBlock = [IDLWalkThroughView easingBlockInOutQuad];
     self.pictureOverlayFadeEasingBlock = [IDLWalkThroughView easingBlockInOutQuad];
     
@@ -275,12 +275,39 @@ float internal_easingBlockOutBounce(float value)
     collectionView.dataSource = self;
     collectionView.delegate = self;
     collectionView.pagingEnabled = YES;
+    collectionView.userInteractionEnabled = NO;
     [collectionView registerClass:[IDLWalkThroughTextCell class] forCellWithReuseIdentifier:kIDLWalkThroughCellIdentifier];
     [self addSubview:collectionView];
     self.textCollectionView = collectionView;
     
+    flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    [flowLayout setMinimumInteritemSpacing:0.0f];
+    [flowLayout setMinimumLineSpacing:0.0f];
+    
+    collectionView = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:flowLayout];
+    collectionView.backgroundColor = [UIColor clearColor];
+    collectionView.backgroundView = nil;
+    collectionView.showsHorizontalScrollIndicator = NO;
+    collectionView.showsVerticalScrollIndicator = NO;
+    collectionView.dataSource = self;
+    collectionView.delegate = self;
+    collectionView.pagingEnabled = YES;
+    [collectionView registerClass:[IDLWalkThroughPageCell class] forCellWithReuseIdentifier:kIDLWalkThroughCellIdentifier];
+    [self addSubview:collectionView];
+    self.interactionCollectionView = collectionView;
+    
     [self buildFooterView];
 
+}
+
+-(NSArray *)collectionViews
+{
+    NSArray *array = @[];
+    if (self.pictureCollectionView) array = [array arrayByAddingObject:self.pictureCollectionView];
+    if (self.textCollectionView) array = [array arrayByAddingObject:self.textCollectionView];
+    if (self.interactionCollectionView) array = [array arrayByAddingObject:self.interactionCollectionView];
+    return array;
 }
 
 - (void)layoutSubviews
@@ -289,19 +316,16 @@ float internal_easingBlockOutBounce(float value)
     
     CGRect frame = self.bounds;
     
-    
-    if (self.textCollectionView && self.pictureCollectionView) {
-        NSArray *collectionViews = [NSArray arrayWithObjects:self.textCollectionView, self.pictureCollectionView, nil];
-        NSInteger page = self.pageControl.currentPage;
-        for (UICollectionView *collectionView in collectionViews) {
-            UICollectionViewFlowLayout *layout = (id)collectionView.collectionViewLayout;
-            layout.itemSize = frame.size;
-            [layout invalidateLayout];
-            collectionView.frame = frame;
-            [collectionView reloadData];
-            [collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:0] atScrollPosition:(UICollectionViewScrollPositionCenteredHorizontally | UICollectionViewScrollPositionCenteredVertically) animated:NO];
-            [self scrollViewDidScroll:collectionView];
-        }
+    NSArray *collectionViews = [self collectionViews];
+    NSInteger page = self.pageControl.currentPage;
+    for (UICollectionView *collectionView in collectionViews) {
+        UICollectionViewFlowLayout *layout = (id)collectionView.collectionViewLayout;
+        layout.itemSize = frame.size;
+        [layout invalidateLayout];
+        collectionView.frame = frame;
+        [collectionView reloadData];
+        [collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:0] atScrollPosition:(UICollectionViewScrollPositionCenteredHorizontally | UICollectionViewScrollPositionCenteredVertically) animated:NO];
+        [self scrollViewDidScroll:collectionView];
     }
     
     if (self.floatingHeaderView) {
@@ -329,8 +353,9 @@ float internal_easingBlockOutBounce(float value)
 {
     _walkThroughDirection = walkThroughDirection;
     UICollectionViewScrollDirection direction = _walkThroughDirection == IDLWalkThroughViewDirectionVertical ? UICollectionViewScrollDirectionVertical : UICollectionViewScrollDirectionHorizontal;
-    NSArray *layouts = [NSArray arrayWithObjects:self.textCollectionView.collectionViewLayout, self.pictureCollectionView.collectionViewLayout, nil];
-    for (UICollectionViewFlowLayout* layout in layouts) {
+    NSArray *collectionViews = [self collectionViews];
+    for (UICollectionView *collectionView in collectionViews) {
+        UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)collectionView.collectionViewLayout;
         [layout setScrollDirection:direction];
         [layout invalidateLayout];
     }
@@ -469,7 +494,7 @@ float internal_easingBlockOutBounce(float value)
 
 - (void)jumpToPage:(NSInteger)page
 {
-    NSArray *collectionViews = [NSArray arrayWithObjects:self.textCollectionView, self.pictureCollectionView, nil];
+    NSArray *collectionViews = [self collectionViews];
     for (UICollectionView *collectionView in collectionViews) {
         [collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page inSection:0] atScrollPosition:(UICollectionViewScrollPositionCenteredHorizontally | UICollectionViewScrollPositionCenteredVertically) animated:YES];
     }
@@ -516,12 +541,19 @@ float internal_easingBlockOutBounce(float value)
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (scrollView != self.textCollectionView) return;
+    if (scrollView != self.interactionCollectionView) return;
     
     UIPageControl *pageControl = self.pageControl;
     
+    IDLWalkThroughViewDirection direction = self.walkThroughDirection;
+    
     // Get scrolling position, and send the alpha values.
-    float offset = self.walkThroughDirection == IDLWalkThroughViewDirectionHorizontal ? self.textCollectionView.contentOffset.x / self.textCollectionView.frame.size.width : self.textCollectionView.contentOffset.y / self.textCollectionView.frame.size.height ;
+    float offset = 0.0f;
+    if (direction == IDLWalkThroughViewDirectionHorizontal) {
+        offset = scrollView.contentOffset.x / scrollView.frame.size.width;
+    } else {
+        offset = scrollView.contentOffset.y / scrollView.frame.size.height;
+    }
     [self crossDissolveForOffset:offset];
     
     CGFloat pageMetric = 0.0f;
@@ -529,7 +561,7 @@ float internal_easingBlockOutBounce(float value)
     
     CGPoint contentOffset = scrollView.contentOffset;
     
-    switch (self.walkThroughDirection) {
+    switch (direction) {
         case IDLWalkThroughViewDirectionHorizontal:
             pageMetric = scrollView.frame.size.width;
             pageOffset = contentOffset.x;
@@ -550,25 +582,35 @@ float internal_easingBlockOutBounce(float value)
     pageControl.currentPage = closestPage;
     
     CGFloat picturePosition = normalisedPosition;
-    if (self.pictureMovementEasingBlock) {
-        picturePosition = self.pictureMovementEasingBlock(picturePosition);
+    
+    [self updateCollectionViewOffset:self.pictureCollectionView direction:direction position:picturePosition pageOffset:(CGFloat)previousPage pageMetric:pageMetric easingBlock:self.pictureMovementEasingBlock];
+    [self updateCollectionViewOffset:self.textCollectionView direction:direction position:picturePosition pageOffset:(CGFloat)previousPage pageMetric:pageMetric easingBlock:self.textMovementEasingBlock];
+    
+}
+
+- (void)updateCollectionViewOffset:(UICollectionView *)collectionView direction:(IDLWalkThroughViewDirection)direction position:(CGFloat)position pageOffset:(CGFloat)pageOffset pageMetric:(CGFloat)pageMetric easingBlock:(IDLWalkThroughViewEasingBlock)easingBlock
+{
+    if (easingBlock) {
+        position = easingBlock(position);
     }
     
-    switch (self.walkThroughDirection) {
+    CGPoint contentOffset = collectionView.contentOffset;
+    
+    switch (direction) {
         case IDLWalkThroughViewDirectionHorizontal:
-            contentOffset.x = (previousPage + picturePosition) * pageMetric;
+            contentOffset.x = (pageOffset + position) * pageMetric;
             break;
         case IDLWalkThroughViewDirectionVertical:
-            contentOffset.y = (previousPage + picturePosition) * pageMetric;
+            contentOffset.y = (pageOffset + position) * pageMetric;
             break;
     }
     
-    self.pictureCollectionView.contentOffset = contentOffset;
+    collectionView.contentOffset = contentOffset;
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    if (scrollView != self.textCollectionView) return;
+    if (scrollView != self.interactionCollectionView) return;
     
     [self updateLastPageShown];
     [self refreshSkipButtonTitle];
@@ -640,7 +682,7 @@ float internal_easingBlockOutBounce(float value)
     }
 
     self.alpha = 0;
-    self.textCollectionView.contentOffset = CGPointZero;
+    [self setNeedsLayout];
     [view addSubview:self];
     
     [UIView animateWithDuration:duration animations:^{

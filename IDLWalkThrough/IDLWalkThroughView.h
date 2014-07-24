@@ -26,6 +26,7 @@ typedef float(^IDLWalkThroughViewEasingBlock)(float value);
 +(IDLWalkThroughViewEasingBlock)easingBlockInOutSine;
 +(IDLWalkThroughViewEasingBlock)easingBlockInOutQuad;
 +(IDLWalkThroughViewEasingBlock)easingBlockInOutCubic;
++(IDLWalkThroughViewEasingBlock)easingBlockInOutPower:(CGFloat)exponent;
 +(IDLWalkThroughViewEasingBlock)easingBlockInBounce;
 +(IDLWalkThroughViewEasingBlock)easingBlockOutBounce;
 +(IDLWalkThroughViewEasingBlock)easingBlockInOutBounce;
@@ -56,7 +57,9 @@ typedef float(^IDLWalkThroughViewEasingBlock)(float value);
 
 @property (nonatomic, copy) IDLWalkThroughViewEasingBlock backgroundFadeEasingBlock;
 @property (nonatomic, copy) IDLWalkThroughViewEasingBlock pictureOverlayFadeEasingBlock;
+
 @property (nonatomic, copy) IDLWalkThroughViewEasingBlock pictureMovementEasingBlock;
+@property (nonatomic, copy) IDLWalkThroughViewEasingBlock textMovementEasingBlock;
 
 - (void)showInView:(UIView*) view animateDuration:(CGFloat) duration;
 
