@@ -1,4 +1,4 @@
-#IDLWalkThrough (based on GHWalkThrough)
+#IDLWalkThrough
 
 This fork includes the following additional functionality to the original project (at the time of forking):
 * Each page has the following layers:
