@@ -1,9 +1,19 @@
-#IDLWalkThrough (work in progress) - forked from GHWalkThrough
+#IDLWalkThrough (based on GHWalkThrough)
 
-This fork will include the following changes to the original project:
-* Multiple layer animations
-* Datasource/delegate syntax changes
-* modernised code
+This fork includes the following additional functionality to the original project (at the time of forking):
+* Each page has the following layers:
+** Background
+** Picture
+** Picture overlay (behaves similarly to the Background layer)
+** Text
+* UIAppearance support
+* Customisable independent easing for each layer using blocks
+* Data source & delegate syntax changes to better match UITableView/UICollectionView
+* Optimised data source use to improve performance
+* Support for any resolution (iPhone & iPad)
+* Rotation support
+* Cleaned up and modernised code (debatable)
+* Project folder reorganisation to differentiate core classes and Example assets
 
 #GHWalkThrough - iOS App Walk through control
 
