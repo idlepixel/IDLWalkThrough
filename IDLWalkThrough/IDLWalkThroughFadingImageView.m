@@ -15,6 +15,8 @@
 
 @end
 
+#define kNotFoundTag    NSNotFound
+
 @implementation IDLWalkThroughFadingImageView
 
 - (id)initWithFrame:(CGRect)frame
@@ -68,6 +70,7 @@
 
 - (void)setBackImage:(UIImage *)backImage
 {
+    if (backImage == nil) self.backImageTag = kNotFoundTag;
     self.backImageView.image = backImage;
 }
 
@@ -84,6 +87,7 @@
 
 - (void)setFrontImage:(UIImage *)frontImage
 {
+    if (frontImage == nil) self.frontImageTag = kNotFoundTag;
     self.frontImageView.image = frontImage;
 }
 
@@ -91,6 +95,24 @@
 {
     _frontAlpha = frontAlpha;
     self.frontImageView.alpha = frontAlpha;
+}
+
+-(void)resetTags
+{
+    self.frontImageTag = kNotFoundTag;
+    self.backImageTag = kNotFoundTag;
+}
+
+-(void)setFrontImage:(UIImage *)frontImage tag:(NSInteger)tag
+{
+    self.frontImageTag = tag;
+    self.frontImage = frontImage;
+}
+
+-(void)setBackImage:(UIImage *)backImage tag:(NSInteger)tag
+{
+    self.backImageTag = tag;
+    self.backImage = backImage;
 }
 
 @end

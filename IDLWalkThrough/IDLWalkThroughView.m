@@ -502,6 +502,18 @@ float internal_easingBlockOutBounce(float value)
     [self refreshSkipButtonTitle];
 }
 
+- (void)resetFadingImageViewTags
+{
+    [self.backgroundFadingImageView resetTags];
+    [self.pictureOverlayFadingImageView resetTags];
+}
+
+- (void)reloadData
+{
+    [self resetFadingImageViewTags];
+    [self setNeedsLayout];
+}
+
 - (void)showPanelAtPageControl:(UIPageControl*) sender
 {
     [self jumpToPage:sender.currentPage];
@@ -619,49 +631,61 @@ float internal_easingBlockOutBounce(float value)
 - (void)crossDissolveFadingImageView:(IDLWalkThroughFadingImageView *)fadingImageView easingBlock:(IDLWalkThroughViewEasingBlock)easingBlock offset:(CGFloat)offset
 {
     CGFloat alphaValue = offset - (int)offset;
+    
     if (alphaValue < 0 && self.pageControl.currentPage == 0){
-        fadingImageView.backImage = nil;
+        fadingImageView.backAlpha = 0.0f;
         fadingImageView.frontAlpha = (1 + alphaValue);
-        return;
+        
+    } else {
+        
+        CGFloat backLayerAlpha = alphaValue;
+        CGFloat frontLayerAlpha = (1 - alphaValue);
+        
+        if (easingBlock) {
+            backLayerAlpha = easingBlock(backLayerAlpha);
+            frontLayerAlpha = easingBlock(frontLayerAlpha);
+        }
+        
+        fadingImageView.backAlpha = backLayerAlpha;
+        fadingImageView.frontAlpha = frontLayerAlpha;
     }
-    
-    fadingImageView.frontAlpha = 1.0f;
-    fadingImageView.backAlpha = 1.0f;
-    
-    CGFloat backLayerAlpha = alphaValue;
-    CGFloat frontLayerAlpha = (1 - alphaValue);
-    
-    if (easingBlock) {
-        backLayerAlpha = easingBlock(backLayerAlpha);
-        frontLayerAlpha = easingBlock(frontLayerAlpha);
-    }
-    
-    fadingImageView.backAlpha = backLayerAlpha;
-    fadingImageView.frontAlpha = frontLayerAlpha;
 }
 
 
 - (void)crossDissolveForOffset:(CGFloat)offset
 {
-    NSInteger page = (int)(offset);
+    NSInteger page = MAX(0, floor(offset));
+    NSInteger nextPage = page + 1;
+    
+    NSInteger numberOfPages = self.pageControl.numberOfPages;
     
     id<IDLWalkThroughViewDataSource> dataSource = self.dataSource;
     
     if (!self.isfixedBackground) {
         if ([dataSource respondsToSelector:@selector(walkThroughView:backgroundImageforPage:)]) {
-            self.backgroundFadingImageView.frontImage = [dataSource walkThroughView:self backgroundImageforPage:page];
-            self.backgroundFadingImageView.backImage = [dataSource walkThroughView:self backgroundImageforPage:page + 1];
-            self.pictureOverlayFadingImageView.alpha = 1.0f;
-            [self crossDissolveFadingImageView:self.backgroundFadingImageView easingBlock:self.backgroundFadeEasingBlock offset:offset];
+            IDLWalkThroughFadingImageView *fadingImageView = self.backgroundFadingImageView;
+            if (fadingImageView.frontImageTag != page) {
+                [fadingImageView setFrontImage:[dataSource walkThroughView:self backgroundImageforPage:page] tag:page];
+            }
+            if (nextPage < numberOfPages && fadingImageView.backImageTag != nextPage) {
+                [fadingImageView setBackImage:[dataSource walkThroughView:self backgroundImageforPage:nextPage] tag:nextPage];
+            }
+            fadingImageView.alpha = 1.0f;
+            [self crossDissolveFadingImageView:fadingImageView easingBlock:self.backgroundFadeEasingBlock offset:offset];
         } else {
-            self.pictureOverlayFadingImageView.alpha = 0.0f;
+            self.backgroundFadingImageView.alpha = 0.0f;
         }
     }
     if ([dataSource respondsToSelector:@selector(walkThroughView:pictureOverlayImageforPage:)]) {
-        self.pictureOverlayFadingImageView.frontImage = [dataSource walkThroughView:self pictureOverlayImageforPage:page];
-        self.pictureOverlayFadingImageView.backImage = [dataSource walkThroughView:self pictureOverlayImageforPage:page + 1];
-        self.pictureOverlayFadingImageView.alpha = 1.0f;
-        [self crossDissolveFadingImageView:self.pictureOverlayFadingImageView easingBlock:self.pictureOverlayFadeEasingBlock offset:offset];
+        IDLWalkThroughFadingImageView *fadingImageView = self.pictureOverlayFadingImageView;
+        if (fadingImageView.frontImageTag != page) {
+            [fadingImageView setFrontImage:[dataSource walkThroughView:self pictureOverlayImageforPage:page] tag:page];
+        }
+        if (nextPage < numberOfPages && page < numberOfPages && fadingImageView.backImageTag != nextPage) {
+            [fadingImageView setBackImage:[dataSource walkThroughView:self pictureOverlayImageforPage:nextPage] tag:nextPage];
+        }
+        fadingImageView.alpha = 1.0f;
+        [self crossDissolveFadingImageView:fadingImageView easingBlock:self.pictureOverlayFadeEasingBlock offset:offset];
     } else {
         self.pictureOverlayFadingImageView.alpha = 0.0f;
     }
@@ -682,7 +706,7 @@ float internal_easingBlockOutBounce(float value)
     }
 
     self.alpha = 0;
-    [self setNeedsLayout];
+    [self reloadData];
     [view addSubview:self];
     
     [UIView animateWithDuration:duration animations:^{

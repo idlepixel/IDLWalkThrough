@@ -13,10 +13,17 @@
 @property (nonatomic, weak, readonly) UIImageView* backImageView;
 @property (nonatomic, weak, readonly) UIImageView* frontImageView;
 
+@property (nonatomic, assign) CGFloat backAlpha;
+@property (nonatomic, assign) CGFloat frontAlpha;
+
 @property (readwrite) UIImage *backImage;
 @property (readwrite) UIImage *frontImage;
 
-@property (nonatomic, assign) CGFloat backAlpha;
-@property (nonatomic, assign) CGFloat frontAlpha;
+@property (nonatomic, assign) NSInteger backImageTag;
+@property (nonatomic, assign) NSInteger frontImageTag;
+
+-(void)resetTags;
+-(void)setFrontImage:(UIImage *)frontImage tag:(NSInteger)tag;
+-(void)setBackImage:(UIImage *)backImage tag:(NSInteger)tag;
 
 @end

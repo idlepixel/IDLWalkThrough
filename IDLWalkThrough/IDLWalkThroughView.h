@@ -67,6 +67,8 @@ typedef float(^IDLWalkThroughViewEasingBlock)(float value);
 
 - (void)resetLastPageShown;
 
+- (void)reloadData;
+
 @end
 
 @protocol IDLWalkThroughViewDelegate <NSObject>
