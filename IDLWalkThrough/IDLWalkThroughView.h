@@ -52,16 +52,17 @@ typedef float(^IDLWalkThroughViewEasingBlock)(float value);
 
 @property (nonatomic, strong) NSNumber *footerPaddingSide       UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) NSNumber *footerPaddingBottom     UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) NSNumber *footerSkipButtonWidth   UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) NSNumber *footerSkipButtonHeight  UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) NSNumber *skipButtonWidth         UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) NSNumber *skipButtonHeight        UI_APPEARANCE_SELECTOR;
+
+@property (nonatomic, strong) UIColor *skipButtonTitleColor     UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIFont *skipButtonFont            UI_APPEARANCE_SELECTOR;
 
 @property (nonatomic, copy) IDLWalkThroughViewEasingBlock backgroundFadeEasingBlock;
 @property (nonatomic, copy) IDLWalkThroughViewEasingBlock pictureOverlayFadeEasingBlock;
 
 @property (nonatomic, copy) IDLWalkThroughViewEasingBlock pictureMovementEasingBlock;
 @property (nonatomic, copy) IDLWalkThroughViewEasingBlock textMovementEasingBlock;
-
-- (void)showInView:(UIView*) view animateDuration:(CGFloat) duration;
 
 - (void)applyAppearanceDefaults:(BOOL)force;
 
@@ -74,7 +75,8 @@ typedef float(^IDLWalkThroughViewEasingBlock)(float value);
 @protocol IDLWalkThroughViewDelegate <NSObject>
 
 @optional
-- (void)walkthroughDidDismissView:(IDLWalkThroughView *)walkthroughView;
+- (void)walkThroughView:(IDLWalkThroughView *)view didSkipOnPageAtIndex:(NSInteger)index;
+- (void)walkThroughView:(IDLWalkThroughView *)view didScrollToPageAtIndex:(NSInteger)index;
 
 @end
 

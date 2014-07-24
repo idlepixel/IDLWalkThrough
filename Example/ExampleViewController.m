@@ -19,7 +19,7 @@ static NSString * const sampleDesc4 = @"Praesent ornare consectetur elit, in fri
 
 static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi egestas eget. Etiam facilisis turpis eget ipsum tempus, nec ultricies dui sagittis. Quisque interdum ipsum vitae ante laoreet, id egestas ligula auctor. Quisque interdum ipsum vitae ante laoreet, id egestas ligula auctor.";
 
-@interface ExampleViewController () <IDLWalkThroughViewDataSource>
+@interface ExampleViewController () <IDLWalkThroughViewDataSource, IDLWalkThroughViewDelegate>
 
 @property (nonatomic, strong) IDLWalkThroughView* walkThroughView;
 
@@ -45,6 +45,7 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
     IDLWalkThroughView *walkThroughView = [[IDLWalkThroughView alloc] initWithFrame:self.navigationController.view.bounds];
     walkThroughView.backgroundColor = [UIColor grayColor];
     walkThroughView.dataSource = self;
+    walkThroughView.delegate = self;
     [walkThroughView setWalkThroughDirection:IDLWalkThroughViewDirectionVertical];
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
@@ -69,7 +70,7 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
     self.descStrings = [NSArray arrayWithObjects:sampleDesc1,sampleDesc2, sampleDesc3, sampleDesc4, sampleDesc5, nil];
 }
 
-#pragma mark - GHDataSource
+#pragma mark - IDLWalkThroughDataSource
 
 - (NSInteger)numberOfPagesInWalkThroughView:(IDLWalkThroughView *)view
 {
@@ -102,6 +103,32 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
     image = [image resizableImageWithCapInsets:UIEdgeInsetsMake(10.0f, 10.0f, 250.0f, 10.0f)];
     return image;
 }
+
+#pragma mark - IDLWalkThroughDelegate
+
+- (void)walkThroughView:(IDLWalkThroughView *)view didSkipOnPageAtIndex:(NSInteger)index
+{
+    //NSLog(@"didSkipOnPageAtIndex: %i",index);
+    
+    view.userInteractionEnabled = NO;
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        view.alpha = 0;
+    } completion:^(BOOL finished){
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)0);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [view removeFromSuperview];
+        });
+	}];
+    
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+}
+
+- (void)walkThroughView:(IDLWalkThroughView *)view didScrollToPageAtIndex:(NSInteger)index
+{
+    //NSLog(@"didScrollToPageAtIndex: %i",index);
+}
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -138,8 +165,25 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
             break;
     }
     [walkThroughView resetLastPageShown];
-    [walkThroughView showInView:self.navigationController.view animateDuration:0.3];
+    [self showWalkThroughWithDuration:0.3f];
 
+}
+
+
+- (void)showWalkThroughWithDuration:(CGFloat) duration
+{
+    IDLWalkThroughView *walkThroughView = self.walkThroughView;
+    
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    walkThroughView.alpha = 0;
+    [walkThroughView reloadData];
+    [self.view addSubview:walkThroughView];
+    
+    [UIView animateWithDuration:duration animations:^{
+        walkThroughView.alpha = 1;
+        walkThroughView.userInteractionEnabled = YES;
+    }];
 }
 
 - (void)viewDidLayoutSubviews

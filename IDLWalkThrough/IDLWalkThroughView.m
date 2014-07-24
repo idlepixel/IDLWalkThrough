@@ -46,6 +46,7 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
 @property (nonatomic, strong) UIButton* skipButton;
 
 @property (nonatomic, assign, readwrite) BOOL lastPageShown;
+@property (nonatomic, assign, readwrite) NSInteger previousDelegatePageIndex;
 
 -(NSArray *)collectionViews;
 
@@ -163,18 +164,21 @@ float internal_easingBlockOutBounce(float value)
 {
     IDLWalkThroughTextCell *textCell = [IDLWalkThroughTextCell appearance];
     
+    UIFont *titleFont = [UIFont boldSystemFontOfSize:16.0f];
+    UIColor *textColor = [UIColor whiteColor];
+    
     if (textCell.titleFont == nil || force) {
-        textCell.titleFont = [UIFont boldSystemFontOfSize:16.0f];
+        textCell.titleFont = titleFont;
     }
     if (textCell.titleColor == nil || force) {
-        textCell.titleColor = [UIColor whiteColor];
+        textCell.titleColor = textColor;
     }
     
     if (textCell.detailFont == nil || force) {
         textCell.detailFont = [UIFont systemFontOfSize:13.0f];
     }
     if (textCell.detailColor == nil || force) {
-        textCell.detailColor = [UIColor whiteColor];
+        textCell.detailColor = textColor;
     }
     
     if (textCell.titlePosition == nil || force) {
@@ -213,12 +217,20 @@ float internal_easingBlockOutBounce(float value)
         view.footerPaddingSide = @(kIDLWalkThroughDefaultFooterPaddingSide);
     }
     
-    if (view.footerSkipButtonHeight == nil || force) {
-        view.footerSkipButtonHeight = @(kIDLWalkThroughDefaultFooterButtonHeight);
+    if (view.skipButtonHeight == nil || force) {
+        view.skipButtonHeight = @(kIDLWalkThroughDefaultFooterButtonHeight);
     }
     
-    if (view.footerSkipButtonWidth == nil || force) {
-        view.footerSkipButtonWidth = @(kIDLWalkThroughDefaultFooterButtonWidth);
+    if (view.skipButtonWidth == nil || force) {
+        view.skipButtonWidth = @(kIDLWalkThroughDefaultFooterButtonWidth);
+    }
+    
+    if (view.skipButtonTitleColor == nil || force) {
+        view.skipButtonTitleColor = textColor;
+    }
+    
+    if (view.skipButtonFont == nil || force) {
+        view.skipButtonFont = titleFont;
     }
 }
 
@@ -382,6 +394,8 @@ float internal_easingBlockOutBounce(float value)
         title = self.doneTitle;
     }
     [self.skipButton setTitle:title forState:UIControlStateNormal];
+    [self.skipButton setTitleColor:self.skipButtonTitleColor forState:UIControlStateNormal];
+    self.skipButton.titleLabel.font = self.skipButtonFont;
 }
 
 - (void)resetLastPageShown
@@ -408,7 +422,7 @@ float internal_easingBlockOutBounce(float value)
     CGPoint center = CGPointMake(bounds.size.width/2.0f, bounds.size.height/2.0f);
     
     CGSize pageControlSize = [pageControl sizeForNumberOfPages:pageControl.numberOfPages];
-    pageControlSize.height = MAX(pageControlSize.height, self.footerSkipButtonHeight.floatValue);
+    pageControlSize.height = MAX(pageControlSize.height, self.skipButtonHeight.floatValue);
     
     CGRect pageControlFrame = pageControl.frame;
     pageControlFrame.size = pageControlSize;
@@ -416,7 +430,7 @@ float internal_easingBlockOutBounce(float value)
     CGPoint bottomLeft = CGPointMake(floor(bounds.size.width - self.footerPaddingSide.floatValue), floor(bounds.size.height - self.footerPaddingBottom.floatValue));
     
     CGRect skipButtonFrame = skipButton.frame;
-    skipButtonFrame.size.width = self.footerSkipButtonWidth.floatValue;
+    skipButtonFrame.size.width = self.skipButtonWidth.floatValue;
     skipButtonFrame.size.height = pageControlSize.height;
     skipButtonFrame.origin.y = floor(bottomLeft.y - pageControlSize.height);
     
@@ -446,6 +460,10 @@ float internal_easingBlockOutBounce(float value)
     
     pageControl.frame = pageControlFrame;
     skipButton.frame = skipButtonFrame;
+    
+    [self bringSubviewToFront:pageControl];
+    [self bringSubviewToFront:skipButton];
+    
     [self refreshSkipButtonTitle];
 }
 
@@ -468,7 +486,7 @@ float internal_easingBlockOutBounce(float value)
     
     skipButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     [skipButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [skipButton addTarget:self action:@selector(skipIntroduction) forControlEvents:UIControlEventTouchUpInside];
+    [skipButton addTarget:self action:@selector(notifyDelegateOfSkipOnPageAtIndex) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:skipButton];
     [self bringSubviewToFront:skipButton];
     self.skipButton = skipButton;
@@ -477,19 +495,21 @@ float internal_easingBlockOutBounce(float value)
     [self refreshSkipButtonTitle];
 }
 
-- (void)skipIntroduction
+- (void)notifyDelegateOfSkipOnPageAtIndex
 {
-    [UIView animateWithDuration:0.3 animations:^{
-        self.alpha = 0;
-    } completion:^(BOOL finished){
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)0);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self removeFromSuperview];
-            if (self.delegate != nil && [self.delegate respondsToSelector:@selector(walkthroughDidDismissView:)]) {
-                [self.delegate walkthroughDidDismissView:self];
-            }
-        });
-	}];
+    if ([self.delegate respondsToSelector:@selector(walkThroughView:didSkipOnPageAtIndex:)]) {
+        [self.delegate walkThroughView:self didSkipOnPageAtIndex:self.pageControl.currentPage];
+    }
+}
+
+- (void)notifyDelegateOfScrollToPageAtIndex:(NSInteger)page
+{
+    if (page == self.previousDelegatePageIndex) return;
+    
+    if ([self.delegate respondsToSelector:@selector(walkThroughView:didScrollToPageAtIndex:)]) {
+        self.previousDelegatePageIndex = page;
+        [self.delegate walkThroughView:self didScrollToPageAtIndex:page];
+    }
 }
 
 - (void)jumpToPage:(NSInteger)page
@@ -510,6 +530,18 @@ float internal_easingBlockOutBounce(float value)
 
 - (void)reloadData
 {
+    self.previousDelegatePageIndex = NSNotFound;
+    
+    self.pageControl.currentPage = 0;
+    self.pageControl.numberOfPages = [self dataSourceNumberOfPages];
+    
+    if (self.isfixedBackground) {
+        self.backgroundFadingImageView.frontImage = self.backgroundImage;
+        
+    } else{
+        [self crossDissolveForOffset:0.0f];
+    }
+    
     [self resetFadingImageViewTags];
     [self setNeedsLayout];
 }
@@ -595,8 +627,10 @@ float internal_easingBlockOutBounce(float value)
     
     CGFloat picturePosition = normalisedPosition;
     
-    [self updateCollectionViewOffset:self.pictureCollectionView direction:direction position:picturePosition pageOffset:(CGFloat)previousPage pageMetric:pageMetric easingBlock:self.pictureMovementEasingBlock];
-    [self updateCollectionViewOffset:self.textCollectionView direction:direction position:picturePosition pageOffset:(CGFloat)previousPage pageMetric:pageMetric easingBlock:self.textMovementEasingBlock];
+    if (!isnan(picturePosition)) {
+        [self updateCollectionViewOffset:self.pictureCollectionView direction:direction position:picturePosition pageOffset:(CGFloat)previousPage pageMetric:pageMetric easingBlock:self.pictureMovementEasingBlock];
+        [self updateCollectionViewOffset:self.textCollectionView direction:direction position:picturePosition pageOffset:(CGFloat)previousPage pageMetric:pageMetric easingBlock:self.textMovementEasingBlock];
+    }
     
 }
 
@@ -626,6 +660,8 @@ float internal_easingBlockOutBounce(float value)
     
     [self updateLastPageShown];
     [self refreshSkipButtonTitle];
+    
+    [self notifyDelegateOfScrollToPageAtIndex:self.pageControl.currentPage];
 }
 
 - (void)crossDissolveFadingImageView:(IDLWalkThroughFadingImageView *)fadingImageView easingBlock:(IDLWalkThroughViewEasingBlock)easingBlock offset:(CGFloat)offset
@@ -650,7 +686,6 @@ float internal_easingBlockOutBounce(float value)
         fadingImageView.frontAlpha = frontLayerAlpha;
     }
 }
-
 
 - (void)crossDissolveForOffset:(CGFloat)offset
 {
@@ -689,29 +724,6 @@ float internal_easingBlockOutBounce(float value)
     } else {
         self.pictureOverlayFadingImageView.alpha = 0.0f;
     }
-}
-
-- (void)showInView:(UIView *)view animateDuration:(CGFloat) duration
-{
-    self.frame = view.bounds;
-    
-    self.pageControl.currentPage = 0;
-    self.pageControl.numberOfPages = [self dataSourceNumberOfPages];
-
-    if (self.isfixedBackground) {
-        self.backgroundFadingImageView.frontImage = self.backgroundImage;
-        
-    } else{
-        [self crossDissolveForOffset:0.0f];
-    }
-
-    self.alpha = 0;
-    [self reloadData];
-    [view addSubview:self];
-    
-    [UIView animateWithDuration:duration animations:^{
-        self.alpha = 1;
-    }];
 }
 
 -(NSInteger)dataSourceNumberOfPages
