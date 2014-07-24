@@ -40,6 +40,7 @@ typedef float(^IDLWalkThroughViewEasingBlock)(float value);
 @property (nonatomic, strong) UIView* floatingHeaderView;
 
 @property (nonatomic, assign) BOOL isfixedBackground;
+@property (nonatomic, assign) BOOL hideSkipButton;
 
 @property (nonatomic, assign, readonly) BOOL lastPageShown;
 

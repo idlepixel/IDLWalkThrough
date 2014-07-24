@@ -385,6 +385,14 @@ float internal_easingBlockOutBounce(float value)
     _doneTitle = doneTitle;
     [self refreshSkipButtonTitle];
 }
+
+- (void)setHideSkipButton:(BOOL)hideSkipButton
+{
+    if (_hideSkipButton != hideSkipButton) {
+        _hideSkipButton = hideSkipButton;
+        [self layoutFooterViews];
+    }
+}
      
 -(void)refreshSkipButtonTitle
 {
@@ -418,6 +426,8 @@ float internal_easingBlockOutBounce(float value)
     UIPageControl *pageControl = self.pageControl;
     UIButton *skipButton = self.skipButton;
     
+    BOOL hideSkipButton = self.hideSkipButton;
+    
     CGRect bounds = self.bounds;
     CGPoint center = CGPointMake(bounds.size.width/2.0f, bounds.size.height/2.0f);
     
@@ -446,9 +456,14 @@ float internal_easingBlockOutBounce(float value)
         skipButtonFrame.origin.x = floor(bottomLeft.x - (skipButtonFrame.size.width + pageControlSize.height));
         
     } else {
+        
         skipButtonFrame.origin.x = floor(bottomLeft.x - skipButtonFrame.size.width);
         
-        pageControlSize.width = floor(MAX((skipButtonFrame.origin.x - center.x) * 2.0f, pageControlSize.width));
+        if (hideSkipButton) {
+            pageControlSize.width = floor(MAX(bounds.size.width, pageControlSize.width));
+        } else {
+            pageControlSize.width = floor(MAX((skipButtonFrame.origin.x - center.x) * 2.0f, pageControlSize.width));
+        }
         
         pageControlFrame.size.width = pageControlSize.width;
         
@@ -460,6 +475,8 @@ float internal_easingBlockOutBounce(float value)
     
     pageControl.frame = pageControlFrame;
     skipButton.frame = skipButtonFrame;
+    
+    skipButton.hidden = hideSkipButton;
     
     [self bringSubviewToFront:pageControl];
     [self bringSubviewToFront:skipButton];
