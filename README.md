@@ -2,10 +2,10 @@
 
 This fork includes the following additional functionality to the original project (at the time of forking):
 * Each page has the following layers:
-** Background
-** Picture
-** Picture overlay (behaves similarly to the Background layer)
-** Text
+  1. Background
+  2. Picture
+  3. Picture overlay (behaves similarly to the Background layer)
+  4. Text
 * UIAppearance support
 * Customisable independent easing for each layer using blocks
 * Data source & delegate syntax changes to better match UITableView/UICollectionView
