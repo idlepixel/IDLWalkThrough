@@ -71,6 +71,9 @@ typedef float(^IDLWalkThroughViewEasingBlock)(float value);
 
 - (void)reloadData;
 
+- (IDLWalkThroughPictureCell *)visiblePictureCell;
+- (IDLWalkThroughTextCell *)visibleTextCell;
+
 @end
 
 @protocol IDLWalkThroughViewDelegate <NSObject>
@@ -78,6 +81,7 @@ typedef float(^IDLWalkThroughViewEasingBlock)(float value);
 @optional
 - (void)walkThroughView:(IDLWalkThroughView *)view didSkipOnPageAtIndex:(NSInteger)index;
 - (void)walkThroughView:(IDLWalkThroughView *)view didScrollToPageAtIndex:(NSInteger)index;
+- (void)walkThroughView:(IDLWalkThroughView *)view didShowPageAtIndex:(NSInteger)index;
 
 @end
 

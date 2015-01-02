@@ -32,6 +32,14 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
     view.layer.borderWidth = width;
 }
 */
+
+typedef NS_OPTIONS(NSInteger, IDLWalkThroughViewReloadState)
+{
+    IDLWalkThroughViewReloadInitiated   = 0,
+    IDLWalkThroughViewReloadedText      = 1 << 0,
+    IDLWalkThroughViewReloadedPicture   = 1 << 1,
+    IDLWalkThroughViewReloadComplete    = 1 << 2,
+};
  
 @interface IDLWalkThroughView ()<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -46,7 +54,10 @@ NS_INLINE void UIViewSetBorder(UIView *view, UIColor *color, CGFloat width)
 @property (nonatomic, strong) UIButton* skipButton;
 
 @property (nonatomic, assign, readwrite) BOOL lastPageShown;
-@property (nonatomic, assign, readwrite) NSInteger previousDelegatePageIndex;
+@property (nonatomic, assign, readwrite) NSInteger previousDelegateScrollPageIndex;
+@property (nonatomic, assign, readwrite) NSInteger previousDelegateShowPageIndex;
+
+@property (nonatomic, assign, readwrite) IDLWalkThroughViewReloadState reloadState;
 
 -(NSArray *)collectionViews;
 
@@ -521,11 +532,26 @@ float internal_easingBlockOutBounce(float value)
 
 - (void)notifyDelegateOfScrollToPageAtIndex:(NSInteger)page
 {
-    if (page == self.previousDelegatePageIndex) return;
+    if (page == self.previousDelegateScrollPageIndex) return;
     
     if ([self.delegate respondsToSelector:@selector(walkThroughView:didScrollToPageAtIndex:)]) {
-        self.previousDelegatePageIndex = page;
+        self.previousDelegateScrollPageIndex = page;
         [self.delegate walkThroughView:self didScrollToPageAtIndex:page];
+    }
+}
+
+- (void)notifyDelegateOfShowPageAtIndex:(NSNumber *)page
+{
+    if (page == nil || page.integerValue == self.previousDelegateShowPageIndex) return;
+    
+    if (self.visibleTextCell == nil || self.visiblePictureCell == nil) {
+        [self performSelector:@selector(notifyDelegateOfShowPageAtIndex:) withObject:page afterDelay:0.05f];
+        return;
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(walkThroughView:didShowPageAtIndex:)]) {
+        self.previousDelegateShowPageIndex = page.integerValue;
+        [self.delegate walkThroughView:self didShowPageAtIndex:page.integerValue];
     }
 }
 
@@ -547,7 +573,10 @@ float internal_easingBlockOutBounce(float value)
 
 - (void)reloadData
 {
-    self.previousDelegatePageIndex = NSNotFound;
+    self.previousDelegateScrollPageIndex = NSNotFound;
+    self.previousDelegateShowPageIndex = NSNotFound;
+    
+    self.reloadState = IDLWalkThroughViewReloadInitiated;
     
     self.pageControl.currentPage = 0;
     self.pageControl.numberOfPages = [self dataSourceNumberOfPages];
@@ -561,6 +590,36 @@ float internal_easingBlockOutBounce(float value)
     
     [self resetFadingImageViewTags];
     [self setNeedsLayout];
+}
+
+- (IDLWalkThroughPictureCell *)visiblePictureCell
+{
+    NSInteger page = self.pageControl.currentPage;
+    NSArray *visibleIndexPaths = self.pictureCollectionView.indexPathsForVisibleItems;
+    
+    //NSLog(@"PICTURE: %i, paths: %@",page,visibleIndexPaths);
+    
+    for (NSIndexPath *indexPath in visibleIndexPaths) {
+        if (indexPath.item == page) {
+            return (IDLWalkThroughPictureCell *)[self.pictureCollectionView cellForItemAtIndexPath:indexPath];
+        }
+    }
+    return nil;
+}
+
+- (IDLWalkThroughTextCell *)visibleTextCell
+{
+    NSInteger page = self.pageControl.currentPage;
+    NSArray *visibleIndexPaths = self.textCollectionView.indexPathsForVisibleItems;
+    
+    //NSLog(@"TEXT: %i, paths: %@",page,visibleIndexPaths);
+    
+    for (NSIndexPath *indexPath in visibleIndexPaths) {
+        if (indexPath.item == page) {
+            return (IDLWalkThroughTextCell *)[self.textCollectionView cellForItemAtIndexPath:indexPath];
+        }
+    }
+    return nil;
 }
 
 - (void)showPanelAtPageControl:(UIPageControl*) sender
@@ -586,12 +645,20 @@ float internal_easingBlockOutBounce(float value)
         if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(walkThroughView:configureTextCell:forPageAtIndex:)]) {
             [self.dataSource walkThroughView:self configureTextCell:(IDLWalkThroughTextCell *)cell forPageAtIndex:indexPath.row];
         }
+        self.reloadState = (self.reloadState | IDLWalkThroughViewReloadedText);
     } else if (collectionView == self.pictureCollectionView) {
         [self prepareWalkThroughPictureCell:(IDLWalkThroughPictureCell *)cell forReuseAtIndexPath:indexPath];
         if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(walkThroughView:configurePictureCell:forPageAtIndex:)]) {
             [self.dataSource walkThroughView:self configurePictureCell:(IDLWalkThroughPictureCell *)cell forPageAtIndex:indexPath.row];
         }
+        self.reloadState = (self.reloadState | IDLWalkThroughViewReloadedPicture);
     }
+    
+    if (self.reloadState == (IDLWalkThroughViewReloadedPicture | IDLWalkThroughViewReloadedText | !IDLWalkThroughViewReloadComplete)) {
+        [self notifyDelegateOfShowPageAtIndex:@(self.pageControl.currentPage)];
+        self.reloadState = (self.reloadState | IDLWalkThroughViewReloadComplete);
+    }
+    
     return cell;
     
 }
@@ -684,7 +751,18 @@ float internal_easingBlockOutBounce(float value)
     [self updateLastPageShown];
     [self refreshSkipButtonTitle];
     
-    [self notifyDelegateOfScrollToPageAtIndex:self.pageControl.currentPage];
+    NSInteger page = self.pageControl.currentPage;
+    
+    [self notifyDelegateOfScrollToPageAtIndex:page];
+    [self notifyDelegateOfShowPageAtIndex:@(page)];
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    if (scrollView != self.interactionCollectionView) return;
+    
+    NSInteger page = self.pageControl.currentPage;
+    [self notifyDelegateOfShowPageAtIndex:@(page)];
 }
 
 - (void)crossDissolveFadingImageView:(IDLWalkThroughFadingImageView *)fadingImageView easingBlock:(IDLWalkThroughViewEasingBlock)easingBlock offset:(CGFloat)offset

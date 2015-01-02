@@ -37,7 +37,7 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
 {
     [super viewDidLoad];
     
-    srand(self.hash);
+    srand((int)self.hash);
     
 	// Do any additional setup after loading the view, typically from a nib.
     
@@ -145,8 +145,40 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
 
 - (void)walkThroughView:(IDLWalkThroughView *)view didScrollToPageAtIndex:(NSInteger)index
 {
-    //NSLog(@"didScrollToPageAtIndex: %i",index);
+    NSLog(@"didScrollToPageAtIndex: %i",(int)index);
 }
+
+- (void)walkThroughView:(IDLWalkThroughView *)view didShowPageAtIndex:(NSInteger)index
+{
+    NSLog(@"didShowPageAtIndex: %i",(int)index);
+    
+    if (self.addDynamicContent) {
+        
+        IDLWalkThroughPictureCell *pictureCell = view.visiblePictureCell;
+        
+        CGRect overlayFrame = pictureCell.bounds;
+        CGSize overlaySize = CGSizeMake(overlayFrame.size.width, 5.0f);
+        overlayFrame.origin.x = 0.0f;
+        overlayFrame.origin.y = 0.0f;
+        overlayFrame.size = overlaySize;
+        
+        CGRect finalFrame = overlayFrame;
+        finalFrame.origin.y = pictureCell.bounds.size.height;
+        
+        UIView *pictureOverlayView = [[UIView alloc] initWithFrame:overlayFrame];
+        pictureOverlayView.backgroundColor = [UIColor whiteColor];
+        pictureOverlayView.alpha = 0.0f;
+        
+        [pictureCell.contentView addSubview:pictureOverlayView];
+        
+        [UIView animateWithDuration:1.5f animations:^(void) {
+            pictureOverlayView.alpha = 1.0f;
+            pictureOverlayView.frame = finalFrame;
+        }];
+        
+    }
+}
+
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
