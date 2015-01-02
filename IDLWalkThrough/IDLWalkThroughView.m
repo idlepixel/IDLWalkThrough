@@ -587,12 +587,18 @@ float internal_easingBlockOutBounce(float value)
             [self.dataSource walkThroughView:self configureTextCell:(IDLWalkThroughTextCell *)cell forPageAtIndex:indexPath.row];
         }
     } else if (collectionView == self.pictureCollectionView) {
+        [self prepareWalkThroughPictureCell:(IDLWalkThroughPictureCell *)cell forReuseAtIndexPath:indexPath];
         if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(walkThroughView:configurePictureCell:forPageAtIndex:)]) {
             [self.dataSource walkThroughView:self configurePictureCell:(IDLWalkThroughPictureCell *)cell forPageAtIndex:indexPath.row];
         }
     }
     return cell;
     
+}
+
+- (void)prepareWalkThroughPictureCell:(IDLWalkThroughPictureCell *)cell forReuseAtIndexPath:(NSIndexPath *)indexPath
+{
+    [cell removeNonPictureContentViews];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath

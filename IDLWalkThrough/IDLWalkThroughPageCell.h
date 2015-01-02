@@ -1,4 +1,4 @@
-//
+ //
 //  GHWalkThroughCell.h
 //  GHWalkThrough
 //
@@ -32,6 +32,8 @@
 @interface IDLWalkThroughPictureCell : IDLWalkThroughPageCell
 
 @property (nonatomic, strong) UIImage *image;
-@property (nonatomic, strong) NSNumber *imagePosition           UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) NSNumber *imagePosition               UI_APPEARANCE_SELECTOR;
+
+-(void)removeNonPictureContentViews;
 
 @end

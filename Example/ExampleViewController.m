@@ -27,6 +27,8 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
 
 @property (nonatomic, strong) UILabel* welcomeLabel;
 
+@property (nonatomic, assign) BOOL addDynamicContent;
+
 @end
 
 @implementation ExampleViewController
@@ -34,6 +36,9 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    srand(self.hash);
+    
 	// Do any additional setup after loading the view, typically from a nib.
     
     //[[IDLWalkThroughTextCell appearance] setTitleColor:[UIColor greenColor]];
@@ -86,6 +91,20 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
 - (void)walkThroughView:(IDLWalkThroughView *)view configurePictureCell:(IDLWalkThroughPictureCell *)cell forPageAtIndex:(NSInteger)index
 {
     cell.image = [UIImage imageNamed:[NSString stringWithFormat:@"title%ld", (long)(index+1)]];
+    
+    if (self.addDynamicContent) {
+        
+        CGRect overlayFrame = cell.bounds;
+        CGSize overlaySize = CGSizeMake(overlayFrame.size.width, 20.0f);
+        overlayFrame.origin.x = 0.0f;
+        overlayFrame.origin.y = floor(rand() % (int)(overlayFrame.size.height - overlaySize.height));
+        overlayFrame.size = overlaySize;
+        
+        UIView *pictureOverlayView = [[UIView alloc] initWithFrame:overlayFrame];
+        pictureOverlayView.backgroundColor = [UIColor redColor];
+        
+        [cell.contentView addSubview:pictureOverlayView];
+    }
 }
 
 - (UIImage*)walkThroughView:(IDLWalkThroughView *)view backgroundImageforPage:(NSInteger)index
@@ -137,15 +156,20 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
     IDLWalkThroughView *walkThroughView = self.walkThroughView;
     
     walkThroughView.isfixedBackground = NO;
+    self.addDynamicContent = NO;
 
     switch (indexPath.row) {
         case 0:
+        {
             walkThroughView.floatingHeaderView = nil;
             [walkThroughView setWalkThroughDirection:IDLWalkThroughViewDirectionHorizontal];
+        }
             break;
         case 1:
+        {
             walkThroughView.floatingHeaderView = nil;
             [walkThroughView setWalkThroughDirection:IDLWalkThroughViewDirectionVertical];
+        }
             break;
         case 2:
         {
@@ -154,11 +178,20 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
         }
             break;
         case 3:
+        {
             [walkThroughView setFloatingHeaderView:self.welcomeLabel];
             walkThroughView.isfixedBackground = YES;
             walkThroughView.backgroundImage = [UIImage imageNamed:@"static_bg_01"];
             [walkThroughView setWalkThroughDirection:IDLWalkThroughViewDirectionVertical];
-    
+        }
+            break;
+            
+        case 4:
+        {
+            walkThroughView.floatingHeaderView = nil;
+            [walkThroughView setWalkThroughDirection:IDLWalkThroughViewDirectionHorizontal];
+            self.addDynamicContent = YES;
+        }
             break;
             
         default:

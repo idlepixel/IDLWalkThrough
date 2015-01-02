@@ -159,6 +159,7 @@
     CGSize imageSize = image.size;
     self.imageView.frame = CGRectMake(0.0f, 0.0f, imageSize.width, imageSize.height);
     [self setNeedsLayout];
+    
 }
 
 - (void)layoutSubviews
@@ -194,7 +195,18 @@
     //self.imageView.layer.borderColor = [UIColor purpleColor].CGColor;
     //self.imageView.layer.borderWidth = 2.0f;
     
-    [self.contentView addSubview:pageView];
+    [self.contentView insertSubview:pageView atIndex:0];
+}
+
+-(void)removeNonPictureContentViews
+{
+    UIView *imageSuperView = self.imageView.superview;
+    NSArray *contentViews = self.contentView.subviews;
+    for (UIView *cv in contentViews) {
+        if (cv != imageSuperView) {
+            [cv removeFromSuperview];
+        }
+    }
 }
 
 @end
