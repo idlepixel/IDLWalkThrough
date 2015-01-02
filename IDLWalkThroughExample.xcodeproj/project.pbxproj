@@ -530,19 +530,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/GHWalkThrough.app/GHWalkThrough";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/IDLWalkThroughExample.app/IDLWalkThroughExample";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "GHWalkThrough/GHWalkThrough-Prefix.pch";
+				GCC_PREFIX_HEADER = "Example/IDLWalkThroughExample-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "GHWalkThroughTests/IDLWalkThroughTests-Info.plist";
+				INFOPLIST_FILE = "IDLWalkThroughTests/IDLWalkThroughTests-Info.plist";
 				PRODUCT_NAME = IDLWalkThroughExampleTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -553,15 +553,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/GHWalkThrough.app/GHWalkThrough";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/IDLWalkThroughExample.app/IDLWalkThroughExample";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "GHWalkThrough/GHWalkThrough-Prefix.pch";
-				INFOPLIST_FILE = "GHWalkThroughTests/IDLWalkThroughTests-Info.plist";
+				GCC_PREFIX_HEADER = "Example/IDLWalkThroughExample-Prefix.pch";
+				INFOPLIST_FILE = "IDLWalkThroughTests/IDLWalkThroughTests-Info.plist";
 				PRODUCT_NAME = IDLWalkThroughExampleTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
