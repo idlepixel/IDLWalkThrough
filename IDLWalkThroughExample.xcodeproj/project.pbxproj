@@ -21,6 +21,7 @@
 		849EC37F188E4A6400CAEA3D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 849EC361188E4A6400CAEA3D /* UIKit.framework */; };
 		849EC387188E4A6400CAEA3D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 849EC385188E4A6400CAEA3D /* InfoPlist.strings */; };
 		849EC389188E4A6400CAEA3D /* GHWalkThroughTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 849EC388188E4A6400CAEA3D /* GHWalkThroughTests.m */; };
+		A72567CF1ACACF6D004F69D2 /* title_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A72567CE1ACACF6D004F69D2 /* title_background@2x.png */; };
 		A7984DFD1980667B00A60599 /* IDLWalkThroughFadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7984DF81980667B00A60599 /* IDLWalkThroughFadingImageView.m */; };
 		A7984DFE1980667B00A60599 /* IDLWalkThroughFadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7984DF81980667B00A60599 /* IDLWalkThroughFadingImageView.m */; };
 		A7984DFF1980667B00A60599 /* IDLWalkThroughPageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7984DFA1980667B00A60599 /* IDLWalkThroughPageCell.m */; };
@@ -84,6 +85,7 @@
 		849EC384188E4A6400CAEA3D /* IDLWalkThroughTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "IDLWalkThroughTests-Info.plist"; sourceTree = "<group>"; };
 		849EC386188E4A6400CAEA3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		849EC388188E4A6400CAEA3D /* GHWalkThroughTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GHWalkThroughTests.m; sourceTree = "<group>"; };
+		A72567CE1ACACF6D004F69D2 /* title_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_background@2x.png"; sourceTree = "<group>"; };
 		A7984DEF197FC6DB00A60599 /* IDLWalkThroughExample-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IDLWalkThroughExample-Prefix.pch"; path = "../Example/IDLWalkThroughExample-Prefix.pch"; sourceTree = "<group>"; };
 		A7984DF71980667B00A60599 /* IDLWalkThroughFadingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDLWalkThroughFadingImageView.h; sourceTree = "<group>"; };
 		A7984DF81980667B00A60599 /* IDLWalkThroughFadingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDLWalkThroughFadingImageView.m; sourceTree = "<group>"; };
@@ -230,6 +232,7 @@
 				A7984E09198067BD00A60599 /* overlay_01@2x.png */,
 				A7984E0A198067BD00A60599 /* overlay_02@2x.png */,
 				A7984E0B198067BD00A60599 /* static_bg_01.png */,
+				A72567CE1ACACF6D004F69D2 /* title_background@2x.png */,
 				A7984E0C198067BD00A60599 /* title1@2x.png */,
 				A7984E0D198067BD00A60599 /* title2@2x.png */,
 				A7984E0E198067BD00A60599 /* title3@2x.png */,
@@ -330,6 +333,7 @@
 				A7984E29198067BD00A60599 /* title5@2x.png in Resources */,
 				A7984E25198067BD00A60599 /* title3@2x.png in Resources */,
 				A7984E15198067BD00A60599 /* bg_03.jpg in Resources */,
+				A72567CF1ACACF6D004F69D2 /* title_background@2x.png in Resources */,
 				A7984E11198067BD00A60599 /* bg_01.jpg in Resources */,
 				849EC368188E4A6400CAEA3D /* InfoPlist.strings in Resources */,
 				849EC371188E4A6400CAEA3D /* Main.storyboard in Resources */,

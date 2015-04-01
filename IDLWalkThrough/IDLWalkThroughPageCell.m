@@ -145,51 +145,119 @@
 
 @interface IDLWalkThroughPictureCell ()
 
-@property (nonatomic, strong) UIImageView* imageView;
+@property (nonatomic, strong) UIImageView* foregroundImageView;
+@property (nonatomic, strong) UIImageView* backgroundImageView;
 
 @end
 
 @implementation IDLWalkThroughPictureCell
 
-- (void)setImage:(UIImage *)image
+- (void)setForegroundImage:(UIImage *)foregroundImage
 {
-    _image = image;
-    self.imageView.image = image;
-	self.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    CGSize imageSize = image.size;
-    self.imageView.frame = CGRectMake(0.0f, 0.0f, imageSize.width, imageSize.height);
+    _foregroundImage = foregroundImage;
+    self.foregroundImageView.image = foregroundImage;
+	self.foregroundImageView.contentMode = self.imageContentMode.integerValue;
+    CGSize imageSize = foregroundImage.size;
+    self.foregroundImageView.frame = CGRectMake(0.0f, 0.0f, imageSize.width, imageSize.height);
     [self setNeedsLayout];
     
+}
+
+- (void)setBackgroundImage:(UIImage *)backgroundImage
+{
+    _backgroundImage = backgroundImage;
+    self.backgroundImageView.image = backgroundImage;
+    self.backgroundImageView.contentMode = self.imageContentMode.integerValue;
+    CGSize imageSize = backgroundImage.size;
+    self.backgroundImageView.frame = CGRectMake(0.0f, 0.0f, imageSize.width, imageSize.height);
+    [self setNeedsLayout];
+    
+}
+
+- (CGRect)layoutView:(UIView *)view bounds:(CGRect)bounds offset:(CGFloat)offset alignment:(UIControlContentVerticalAlignment)alignment
+{
+    CGRect viewRect = view.frame;
+    
+    viewRect.origin.x = floor(CGRectGetMidX(bounds) - viewRect.size.width/2.0f);
+    
+    if (alignment == UIControlContentVerticalAlignmentBottom) {
+        viewRect.origin.y = floor(bounds.size.height - viewRect.size.height - offset);
+        
+    } else if (alignment == UIControlContentVerticalAlignmentTop) {
+        viewRect.origin.y = floor(offset);
+        
+    } else {
+        viewRect.origin.y = floor(CGRectGetMidY(bounds) - viewRect.size.height/2.0f);
+    }
+    
+    //NSLog(@"bounds: %@",NSStringFromCGRect(bounds));
+    //NSLog(@"viewRect: %@",NSStringFromCGRect(viewRect));
+    
+    view.frame = viewRect;
+    
+    return viewRect;
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     
+    /*/
+    self.foregroundImageView.layer.borderColor = [UIColor redColor].CGColor;
+    self.foregroundImageView.layer.borderWidth = 2.0f;
+    self.backgroundImageView.layer.borderColor = [UIColor greenColor].CGColor;
+    self.backgroundImageView.layer.borderWidth = 2.0f;
+    //*/
+    
     CGRect contentRect = self.contentView.bounds;
     
-    CGRect imageRect = self.imageView.frame;
-    imageRect.origin.x = floor((contentRect.size.width - imageRect.size.width)/2.0f);
-    imageRect.origin.y = floor(contentRect.size.height - imageRect.size.height - self.imagePosition.floatValue);
+    CGRect backgroundRect = contentRect;
     
-    self.imageView.frame = imageRect;
+    BOOL hasBackground = (self.backgroundImage != nil);
+    
+    CGFloat verticalImageOffset = self.verticalImageOffset.floatValue;
+    UIControlContentVerticalAlignment verticalAlignment = self.verticalImageAlignment.integerValue;
+    
+    if (hasBackground) {
+        backgroundRect = [self layoutView:self.backgroundImageView bounds:contentRect offset:verticalImageOffset alignment:verticalAlignment];
+    }
+    
+    if (self.foregroundImage != nil) {
+        if (hasBackground && self.centerForegroundOnBackground) {
+            [self layoutView:self.foregroundImageView bounds:backgroundRect offset:0.0f alignment:UIControlContentVerticalAlignmentCenter];
+        } else {
+            [self layoutView:self.foregroundImageView bounds:contentRect offset:verticalImageOffset alignment:verticalAlignment];
+        }
+    }
 }
 
 - (void)configure
 {
     [super configure];
     
+    /*
+    self.imageContentMode = UIViewContentModeScaleAspectFit;
+    self.centerForegroundOnBackground = YES;
+    self.verticalImageAlignment = UIControlContentVerticalAlignmentBottom;
+    */
+     
     self.backgroundColor = [UIColor clearColor];
     self.backgroundView = nil;
     self.contentView.backgroundColor = [UIColor clearColor];
     
     UIView *pageView = [[UIView alloc] initWithFrame:self.contentView.bounds];
     
-    if (self.imageView == nil) {
-        UIImageView *imageView = self.image != nil ? [[UIImageView alloc] initWithImage:self.image] : [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 128, 128)];
-        self.imageView = imageView;
+    if (self.backgroundImageView == nil) {
+        UIImageView *imageView = self.backgroundImage != nil ? [[UIImageView alloc] initWithImage:self.backgroundImage] : [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 128, 128)];
+        self.backgroundImageView = imageView;
     }
-    [pageView addSubview:self.imageView];
+    [pageView addSubview:self.backgroundImageView];
+    
+    if (self.foregroundImageView == nil) {
+        UIImageView *imageView = self.foregroundImage != nil ? [[UIImageView alloc] initWithImage:self.foregroundImage] : [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 128, 128)];
+        self.foregroundImageView = imageView;
+    }
+    [pageView addSubview:self.foregroundImageView];
     
     // debug
     //self.imageView.layer.borderColor = [UIColor purpleColor].CGColor;
@@ -200,7 +268,7 @@
 
 -(void)removeNonPictureContentViews
 {
-    UIView *imageSuperView = self.imageView.superview;
+    UIView *imageSuperView = self.foregroundImageView.superview;
     NSArray *contentViews = self.contentView.subviews;
     for (UIView *cv in contentViews) {
         if (cv != imageSuperView) {

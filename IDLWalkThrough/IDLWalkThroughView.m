@@ -9,19 +9,23 @@
 #import "IDLWalkThroughView.h"
 #import "IDLWalkThroughFadingImageView.h"
 
-#define kIDLWalkThroughDefaultTitlePosition             200.0f
-#define kIDLWalkThroughDefaultImagePosition             180.0f
-#define kIDLWalkThroughDefaultTitleDetailPadding        0.0f
+#define kIDLWalkThroughDefaultTitlePosition                 200.0f
+#define kIDLWalkThroughDefaultTitleDetailPadding            0.0f
 
-#define kIDLWalkThroughDefaultPaddingHorizontalTitle    10.0f
-#define kIDLWalkThroughDefaultPaddingHorizontalDetail   20.0f
+#define kIDLWalkThroughDefaultPaddingHorizontalTitle        10.0f
+#define kIDLWalkThroughDefaultPaddingHorizontalDetail       20.0f
 
-#define kIDLWalkThroughDefaultHeaderPaddingTop          50.0f
+#define kIDLWalkThroughDefaultHeaderPaddingTop              50.0f
 
-#define kIDLWalkThroughDefaultFooterPaddingBottom       30.0f
-#define kIDLWalkThroughDefaultFooterPaddingSide         30.0f
-#define kIDLWalkThroughDefaultFooterButtonHeight        45.0f
-#define kIDLWalkThroughDefaultFooterButtonWidth         60.0f
+#define kIDLWalkThroughDefaultFooterPaddingBottom           30.0f
+#define kIDLWalkThroughDefaultFooterPaddingSide             30.0f
+#define kIDLWalkThroughDefaultFooterButtonHeight            45.0f
+#define kIDLWalkThroughDefaultFooterButtonWidth             60.0f
+
+#define kIDLWalkThroughDefaultVerticalImageOffset           180.0f
+#define kIDLWalkThroughDefaultVerticalImageAlignment        UIControlContentVerticalAlignmentBottom
+#define kIDLWalkThroughDefaultCenterForegroundOnBackground  YES
+#define kIDLWalkThroughDefaultImageContentMode              UIViewContentModeScaleAspectFit
 
 #define kIDLWalkThroughCellIdentifier               @"IDLWalkThroughCellIdentifier"
 
@@ -210,8 +214,20 @@ float internal_easingBlockOutBounce(float value)
     
     IDLWalkThroughPictureCell *pictureCell = [IDLWalkThroughPictureCell appearance];
     
-    if (pictureCell.imagePosition == nil || force) {
-        pictureCell.imagePosition = @(kIDLWalkThroughDefaultImagePosition);
+    if (pictureCell.verticalImageOffset == nil || force) {
+        pictureCell.verticalImageOffset = @(kIDLWalkThroughDefaultVerticalImageOffset);
+    }
+    
+    if (pictureCell.verticalImageAlignment == nil || force) {
+        pictureCell.verticalImageAlignment = @(kIDLWalkThroughDefaultVerticalImageAlignment);
+    }
+    
+    if (pictureCell.centerForegroundOnBackground == nil || force) {
+        pictureCell.centerForegroundOnBackground = @(kIDLWalkThroughDefaultCenterForegroundOnBackground);
+    }
+    
+    if (pictureCell.imageContentMode == nil || force) {
+        pictureCell.imageContentMode = @(kIDLWalkThroughDefaultImageContentMode);
     }
     
     IDLWalkThroughView *view = [IDLWalkThroughView appearance];

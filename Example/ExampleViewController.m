@@ -47,6 +47,9 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
     //[[IDLWalkThroughView appearance] setFooterPaddingBottom:@(5.0f)];
     //[[IDLWalkThroughView appearance] setFooterPaddingSide:@(5.0f)];
     
+    //[[IDLWalkThroughPictureCell appearance] setVerticalImageAlignment:@(UIControlContentVerticalAlignmentTop)];
+    //[[IDLWalkThroughPictureCell appearance] setVerticalImageOffset:@(30.0f)];
+    
     IDLWalkThroughView *walkThroughView = [[IDLWalkThroughView alloc] initWithFrame:self.navigationController.view.bounds];
     walkThroughView.backgroundColor = [UIColor grayColor];
     walkThroughView.dataSource = self;
@@ -90,7 +93,13 @@ static NSString * const sampleDesc5 = @"Sed rhoncus arcu nisl, in ultrices mi eg
 
 - (void)walkThroughView:(IDLWalkThroughView *)view configurePictureCell:(IDLWalkThroughPictureCell *)cell forPageAtIndex:(NSInteger)index
 {
-    cell.image = [UIImage imageNamed:[NSString stringWithFormat:@"title%ld", (long)(index+1)]];
+    cell.foregroundImage = [UIImage imageNamed:[NSString stringWithFormat:@"title%ld", (long)(index+1)]];
+    
+    if (index % 2 == 0) {
+        cell.backgroundImage = [UIImage imageNamed:@"title_background.png"];
+    } else {
+        cell.backgroundImage = nil;
+    }
     
     if (self.addDynamicContent) {
         
